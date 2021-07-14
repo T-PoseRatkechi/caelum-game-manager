@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaelumGameManagerGUI", "CaelumGameManagerGUI\CaelumGameManagerGUI.csproj", "{97BF71CF-C5F1-4783-AB70-C79B6A6CAEFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaelumGameLibrary", "CaelumGameLibrary\CaelumGameLibrary.csproj", "{C77B825B-446C-448F-96BF-9E55617D2148}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{E2739FC5-F200-466B-A0AD-2433DC6C1A8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97BF71CF-C5F1-4783-AB70-C79B6A6CAEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97BF71CF-C5F1-4783-AB70-C79B6A6CAEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97BF71CF-C5F1-4783-AB70-C79B6A6CAEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97BF71CF-C5F1-4783-AB70-C79B6A6CAEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77B825B-446C-448F-96BF-9E55617D2148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77B825B-446C-448F-96BF-9E55617D2148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77B825B-446C-448F-96BF-9E55617D2148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77B825B-446C-448F-96BF-9E55617D2148}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {011CCC69-1811-4465-82ED-BFCE15F44348}
+	EndGlobalSection
+EndGlobal
