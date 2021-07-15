@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
         mc:Ignorable="d" FontSize="18"
-        Title="Caelum Game Manager" Height="450" Width="800">
+        Title="Caelum Game Manager" Height="450" MinHeight="450" Width="800" MinWidth="800"
+        Background="#FF121212">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
