@@ -1,19 +1,23 @@
-﻿using System;
+﻿using CaelumCoreLibrary.Cards;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CaelumCoreLibrary.CaelumPackages
+namespace CaelumCoreLibrary.Cards
 {
-    public abstract class BasePackage : IPackage
+    public abstract class BaseCard : ICard
     {
-        private PackageData data;
+        private CardData data;
 
-        public BasePackage(string path, PackageType type)
+        public BaseCard(string path, CardType type)
         {
             Data = new() { Path = path, Type = type };
         }
+
+        /// <inheritdoc/>
+        public string Id { get; set; }
 
         /// <inheritdoc/>
         public string Name { get; set; }
@@ -28,7 +32,7 @@ namespace CaelumCoreLibrary.CaelumPackages
         public string Version { get; set; }
 
         /// <inheritdoc/>
-        public PackageData Data
+        public CardData Data
         {
             get { return data; }
             private init { data = value; }

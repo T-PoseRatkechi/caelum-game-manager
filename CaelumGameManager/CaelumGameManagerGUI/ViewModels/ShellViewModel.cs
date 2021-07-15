@@ -1,5 +1,5 @@
 ﻿// using CaelumGameManagerGUI.Models;
-using CaelumCoreLibrary.CaelumPackages;
+using CaelumCoreLibrary.Cards;
 using CaelumGameManagerGUI.Models;
 using Caliburn.Micro;
 using System;
@@ -13,17 +13,17 @@ namespace CaelumGameManagerGUI.ViewModels
 {
     public class ShellViewModel : Screen
     {
-        private BindableCollection<PackageModel> packages = new();
+        private BindableCollection<CardModel> deck = new();
 
         public ShellViewModel()
         {
 
         }
 
-        public BindableCollection<PackageModel> Packages
+        public BindableCollection<CardModel> Deck
         {
-            get { return packages; }
-            set { packages = value; }
+            get { return deck; }
+            set { deck = value; }
         }
     }
 }

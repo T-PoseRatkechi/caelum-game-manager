@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CaelumCoreLibrary.CaelumPackages
+namespace CaelumCoreLibrary.Cards
 {
-    public class PackageData
+    public class CardData
     {
         public string Path { get; set; }
-        public PackageType Type { get; set; }
+        public CardType Type { get; set; }
     }
 }
