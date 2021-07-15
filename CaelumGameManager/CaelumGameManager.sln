@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhosLibrary", "Dependencies
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhosMusicConverterCMD", "Dependencies\phos-music-converter\PhosMusicConverterCMD\PhosMusicConverterCMD.csproj", "{C9DCA5BB-E6D5-4C1B-8DAE-25F04D1F473E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaelumGameManagerCMD", "CaelumGameManagerCMD\CaelumGameManagerCMD.csproj", "{51D64E03-C622-42EE-BF1E-EEA7C2844C26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{C9DCA5BB-E6D5-4C1B-8DAE-25F04D1F473E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9DCA5BB-E6D5-4C1B-8DAE-25F04D1F473E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9DCA5BB-E6D5-4C1B-8DAE-25F04D1F473E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51D64E03-C622-42EE-BF1E-EEA7C2844C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51D64E03-C622-42EE-BF1E-EEA7C2844C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51D64E03-C622-42EE-BF1E-EEA7C2844C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51D64E03-C622-42EE-BF1E-EEA7C2844C26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
