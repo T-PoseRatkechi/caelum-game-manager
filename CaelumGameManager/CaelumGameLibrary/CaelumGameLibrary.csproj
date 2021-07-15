@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dependencies\phos-music-converter\PhosLibrary\PhosLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

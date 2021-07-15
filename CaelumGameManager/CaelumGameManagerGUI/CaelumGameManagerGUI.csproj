@@ -16,4 +16,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CaelumGameLibrary\CaelumGameLibrary.csproj" />
+    <ProjectReference Include="..\Dependencies\phos-music-converter\PhosMusicConverterCMD\PhosMusicConverterCMD.csproj" />
+  </ItemGroup>
+
 </Project>
