@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CaelumCoreLibrary.Packages
+namespace CaelumCoreLibrary.CaelumPackages
 {
     /// <summary>
     /// Interface that all package types implement.
@@ -30,5 +30,10 @@ namespace CaelumCoreLibrary.Packages
         /// Version of package.
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Package data, such as package type and path to data.
+        /// </summary>
+        public PackageData Data { get; }
     }
 }

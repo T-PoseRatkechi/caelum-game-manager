@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace CaelumCoreLibrary.CaelumPackages
 {
-    public class FolderPackage : BasePackage
+    public enum PackageType
     {
-        public FolderPackage(string path) : base(path, PackageType.Folder)
-        {
-        }
+        Mod,
+        Folder,
+        Tool,
+        Update,
+        Preset
     }
 }

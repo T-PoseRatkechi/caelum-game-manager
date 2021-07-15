@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace CaelumCoreLibrary.CaelumPackages
 {
-    public class FolderPackage : BasePackage
+    public class PackageData
     {
-        public FolderPackage(string path) : base(path, PackageType.Folder)
-        {
-        }
+        public string Path { get; set; }
+        public PackageType Type { get; set; }
     }
 }

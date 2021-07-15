@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CaelumCoreLibrary.Packages
+namespace CaelumCoreLibrary.CaelumPackages
 {
-    public class ModPackage : IPackage
+    public class ModPackage : BasePackage
     {
-        /// <inheritdoc/>
-        public string Name { get; set; }
-
-        /// <inheritdoc/>
-        public string[] Authors { get; set; }
-
-        /// <inheritdoc/>
-        public string Game { get; set; }
-
-        /// <inheritdoc/>
-        public string Version { get; set; }
+        /// <summary>
+        /// Initializes a new mod package.
+        /// </summary>
+        /// <param name="path">Path to mod package data.</param>
+        public ModPackage(string path) : base(path, PackageType.Mod)
+        {
+        }
     }
 }
