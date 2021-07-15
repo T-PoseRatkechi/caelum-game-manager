@@ -1,0 +1,3 @@
+[submodule "CaelumGameManager/Dependencies/phos-music-converter"]
+	path = CaelumGameManager/Dependencies/phos-music-converter
+	url = https://github.com/T-PoseRatkechi/phos-music-converter
