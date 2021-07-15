@@ -29,11 +29,11 @@
         <Button x:Name="LoadMusic" Grid.Column="1" Grid.Row="1">Build Music</Button>
         <TextBlock Grid.Column="2" Grid.Row="1" x:Name="Status"/>
         
-        <ListBox x:Name="Songs" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"
+        <ListBox x:Name="Packages" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"
                  ScrollViewer.CanContentScroll="True" MaxHeight="500">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding name}" />
+                    <TextBlock Text="{Binding PackageType}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

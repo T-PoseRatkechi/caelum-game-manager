@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CaelumCoreLibrary\CaelumCoreLibrary.csproj" />
     <ProjectReference Include="..\Dependencies\phos-music-converter\PhosMusicConverterCMD\PhosMusicConverterCMD.csproj" />
   </ItemGroup>
