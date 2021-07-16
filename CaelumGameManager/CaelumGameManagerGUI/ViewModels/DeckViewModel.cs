@@ -30,7 +30,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 IsEnabled = false,
                 Id = "tpose-ratkechi.randomizedencounters",
                 Name = "Randomized Encounters",
-                Authors = new string[] { "T-Pose Ratkechi" },
+                Authors = new string[] { "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi" },
                 Game = "Persona 4 Golden",
                 Version = "0.1.2",
             }));
@@ -40,7 +40,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 IsEnabled = true,
                 Id = "tpose-ratkechi.caelummusicmanager",
                 Name = "Caelum Music Manager",
-                Authors = new string[] { "T-Pose Ratkechi" },
+                Authors = new string[] { "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi" },
                 Game = "Persona 4 Golden",
                 Version = "1.2.489",
             }));

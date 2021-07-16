@@ -20,15 +20,20 @@
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="Deck" Grid.Column="1" Grid.Row="1" CanUserAddRows="False"
-                  AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"/>
-                <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}" />
-                <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}" />
-                <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <TabControl Grid.Column="1" Grid.Row="1" >
+            <TabItem Header="Deck">
+                <DataGrid x:Name="Deck" CanUserAddRows="False"
+                  AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
+                          CanUserResizeRows="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}" />
+                        <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}" />
+                        <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>
