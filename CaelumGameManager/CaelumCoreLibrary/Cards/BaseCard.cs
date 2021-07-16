@@ -17,6 +17,9 @@ namespace CaelumCoreLibrary.Cards
         }
 
         /// <inheritdoc/>
+        public bool IsEnabled { get; set; }
+
+        /// <inheritdoc/>
         public string Id { get; set; }
 
         /// <inheritdoc/>

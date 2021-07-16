@@ -12,6 +12,11 @@ namespace CaelumCoreLibrary.Cards
     public interface ICard
     {
         /// <summary>
+        /// Toggle whether the card is enabled.
+        /// </summary>
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
         /// Card id that must be unique in the given game deck. Only exception are Update Cards.
         /// Should typically be: {author_name}.{card_name}
         /// Update Cards must have the same id as the card they are updating.
