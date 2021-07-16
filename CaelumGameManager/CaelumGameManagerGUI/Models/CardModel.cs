@@ -16,10 +16,8 @@ namespace CaelumGameManagerGUI.Models
             this.card = card;
         }
 
-        public string Name => this.card.Name;
+        public ICard Card { get => this.card; }
+
         public string Authors => string.Join(", ", card.Authors);
-        public string Game => this.card.Game;
-        public string PackagePath => this.card.Data.Path;
-        public string PackageType => this.card.Data.Type.ToString();
     }
 }
