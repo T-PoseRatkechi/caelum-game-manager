@@ -18,6 +18,27 @@ namespace CaelumGameManagerGUI.Models
 
         public ICard Card { get => this.card; }
 
-        public string Authors => string.Join(", ", card.Authors);
+        public string Authors
+        {
+            get
+            {
+                if (Card.Authors == null)
+                {
+                    return "Unknown";
+                }
+
+                if (Card.Authors.Length == 1)
+                {
+                    return Card.Authors[0];
+                }
+
+                if (Card.Authors.Length > 1)
+                {
+                    return $"{Card.Authors[0]} +{Card.Authors.Length} other(s)";
+                }
+
+                return "Unknown";
+            }
+        }
     }
 }
