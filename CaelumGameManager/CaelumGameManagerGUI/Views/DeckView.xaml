@@ -5,8 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Background="White">
+      d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,13 +23,18 @@
             <TabItem Header="Deck">
                 <DataGrid x:Name="Deck" CanUserAddRows="False"
                   AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
-                          CanUserResizeRows="False" IsReadOnly="True">
+                          CanUserResizeRows="False">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}" />
-                        <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}" />
-                        <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"/>
+                        <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"
+                                                IsReadOnly="False"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"
+                                            IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
