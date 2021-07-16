@@ -10,6 +10,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -27,16 +28,7 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         
-        <Button x:Name="LoadMusic" Grid.Column="1" Grid.Row="1">Build Music</Button>
-        <TextBlock Grid.Column="2" Grid.Row="1" x:Name="Status"/>
-        
-        <ListBox x:Name="Packages" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"
-                 ScrollViewer.CanContentScroll="True" MaxHeight="500">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding PackageType}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <ContentControl Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="4"
+                        x:Name="ActiveItem"/>
     </Grid>
 </Window>

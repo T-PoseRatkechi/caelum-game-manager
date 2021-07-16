@@ -11,19 +11,11 @@ using System.Threading.Tasks;
 
 namespace CaelumGameManagerGUI.ViewModels
 {
-    public class ShellViewModel : Screen
+    public class ShellViewModel : Conductor<Screen>
     {
-        private BindableCollection<CardModel> deck = new();
-
         public ShellViewModel()
         {
-
-        }
-
-        public BindableCollection<CardModel> Deck
-        {
-            get { return deck; }
-            set { deck = value; }
+            ActivateItemAsync(new DeckViewModel());
         }
     }
 }
