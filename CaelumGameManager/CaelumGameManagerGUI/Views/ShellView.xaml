@@ -29,7 +29,7 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Column="2" Grid.ColumnSpan="4"
+        <ContentControl Grid.Column="2" Grid.ColumnSpan="5"
                         Grid.Row="1" Grid.RowSpan="4"
                         x:Name="ActiveItem"/>
     </Grid>
