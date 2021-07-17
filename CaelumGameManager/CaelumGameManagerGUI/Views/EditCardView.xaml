@@ -33,5 +33,7 @@
         <TextBox Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="Version" Height="30"/>
         <ComboBox Grid.Column="1" Grid.Row="4" Height="30" ItemsSource="{Binding CardTypes}"
                   SelectedItem="{Binding SelectedType}"/>
+        <Button Grid.Column="1" Grid.Row="5"
+                x:Name="ConfirmButton" Content="{Binding ConfirmText}" />
     </Grid>
 </mah:MetroWindow>

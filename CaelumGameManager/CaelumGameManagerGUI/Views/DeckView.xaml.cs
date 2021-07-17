@@ -1,29 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace CaelumGameManagerGUI.Views
+﻿namespace CaelumGameManagerGUI.Views
 {
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
     /// <summary>
     /// Interaction logic for DeckView.xaml
     /// </summary>
     public partial class DeckView : UserControl
     {
+
         public DeckView()
         {
             InitializeComponent();
             SetColumnWidth();
+
+            this.OpenEditCard.Loaded += (sender, evt) =>
+            {
+                if (sender != null)
+                {
+                    var menuItem = sender as MenuItem;
+                    var contextMenu = menuItem.Parent as ContextMenu;
+                    var item = contextMenu.PlacementTarget as DataGrid;
+                    var selectedItem = item.SelectedItem;
+
+                    if (selectedItem != null)
+                    {
+                        this.OpenEditCard.Header = "Edit Card";
+                    }
+                    else
+                    {
+                        this.OpenEditCard.Header = "Create Card";
+                    }
+                }
+            };
         }
 
         /// <summary>
@@ -54,6 +63,26 @@ namespace CaelumGameManagerGUI.Views
                     FilteredDeck.Columns[i].Width = (i != total - 1) ? new DataGridLength(1, DataGridLengthUnitType.SizeToCells) : new DataGridLength(1, DataGridLengthUnitType.Star);
                 }
             };
+        }
+
+        /// <summary>
+        /// Diselect any items when mouse clicks in empty space.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FilteredDeck_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender != null)
+            {
+                DataGrid grid = sender as DataGrid;
+
+                if (grid != null && grid.SelectedItem != null && grid.SelectedItems.Count == 1)
+                {
+                    DataGridRow row = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+
+                    row.IsSelected = row.IsMouseOver;
+                }
+            }
         }
     }
 }

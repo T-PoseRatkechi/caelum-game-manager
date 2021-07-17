@@ -35,7 +35,7 @@
 
          <DataGrid x:Name="FilteredDeck" Grid.Column="0" Grid.Row="1" CanUserAddRows="False"
                   AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
-                  CanUserResizeRows="False">
+                  CanUserResizeRows="False" MouseLeftButtonDown="FilteredDeck_MouseDown">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"
                                                 IsReadOnly="False" />
@@ -50,8 +50,8 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="OpenCreateCard" Header="Create Card"
-                              cal:Message.Attach="OpenEditCard('create')"/>
+                    <MenuItem x:Name="OpenEditCard"
+                              cal:Message.Attach="OpenEditCard($source)"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

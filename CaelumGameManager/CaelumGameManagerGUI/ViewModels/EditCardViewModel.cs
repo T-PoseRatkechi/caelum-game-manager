@@ -10,30 +10,39 @@ namespace CaelumGameManagerGUI.ViewModels
 {
     public class EditCardViewModel : Screen
     {
-        private void SetWindowName(string context)
+        private string selectedType = CardType.Mod.ToString();
+
+        private void SetContextualNames(string context)
         {
             switch (context)
             {
                 case "create":
                     this.DisplayName = "Create Card";
+                    this.ConfirmText = "Create";
                     break;
                 case "edit":
                     this.DisplayName = "Edit Card";
+                    this.ConfirmText = "Confirm";
                     break;
                 default:
                     this.DisplayName = "Edit Card";
+                    this.ConfirmText = "Confirm";
                     break;
             }
         }
 
         public EditCardViewModel(string openContext)
         {
-            SetWindowName(openContext);
+            SetContextualNames(openContext);
+        }
+
+        public string ConfirmText { get; private set; }
+        public void ConfirmButton()
+        {
+
         }
 
         public string[] CardTypes { get; } = Enum.GetNames(typeof(CardType));
-
-        private string selectedType = CardType.Mod.ToString();
 
         public string SelectedType
         {

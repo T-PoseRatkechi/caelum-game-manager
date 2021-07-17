@@ -1,94 +1,74 @@
-﻿using CaelumCoreLibrary.Cards;
-using CaelumGameManagerGUI.Models;
-using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
+﻿// Copyright (c) T-Pose Ratkechi. All rights reserved.
+// Licensed under the GNU GPLv3 license. See LICENSE file in the project root for full license information.
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 namespace CaelumGameManagerGUI.ViewModels
 {
+    using System.ComponentModel;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using CaelumCoreLibrary.Cards;
+    using CaelumGameManagerGUI.Models;
+    using Caliburn.Micro;
+
+    /// <summary>
+    /// Deck VM.
+    /// </summary>
     public class DeckViewModel : Screen
     {
-        IWindowManager WindowManager { get; set; } = new WindowManager();
+        private readonly IWindowManager windowManager = new WindowManager();
 
         private BindableCollection<CardModel> deck = new();
 
-        private ICollectionView filteredDeck;
-
-        public ICollectionView FilteredDeck
-        {
-            get { return filteredDeck; }
-            set 
-            { 
-                filteredDeck = value;
-                NotifyOfPropertyChange("FilteredDeck");
-            }
-        }
-
-
-        public DeckViewModel()
-        {
-            deck.Add(new CardModel(new ModCard("test/path/bgme a") 
-            {
-                IsEnabled=true,
-                Id="tpose-ratkechi.bgmea",
-                Name="BGME:A",
-                Authors=new string[] { "T-Pose Ratkechi" },
-                Game="Persona 4 Golden",
-                Version="1.0.0",
-            }));;
-
-            deck.Add(new CardModel(new FolderCard("test/path/randoimzed encounters")
-            {
-                IsEnabled = false,
-                Id = "tpose-ratkechi.randomizedencounters",
-                Name = "Randomized Encounters",
-                Authors = new string[] { "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi" },
-                Game = "Persona 4 Golden",
-                Version = "0.1.2",
-            }));
-
-            deck.Add(new CardModel(new ToolCard("test/path/caelum music manager")
-            {
-                IsEnabled = true,
-                Id = "tpose-ratkechi.caelummusicmanager",
-                Name = "Caelum Music Manager",
-                Authors = new string[] { "T-Pose Ratkechi", "T-Pose Ratkechi", "T-Pose Ratkechi" },
-                Game = "Persona 4 Golden",
-                Version = "1.2.489",
-            }));
-
-            FilteredDeck = CollectionViewSource.GetDefaultView(deck);
-        }
-
-        private bool FilterCardsByType(object item, CardType type)
-        {
-            CardModel cardModel = item as CardModel;
-            if (cardModel != null)
-            {
-                if (cardModel.Card.Data.Type == type)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public ICollectionView Deck { get => this.FilteredDeck; }
-
         private string selectedFilter = "All";
 
-        public string SelectedFilter
+        private ICollectionView filteredDeck;
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
+        /// </summary>
+        public DeckViewModel()
         {
-            get { return selectedFilter; }
+            this.FilteredDeck = CollectionViewSource.GetDefaultView(this.deck);
+        }
+
+        /// <summary>
+        /// Gets or sets the deck with a filter.
+        /// </summary>
+        public ICollectionView FilteredDeck
+        {
+            get
+            {
+                return this.filteredDeck;
+            }
+
             set
             {
-                selectedFilter = value;
+                this.filteredDeck = value;
+                this.NotifyOfPropertyChange(nameof(this.FilteredDeck));
+            }
+        }
+
+        /// <summary>
+        /// Gets list of available filters.
+        /// </summary>
+        public string[] Filters { get; } = new string[] { "All", "Mods", "Tools", "Folder" };
+
+        /// <summary>
+        /// Gets or sets the selected filter on deck.
+        /// </summary>
+        public string SelectedFilter
+        {
+            get
+            {
+                return this.selectedFilter;
+            }
+
+            set
+            {
+                this.selectedFilter = value;
                 switch (value)
                 {
                     case "Mods":
@@ -108,11 +88,47 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-        public void OpenEditCard(string context)
+        /// <summary>
+        /// Open the Create/Edit Card window.
+        /// </summary>
+        /// <param name="sender">Sender object.</param>
+        public void OpenEditCard(object sender)
         {
-            this.WindowManager.ShowWindowAsync(new EditCardViewModel(context));
+            if (sender != null)
+            {
+                var menuItem = sender as MenuItem;
+                var contextMenu = menuItem.Parent as ContextMenu;
+                var item = contextMenu.PlacementTarget as DataGrid;
+                var selectedItem = item.SelectedItem;
+
+                if (selectedItem != null)
+                {
+                    this.windowManager.ShowDialogAsync(new EditCardViewModel("edit"));
+                    return;
+                }
+
+                this.windowManager.ShowDialogAsync(new EditCardViewModel("create"));
+            }
         }
 
-        public string[] Filters { get; } = new string[] { "All", "Mods", "Tools", "Folder" };
+        /// <summary>
+        /// Card filter to apply to deck and only display cards of <paramref name="type"/>.
+        /// </summary>
+        /// <param name="item">Card item.</param>
+        /// <param name="type">Card type to display.</param>
+        /// <returns>Whether card passes filter.</returns>
+        private static bool FilterCardsByType(object item, CardType type)
+        {
+            CardModel cardModel = item as CardModel;
+            if (cardModel != null)
+            {
+                if (cardModel.Card.Data.Type == type)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
