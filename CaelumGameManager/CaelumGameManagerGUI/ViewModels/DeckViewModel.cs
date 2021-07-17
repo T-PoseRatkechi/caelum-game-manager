@@ -13,6 +13,8 @@ namespace CaelumGameManagerGUI.ViewModels
 {
     public class DeckViewModel : Screen
     {
+        IWindowManager WindowManager { get; set; } = new WindowManager();
+
         private BindableCollection<CardModel> deck = new();
 
         private ICollectionView filteredDeck;
@@ -106,7 +108,10 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-
+        public void OpenEditCard(string context)
+        {
+            this.WindowManager.ShowWindowAsync(new EditCardViewModel(context));
+        }
 
         public string[] Filters { get; } = new string[] { "All", "Mods", "Tools", "Folder" };
     }

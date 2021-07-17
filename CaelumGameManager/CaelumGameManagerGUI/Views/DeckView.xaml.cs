@@ -36,7 +36,8 @@ namespace CaelumGameManagerGUI.Views
         /// </summary>
         private void SetColumnWidth()
         {
-            FilteredDeck.Loaded += (sender, evt) => {
+            FilteredDeck.Loaded += (sender, evt) =>
+            {
                 for (int i = 0, total = FilteredDeck.Columns.Count; i < total; i++)
                 {
                     // Set min width to Header size (XAML has Column Width = SizeToHeader)
@@ -50,7 +51,7 @@ namespace CaelumGameManagerGUI.Views
 
                     // Set column widths to fit cells content.
                     // Set last column to fill remaining space to remove empty column area.
-                    FilteredDeck.Columns[i].Width = (i != total - 1) ?  new DataGridLength(1, DataGridLengthUnitType.SizeToCells) : new DataGridLength(1, DataGridLengthUnitType.Star);
+                    FilteredDeck.Columns[i].Width = (i != total - 1) ? new DataGridLength(1, DataGridLengthUnitType.SizeToCells) : new DataGridLength(1, DataGridLengthUnitType.Star);
                 }
             };
         }
