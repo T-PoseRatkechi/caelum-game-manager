@@ -7,6 +7,10 @@ namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Decks;
+    using CaelumCoreLibrary.Games;
+    using CaelumCoreLibrary.Utilities;
+    using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
 
     /// <summary>
@@ -15,15 +19,98 @@ namespace CaelumGameManagerGUI.ViewModels
     public class EditCardViewModel : Screen
     {
         private string selectedType = CardType.Mod.ToString();
+        private BindableCollection<CardModel> cards;
+        private IGame game;
+        private string context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditCardViewModel"/> class.
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
-        public EditCardViewModel(string openContext)
+        /// <param name="deckCards">Deck cards to add to or edit.</param>
+        public EditCardViewModel(string openContext, IGame game, BindableCollection<CardModel> deckCards)
         {
-            this.SetContextualNames(openContext);
+            this.context = openContext;
+            this.cards = deckCards;
+            this.game = game;
+
+            this.SetContextualNames();
         }
+
+        private string cardId;
+
+        public string CardId
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.CardName) && !string.IsNullOrEmpty(this.Authors))
+                {
+                    try
+                    {
+                        if (this.Authors.Length > 0)
+                        {
+                            var authorsList = this.Authors.Split(',');
+                            if (authorsList.Length > 0)
+                            {
+                                var tempId = $"{this.CardName}-{authorsList[0]}".ToLower();
+                                if (CardUtils.IsValidId(tempId))
+                                {
+                                    this.cardId = tempId;
+                                }
+                                else
+                                {
+                                    this.cardId = null;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        this.cardId = this.CardName;
+                    }
+                }
+
+                return this.cardId;
+            }
+        }
+
+        private string cardName;
+
+        public string CardName
+        {
+            get
+            {
+                return this.cardName;
+            }
+
+            set
+            {
+                this.cardName = value;
+                this.NotifyOfPropertyChange(() => this.CardName);
+                this.NotifyOfPropertyChange(() => this.CardId);
+            }
+        }
+
+
+        private string _authors;
+
+        public string Authors
+        {
+            get
+            {
+                return this._authors;
+            }
+
+            set
+            {
+                this._authors = value;
+                this.NotifyOfPropertyChange(() => this.Authors);
+                this.NotifyOfPropertyChange(() => this.CardId);
+            }
+        }
+
+
+        public string Version { get; set; }
 
         /// <summary>
         /// Gets Confirm button text.
@@ -44,21 +131,42 @@ namespace CaelumGameManagerGUI.ViewModels
             set { this.selectedType = value; }
         }
 
+        public bool CanConfirmCard()
+        {
+            if (string.IsNullOrEmpty(this.CardId))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Confirm button action.
         /// </summary>
-        public void ConfirmButton()
+        public void ConfirmCard()
         {
+            if (this.context == "create")
+            {
+                try
+                {
+                    CardType cardType = (CardType)Enum.Parse(typeof(CardType), this.SelectedType);
+                    var newCard = this.game.CreateCard(this.CardName, cardType);
+                }
+                catch (Exception e)
+                {
 
+                }
+            }
         }
 
         /// <summary>
         /// Sets text to match context.
         /// </summary>
         /// <param name="context">Context the VM was opened with.</param>
-        private void SetContextualNames(string context)
+        private void SetContextualNames()
         {
-            switch (context)
+            switch (this.context)
             {
                 case "create":
                     this.DisplayName = "Create Card";

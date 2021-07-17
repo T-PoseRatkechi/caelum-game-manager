@@ -9,6 +9,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Windows.Controls;
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
 
@@ -103,11 +104,11 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 if (selectedItem != null)
                 {
-                    this.windowManager.ShowDialogAsync(new EditCardViewModel("edit"));
+                    this.windowManager.ShowDialogAsync(new EditCardViewModel("edit", new GameP4G(), this.deck));
                     return;
                 }
 
-                this.windowManager.ShowDialogAsync(new EditCardViewModel("create"));
+                this.windowManager.ShowDialogAsync(new EditCardViewModel("create", new GameP4G(), this.deck));
             }
         }
 
