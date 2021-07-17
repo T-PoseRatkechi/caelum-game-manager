@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "documentationRules": {
+      "companyName": "T-Pose Ratkechi",
+      "copyrightText": "Copyright (c) {companyName}. All rights reserved.\nLicensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License\nas published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.",
+      "variables": {
+        "licenseName": "GNU GPLv3",
+        "licenseFile": "LICENSE"
+      },
+      "xmlHeader": false
+    }
+  }
+}
