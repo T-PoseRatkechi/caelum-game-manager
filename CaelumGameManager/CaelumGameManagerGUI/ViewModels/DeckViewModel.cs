@@ -3,15 +3,30 @@ using CaelumGameManagerGUI.Models;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace CaelumGameManagerGUI.ViewModels
 {
     public class DeckViewModel : Screen
     {
         private BindableCollection<CardModel> deck = new();
+
+        private ICollectionView filteredDeck;
+
+        public ICollectionView FilteredDeck
+        {
+            get { return filteredDeck; }
+            set 
+            { 
+                filteredDeck = value;
+                NotifyOfPropertyChange("FilteredDeck");
+            }
+        }
+
 
         public DeckViewModel()
         {
@@ -44,13 +59,55 @@ namespace CaelumGameManagerGUI.ViewModels
                 Game = "Persona 4 Golden",
                 Version = "1.2.489",
             }));
+
+            FilteredDeck = CollectionViewSource.GetDefaultView(deck);
         }
 
-
-        public BindableCollection<CardModel> Deck
+        private bool FilterCardsByType(object item, CardType type)
         {
-            get { return deck; }
-            set { deck = value; }
+            CardModel cardModel = item as CardModel;
+            if (cardModel != null)
+            {
+                if (cardModel.Card.Data.Type == type)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
+
+        public ICollectionView Deck { get => this.FilteredDeck; }
+
+        private string selectedFilter = "All";
+
+        public string SelectedFilter
+        {
+            get { return selectedFilter; }
+            set
+            {
+                selectedFilter = value;
+                switch (value)
+                {
+                    case "Mods":
+                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, CardType.Mod);
+                        break;
+                    case "Tools":
+                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, CardType.Tool);
+                        break;
+                    case "Folder":
+                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, CardType.Folder);
+                        break;
+                    case "All":
+                    default:
+                        this.FilteredDeck.Filter = null;
+                        break;
+                }
+            }
+        }
+
+
+
+        public string[] Filters { get; } = new string[] { "All", "Mods", "Tools", "Folder" };
     }
 }

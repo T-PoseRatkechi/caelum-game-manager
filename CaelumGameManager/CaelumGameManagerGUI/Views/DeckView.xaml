@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="CaelumGameManagerGUI.Views.DeckView"
+﻿<UserControl
+    x:Class="CaelumGameManagerGUI.Views.DeckView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,35 +10,42 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Column="1" Grid.Row="1" >
-            <TabItem Header="Deck">
-                <DataGrid x:Name="Deck" CanUserAddRows="False"
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Deck" FontSize="25" Grid.Column="0" />
+            <TextBlock Text="Cards" FontSize="25" Grid.Column="3" HorizontalAlignment="Right" Padding="0 0 10 0"/>
+            <ComboBox Grid.Column="4" ItemsSource="{Binding Filters}" SelectedValue="{Binding SelectedFilter}"/>
+        </Grid>
+
+         <DataGrid x:Name="FilteredDeck" Grid.Column="0" Grid.Row="1" CanUserAddRows="False"
                   AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
-                          CanUserResizeRows="False">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"
-                                                IsReadOnly="False"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}"
+                  CanUserResizeRows="False">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"
+                                                IsReadOnly="False" />
+                <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}"
                                             IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}"
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}"
                                             IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}"
+                <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}"
                                             IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"
+                <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"
                                             IsReadOnly="True"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
-        </TabControl>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

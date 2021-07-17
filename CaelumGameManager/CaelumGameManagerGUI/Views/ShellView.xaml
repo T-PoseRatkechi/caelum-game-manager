@@ -32,6 +32,5 @@
         <ContentControl Grid.Column="2" Grid.ColumnSpan="4"
                         Grid.Row="1" Grid.RowSpan="4"
                         x:Name="ActiveItem"/>
-        <TextBlock Text="Hello" Grid.Column="1" Grid.Row="1" />
     </Grid>
 </mah:MetroWindow>
