@@ -60,7 +60,19 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 if (this.Card != null)
                 {
-                    switch (this.Card.)
+                    switch (this.Card.Data.Type)
+                    {
+                        case CardType.Folder:
+                            return "FolderOpen";
+                        case CardType.Tool:
+                            return "Pickaxe";
+                        case CardType.Update:
+                            return "Update";
+                        case CardType.Preset:
+                            return "Cards";
+                        default:
+                            return "Help";
+                    }
                 }
 
                 return "Help";
