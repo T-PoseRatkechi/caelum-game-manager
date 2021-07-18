@@ -52,6 +52,9 @@ namespace CaelumCoreLibrary.Cards
         public string[] Authors { get; set; }
 
         /// <inheritdoc/>
+        public string Description { get; set; }
+
+        /// <inheritdoc/>
         public string Version { get; set; }
 
         /// <inheritdoc/>

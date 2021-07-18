@@ -35,6 +35,11 @@ namespace CaelumCoreLibrary.Cards
         public string[] Authors { get; set; }
 
         /// <summary>
+        /// Gets or sets description of card.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets name of game this card is for.
         /// </summary>
         public string Game { get; set; }
