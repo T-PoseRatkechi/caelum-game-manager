@@ -24,8 +24,9 @@ namespace CaelumCoreLibrary.Games
         /// <param name="name">Name of card.</param>
         /// <param name="type">Card type.</param>
         /// <param name="authors">Authors of card.</param>
+        /// <param name="description">Description of card.</param>
         /// <param name="version">Card version.</param>
         /// <returns>New <seealso cref="ICard"/> instance.</returns>
-        public ICard CreateCard(string id, string name, CardType type, string[] authors, string version);
+        public ICard CreateCard(string id, string name, CardType type, string[] authors = null, string description = null, string version = null);
     }
 }
