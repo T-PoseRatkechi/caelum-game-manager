@@ -9,6 +9,8 @@ namespace CaelumCoreLibrary.Games
     using System.IO;
     using System.Text.Json;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Common;
+    using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Utilities;
 
     /// <summary>
@@ -51,19 +53,24 @@ namespace CaelumCoreLibrary.Games
         public string ConfigPath { get; init; }
 
         /// <summary>
-        /// Gets game's config path.
-        /// </summary>
-        public GameConfig Config { get; private set; }
-
-        /// <summary>
         /// Gets game's current config version.
         /// </summary>
         public int ConfigVersion { get; init; }
 
         /// <summary>
+        /// Gets game's config path.
+        /// </summary>
+        public GameConfig Config { get; private set; }
+
+        /// <summary>
         /// Gets game's cards directory.
         /// </summary>
         public string CardsDir { get; init; }
+
+        /// <summary>
+        /// Gets game's cards directory.
+        /// </summary>
+        public ICard[] Deck { get; private set; }
 
         /// <summary>
         /// Gets game's downloads directory.
@@ -81,17 +88,40 @@ namespace CaelumCoreLibrary.Games
             switch (type)
             {
                 case CardType.Folder:
-                    var cardFolderPath = Path.Join(this.CardsDir, id);
-                    var newFolderCard = new FolderCard(cardFolderPath)
                     {
-                        Id = id,
-                        Name = name,
-                        Authors = authors,
-                        Game = this.Name,
-                        Version = version,
-                    };
+                        var cardFolderPath = Path.Join(this.CardsDir, id);
+                        var newFolderCard = new FolderCard(cardFolderPath)
+                        {
+                            Id = id,
+                            Name = name,
+                            Authors = authors,
+                            Game = this.Name,
+                            Version = version,
+                        };
 
-                    return newFolderCard;
+                        var cardText = JsonSerializer.Serialize(newFolderCard, new JsonSerializerOptions { WriteIndented = true });
+                        File.WriteAllText(newFolderCard.CardConfigPath, cardText);
+
+                        return newFolderCard;
+                    }
+
+                case CardType.Tool:
+                    {
+                        var cardToolPath = Path.Join(CaelumPaths.ToolsDir, id);
+                        var newToolCard = new ToolCard(cardToolPath)
+                        {
+                            Game = this.Name,
+                            Id = id,
+                            Name = name,
+                            Authors = authors,
+                            Version = version,
+                        };
+
+                        var cardText = JsonSerializer.Serialize(newToolCard, new JsonSerializerOptions { WriteIndented = true });
+                        File.WriteAllText(newToolCard.CardConfigPath, cardText);
+
+                        return newToolCard;
+                    }
                 default:
                     return null;
             }
@@ -103,6 +133,14 @@ namespace CaelumCoreLibrary.Games
         protected virtual void GameInit()
         {
             this.LoadConfig();
+        }
+
+        private void LoadDeck()
+        {
+            for (int i = 0, total = this.Config.Deck.Length; i < total; i++)
+            {
+
+            }
         }
 
         /// <summary>

@@ -8,6 +8,7 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
+    using System.IO;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Games;
@@ -142,6 +143,15 @@ namespace CaelumGameManagerGUI.ViewModels
             set { this.selectedType = value; }
         }
 
+        private string _cardImage = Path.Join(Directory.GetCurrentDirectory(), "test.png");
+
+        public string CardImage
+        {
+            get { return _cardImage; }
+            set { _cardImage = value; }
+        }
+
+
         /// <summary>
         /// Validates card properties are valid and enables/disables the confirm button.
         /// </summary>
@@ -171,7 +181,9 @@ namespace CaelumGameManagerGUI.ViewModels
                 try
                 {
                     CardType cardType = (CardType)Enum.Parse(typeof(CardType), this.SelectedType);
-                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors.Split(','), this.Version);
+                    string cardVersion = string.IsNullOrEmpty(this.Version) ? "1.0.0" : this.Version;
+                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors.Split(','), cardVersion);
+                    this.CardImage = Path.Join(Directory.GetCurrentDirectory(), "test.png");
 
                     this.cards.Add(new CardModel(newCard));
                 }

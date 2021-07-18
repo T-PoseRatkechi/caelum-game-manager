@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
         mc:Ignorable="d"
-        Height="300" Width="400"
+        Height="300" Width="400" MinHeight="300" MinWidth="400"
                  WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,18 +22,23 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-
-        <TextBox x:Name="CardId" Grid.Column="1" Grid.Row="1" mah:TextBoxHelper.Watermark="Id" Height="30"
-                 IsReadOnly="True"/>
-        <TextBox x:Name="CardName" Grid.Column="1" Grid.Row="2" mah:TextBoxHelper.Watermark="Name" Height="30"/>
-        <TextBox x:Name="Authors" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="Author(s)" Height="30"/>
-        <TextBox x:Name="Version" Grid.Column="1" Grid.Row="4" mah:TextBoxHelper.Watermark="Version" Height="30"/>
-        <ComboBox Grid.Column="1" Grid.Row="5" Height="30" ItemsSource="{Binding CardTypes}"
+        <TextBox x:Name="CardName" Grid.Column="1" Grid.Row="1" mah:TextBoxHelper.Watermark="Name" Height="30"/>
+        <TextBox x:Name="Authors" Grid.Column="1" Grid.Row="2" mah:TextBoxHelper.Watermark="Author(s)" Height="30"/>
+        <TextBox x:Name="Version" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="Version" Height="30"/>
+        <ComboBox Grid.Column="1" Grid.Row="4" Height="30" ItemsSource="{Binding CardTypes}"
                   SelectedItem="{Binding SelectedType}"/>
-        <Button Grid.Column="1" Grid.Row="6"
+        <Button Grid.Column="1" Grid.Row="5"
                 x:Name="ConfirmCard" Content="{Binding ConfirmText}" />
+
+        <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" StretchDirection="DownOnly" Stretch="Fill" HorizontalAlignment="Right">
+            <TextBlock x:Name="CardId" Opacity="0.2" FontSize="15"/>
+        </Viewbox>
+
+        <Image Grid.Column="2" Grid.Row="1" Grid.RowSpan="6" Width="200" Source="{Binding CardImage}"
+               Margin="10 0 0 0"/>
     </Grid>
 </mah:MetroWindow>
