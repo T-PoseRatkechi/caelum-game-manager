@@ -37,6 +37,9 @@ namespace CaelumCoreLibrary.Cards
         }
 
         /// <inheritdoc/>
+        public string Game { get; set; }
+
+        /// <inheritdoc/>
         public bool IsEnabled { get; set; }
 
         /// <inheritdoc/>
@@ -47,9 +50,6 @@ namespace CaelumCoreLibrary.Cards
 
         /// <inheritdoc/>
         public string[] Authors { get; set; }
-
-        /// <inheritdoc/>
-        public string Game { get; set; }
 
         /// <inheritdoc/>
         public string Version { get; set; }
