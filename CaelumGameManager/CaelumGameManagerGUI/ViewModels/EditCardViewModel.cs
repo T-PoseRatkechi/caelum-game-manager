@@ -171,11 +171,13 @@ namespace CaelumGameManagerGUI.ViewModels
                 try
                 {
                     CardType cardType = (CardType)Enum.Parse(typeof(CardType), this.SelectedType);
-                    var newCard = this.game.CreateCard(this.CardName, cardType);
+                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors.Split(','), this.Version);
+
+                    this.cards.Add(new CardModel(newCard));
                 }
                 catch (Exception e)
                 {
-
+                    throw new NotImplementedException();
                 }
             }
         }

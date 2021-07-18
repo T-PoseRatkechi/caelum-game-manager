@@ -20,9 +20,12 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Handles creating a new card with the given name and <seealso cref="CardType"/>.
         /// </summary>
+        /// <param name="id">Card ID.</param>
         /// <param name="name">Name of card.</param>
         /// <param name="type">Card type.</param>
+        /// <param name="authors">Authors of card.</param>
+        /// <param name="version">Card version.</param>
         /// <returns>New <seealso cref="ICard"/> instance.</returns>
-        public ICard CreateCard(string name, CardType type);
+        public ICard CreateCard(string id, string name, CardType type, string[] authors, string version);
     }
 }

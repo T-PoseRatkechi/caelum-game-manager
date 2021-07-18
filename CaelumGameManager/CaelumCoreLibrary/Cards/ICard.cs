@@ -5,6 +5,8 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using System;
+
     /// <summary>
     /// Interface that all package types implement.
     /// </summary>

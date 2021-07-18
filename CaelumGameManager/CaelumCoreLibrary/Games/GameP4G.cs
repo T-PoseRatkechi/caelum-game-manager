@@ -16,42 +16,14 @@ namespace CaelumCoreLibrary.Games
     /// <summary>
     /// IGame implementation for P4G.
     /// </summary>
-    public class GameP4G : IGame
+    public class GameP4G : BaseGame
     {
-        private string gamePath;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GameP4G"/> class.
         /// </summary>
         public GameP4G()
+            : base("Persona 4 Golden")
         {
-            this.Name = "Persona 4 Golden";
-            this.Init();
-        }
-
-        /// <inheritdoc/>
-        public string Name { get; init; }
-
-        /// <inheritdoc/>
-        public ICard CreateCard(string name, CardType type)
-        {
-            switch (type)
-            {
-                case CardType.Folder:
-                    var cardFolderPath = Path.Join(this.gamePath, name);
-                    return new FolderCard(cardFolderPath);
-                default:
-                    return null;
-            }
-        }
-
-        /// <summary>
-        /// Handles initializing game folders and files.
-        /// </summary>
-        private void Init()
-        {
-            var gameDir = Directory.CreateDirectory(Path.Join(Directory.GetCurrentDirectory(), this.Name));
-            this.gamePath = gameDir.FullName;
         }
     }
 }
