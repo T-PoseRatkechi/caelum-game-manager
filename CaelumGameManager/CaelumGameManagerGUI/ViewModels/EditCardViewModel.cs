@@ -31,6 +31,8 @@ namespace CaelumGameManagerGUI.ViewModels
 
         private string _authors;
 
+        public CardViewModel CardDisplay { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EditCardViewModel"/> class.
         /// </summary>
@@ -143,13 +145,15 @@ namespace CaelumGameManagerGUI.ViewModels
             set { this.selectedType = value; }
         }
 
-        private string _cardImage = "/Resources/Images/missing-preview.png";
+        /// <summary>
+        /// Gets or sets the card's preview image.
+        /// </summary>
+        public string CardImage { get; set; } = "/Resources/Images/missing-preview.png";
 
-        public string CardImage
-        {
-            get { return _cardImage; }
-            set { _cardImage = value; }
-        }
+        /// <summary>
+        /// Gets or sets the card's description.
+        /// </summary>
+        public string Description { get; set; }
 
 
         /// <summary>
@@ -182,8 +186,11 @@ namespace CaelumGameManagerGUI.ViewModels
                 {
                     CardType cardType = (CardType)Enum.Parse(typeof(CardType), this.SelectedType);
                     string cardVersion = string.IsNullOrEmpty(this.Version) ? "1.0.0" : this.Version;
-                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors.Split(','), cardVersion);
+                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors.Split(','), this.Description, cardVersion);
                     this.CardImage = Path.Join(Directory.GetCurrentDirectory(), "test.png");
+
+                    this.CardDisplay = new(newCard);
+                    this.NotifyOfPropertyChange(() => this.CardDisplay);
 
                     this.cards.Add(new CardModel(newCard));
                 }
