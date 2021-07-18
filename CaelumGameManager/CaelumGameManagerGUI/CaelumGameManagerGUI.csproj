@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\missing-preview.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="MahApps.Metro" Version="2.4.7" />
     <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.333">
