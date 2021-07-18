@@ -143,7 +143,7 @@ namespace CaelumGameManagerGUI.ViewModels
             set { this.selectedType = value; }
         }
 
-        private string _cardImage = Path.Join(Directory.GetCurrentDirectory(), "test.png");
+        private string _cardImage = "/Resources/Images/missing-preview.png";
 
         public string CardImage
         {
