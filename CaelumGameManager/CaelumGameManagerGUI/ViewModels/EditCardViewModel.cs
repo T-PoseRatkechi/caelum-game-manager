@@ -3,6 +3,8 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+#pragma warning disable SA1309 // Field names should not begin with underscore
+
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
@@ -23,6 +25,11 @@ namespace CaelumGameManagerGUI.ViewModels
         private IGame game;
         private string context;
 
+        private string _cardId;
+        private string _cardName;
+
+        private string _authors;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EditCardViewModel"/> class.
         /// </summary>
@@ -37,63 +44,65 @@ namespace CaelumGameManagerGUI.ViewModels
             this.SetContextualNames();
         }
 
-        private string cardId;
-
+        /// <summary>
+        /// Gets the card ID with validation.
+        /// </summary>
         public string CardId
         {
             get
             {
-                if (!string.IsNullOrEmpty(this.CardName) && !string.IsNullOrEmpty(this.Authors))
+                this._cardId = null;
+
+                if (string.IsNullOrEmpty(this.CardName) || string.IsNullOrEmpty(this.Authors))
                 {
-                    try
+                    return this._cardId;
+                }
+
+                try
+                {
+                    if (this.Authors.Length > 0)
                     {
-                        if (this.Authors.Length > 0)
+                        var authorsList = this.Authors.Split(',');
+                        if (authorsList.Length > 0)
                         {
-                            var authorsList = this.Authors.Split(',');
-                            if (authorsList.Length > 0)
+                            var tempId = $"{authorsList[0]}_{this.CardName}".ToLower().Replace(" ", string.Empty);
+                            if (CardUtils.IsValidId(tempId))
                             {
-                                var tempId = $"{this.CardName}-{authorsList[0]}".ToLower();
-                                if (CardUtils.IsValidId(tempId))
-                                {
-                                    this.cardId = tempId;
-                                }
-                                else
-                                {
-                                    this.cardId = null;
-                                }
+                                this._cardId = tempId;
                             }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        this.cardId = this.CardName;
-                    }
+                }
+                catch (Exception e)
+                {
+
                 }
 
-                return this.cardId;
+                return this._cardId;
             }
         }
 
-        private string cardName;
-
+        /// <summary>
+        /// Gets or sets the card name.
+        /// </summary>
         public string CardName
         {
             get
             {
-                return this.cardName;
+                return this._cardName;
             }
 
             set
             {
-                this.cardName = value;
+                this._cardName = value;
                 this.NotifyOfPropertyChange(() => this.CardName);
                 this.NotifyOfPropertyChange(() => this.CardId);
             }
         }
 
-
-        private string _authors;
-
+        /// <summary>
+        /// Gets or sets the authors.
+        /// </summary>
         public string Authors
         {
             get
@@ -109,7 +118,9 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the card version.
+        /// </summary>
         public string Version { get; set; }
 
         /// <summary>
@@ -131,9 +142,14 @@ namespace CaelumGameManagerGUI.ViewModels
             set { this.selectedType = value; }
         }
 
-        public bool CanConfirmCard()
+        /// <summary>
+        /// Validates card properties are valid and enables/disables the confirm button.
+        /// </summary>
+        /// <param name="cardId">Card ID.</param>
+        /// <returns>Whether card has valid properties.</returns>
+        public bool CanConfirmCard(string cardId)
         {
-            if (string.IsNullOrEmpty(this.CardId))
+            if (string.IsNullOrEmpty(cardId))
             {
                 return false;
             }
@@ -141,10 +157,14 @@ namespace CaelumGameManagerGUI.ViewModels
             return true;
         }
 
+
         /// <summary>
         /// Confirm button action.
         /// </summary>
-        public void ConfirmCard()
+        /// <param name="cardId">Card ID.</param>
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void ConfirmCard(string cardId)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             if (this.context == "create")
             {

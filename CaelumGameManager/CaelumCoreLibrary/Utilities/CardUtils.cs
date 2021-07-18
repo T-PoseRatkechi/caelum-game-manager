@@ -12,6 +12,8 @@ namespace CaelumCoreLibrary.Utilities
     /// </summary>
     public class CardUtils
     {
+        private const string InvalidIdCharacters = @"([^A-z0-9-_]|[\^\\])";
+
         /// <summary>
         /// Returns whether <paramref name="s"/> is valid as an ID. Only A-z and - characters.
         /// </summary>
@@ -19,9 +21,19 @@ namespace CaelumCoreLibrary.Utilities
         /// <returns>If <paramref name="s"/> is a valid <seealso cref="Cards.ICard"/> ID.</returns>
         public static bool IsValidId(string s)
         {
-            Regex reg = new(@"([^A-z^0-9-])");
+            Regex reg = new(InvalidIdCharacters);
 
             if (reg.IsMatch(s))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(s))
+            {
+                return false;
+            }
+
+            if (s.Length > 64)
             {
                 return false;
             }
