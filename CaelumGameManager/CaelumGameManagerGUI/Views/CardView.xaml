@@ -45,6 +45,6 @@
         <Image Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Source="{Binding CardImage}" Width="256"
                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10"/>
         <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Path=Card.Description}" TextWrapping="Wrap" AcceptsReturn="True"
-                 IsReadOnly="True"/>
+                 IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </UserControl>

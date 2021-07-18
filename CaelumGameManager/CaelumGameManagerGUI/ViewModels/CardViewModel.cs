@@ -71,11 +71,11 @@ namespace CaelumGameManagerGUI.ViewModels
                         case CardType.Preset:
                             return "Cards";
                         default:
-                            return "Help";
+                            return "HelpBox";
                     }
                 }
 
-                return "Help";
+                return "HelpBox";
             }
         }
     }
