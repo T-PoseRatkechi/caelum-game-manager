@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Games
 {
     using CaelumCoreLibrary.Cards;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Game interface for managing deck and card creation.
@@ -18,6 +19,11 @@ namespace CaelumCoreLibrary.Games
         public string Name { get; init; }
 
         /// <summary>
+        /// Gets or sets game deck.
+        /// </summary>
+        public List<ICard> Deck { get; set; }
+
+        /// <summary>
         /// Handles creating a new card with the given name and <seealso cref="CardType"/>.
         /// </summary>
         /// <param name="id">Card ID.</param>
@@ -28,5 +34,7 @@ namespace CaelumCoreLibrary.Games
         /// <param name="version">Card version.</param>
         /// <returns>New <seealso cref="ICard"/> instance.</returns>
         public ICard CreateCard(string id, string name, CardType type, string[] authors = null, string description = null, string version = null);
+
+        public void WriteConfig();
     }
 }

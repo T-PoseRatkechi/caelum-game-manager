@@ -31,4 +31,8 @@
     <ProjectReference Include="..\Dependencies\phos-music-converter\PhosMusicConverterCMD\PhosMusicConverterCMD.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

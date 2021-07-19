@@ -1,6 +1,9 @@
 ﻿namespace CaelumGameManagerGUI.Views
 {
+    using System.Collections.Generic;
+    using System.Globalization;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Input;
 
     /// <summary>
@@ -9,10 +12,13 @@
     public partial class DeckView : UserControl
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeckView"/> class.
+        /// </summary>
         public DeckView()
         {
-            InitializeComponent();
-            SetColumnWidth();
+            this.InitializeComponent();
+            this.SetColumnWidth();
 
             this.OpenEditCard.Loaded += (sender, evt) =>
             {
@@ -45,22 +51,22 @@
         /// </summary>
         private void SetColumnWidth()
         {
-            FilteredDeck.Loaded += (sender, evt) =>
+            this.FilteredDeck.Loaded += (sender, evt) =>
             {
-                for (int i = 0, total = FilteredDeck.Columns.Count; i < total; i++)
+                for (int i = 0, total = this.FilteredDeck.Columns.Count; i < total; i++)
                 {
                     // Set min width to Header size (XAML has Column Width = SizeToHeader)
-                    FilteredDeck.Columns[i].MinWidth = FilteredDeck.Columns[i].ActualWidth;
+                    this.FilteredDeck.Columns[i].MinWidth = this.FilteredDeck.Columns[i].ActualWidth;
 
                     // Set first column (Enabled) to disable resize.
                     if (i == 0)
                     {
-                        FilteredDeck.Columns[i].CanUserResize = false;
+                        this.FilteredDeck.Columns[i].CanUserResize = false;
                     }
 
                     // Set column widths to fit cells content.
                     // Set last column to fill remaining space to remove empty column area.
-                    FilteredDeck.Columns[i].Width = (i != total - 1) ? new DataGridLength(1, DataGridLengthUnitType.SizeToCells) : new DataGridLength(1, DataGridLengthUnitType.Star);
+                    this.FilteredDeck.Columns[i].Width = (i != total - 1) ? new DataGridLength(1, DataGridLengthUnitType.SizeToCells) : new DataGridLength(1, DataGridLengthUnitType.Star);
                 }
             };
         }
@@ -68,8 +74,8 @@
         /// <summary>
         /// Diselect any items when mouse clicks in empty space.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event.</param>
         private void FilteredDeck_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender != null)
@@ -83,6 +89,40 @@
                     row.IsSelected = row.IsMouseOver;
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// For converting authors array to single string.
+    /// </summary>
+    public class ListToString : IValueConverter
+    {
+        /// <inheritdoc/>
+        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string[])
+            {
+                var list = value as string[];
+                if (list.Length < 1)
+                {
+                    return "Unknown";
+                }
+
+                if (list.Length == 1)
+                {
+                    return list[0];
+                }
+
+                return $"{list[0]} +{list.Length - 1} other(s)";
+            }
+
+            return "Unknown";
+        }
+
+        /// <inheritdoc/>
+        public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

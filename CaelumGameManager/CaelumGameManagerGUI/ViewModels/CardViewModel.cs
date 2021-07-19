@@ -42,7 +42,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     return "/Resources/Images/missing-preview.png";
                 }
 
-                string cardImagePath = Path.Join(this.Card.Data.Path, "card.png");
+                string cardImagePath = Path.Join(this.Card.Path, "card.png");
                 if (File.Exists(cardImagePath))
                 {
                     return cardImagePath;
@@ -60,7 +60,7 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 if (this.Card != null)
                 {
-                    switch (this.Card.Data.Type)
+                    switch (this.Card.Type)
                     {
                         case CardType.Folder:
                             return "FolderOpen";

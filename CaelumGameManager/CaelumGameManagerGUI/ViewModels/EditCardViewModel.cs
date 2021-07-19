@@ -13,7 +13,6 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Utilities;
-    using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
 
     /// <summary>
@@ -22,9 +21,9 @@ namespace CaelumGameManagerGUI.ViewModels
     public class EditCardViewModel : Screen
     {
         private string selectedType = CardType.Mod.ToString();
-        private BindableCollection<CardModel> cards;
+        private BindableCollection<ICard> cards;
+        private ICard card;
         private IGame game;
-        private string context;
 
         private string _cardId;
         private string _cardName;
@@ -38,11 +37,20 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public EditCardViewModel(string openContext, IGame game, BindableCollection<CardModel> deckCards)
+        public EditCardViewModel(IGame game, BindableCollection<ICard> deckCards, ICard card = null)
         {
-            this.context = openContext;
             this.cards = deckCards;
             this.game = game;
+            this.card = card;
+
+            if (card != null)
+            {
+                this._cardId = card.Id;
+                this.CardName = card.Name;
+                this.Authors = string.Join(", ", card.Authors);
+                this.SelectedType = card.Type.ToString();
+                this.Description = card.Description;
+            }
 
             this.SetContextualNames();
         }
@@ -180,7 +188,7 @@ namespace CaelumGameManagerGUI.ViewModels
         public void ConfirmCard(string cardId)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
-            if (this.context == "create")
+            if (this.card == null)
             {
                 try
                 {
@@ -192,7 +200,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.CardDisplay = new(newCard);
                     this.NotifyOfPropertyChange(() => this.CardDisplay);
 
-                    this.cards.Add(new CardModel(newCard));
+                    this.cards.Add(newCard);
                 }
                 catch (Exception e)
                 {
@@ -207,20 +215,15 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <param name="context">Context the VM was opened with.</param>
         private void SetContextualNames()
         {
-            switch (this.context)
+            if (this.card == null)
             {
-                case "create":
-                    this.DisplayName = "Create Card";
-                    this.ConfirmText = "Create";
-                    break;
-                case "edit":
-                    this.DisplayName = "Edit Card";
-                    this.ConfirmText = "Confirm";
-                    break;
-                default:
-                    this.DisplayName = "Edit Card";
-                    this.ConfirmText = "Confirm";
-                    break;
+                this.DisplayName = "Create Card";
+                this.ConfirmText = "Create";
+            }
+            else
+            {
+                this.DisplayName = "Edit Card";
+                this.ConfirmText = "Confirm";
             }
         }
     }

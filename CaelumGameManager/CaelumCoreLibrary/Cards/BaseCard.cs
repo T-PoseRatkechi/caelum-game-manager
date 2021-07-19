@@ -5,37 +5,11 @@
 
 namespace CaelumCoreLibrary.Cards
 {
-    using System;
-    using System.IO;
-    using System.Text.Json;
-    using System.Text.Json.Serialization;
-
     /// <summary>
     /// Base card implementation.
     /// </summary>
-    [Serializable]
     public abstract class BaseCard : ICard
     {
-        /// <summary>
-        /// Gets the card's config path.
-        /// </summary>
-        [JsonIgnore]
-        public string CardConfigPath { get; init; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCard"/> class.
-        /// </summary>
-        /// <param name="cardPath">Path to card.</param>
-        /// <param name="type">Card type.</param>
-        public BaseCard(string cardPath, CardType type)
-        {
-            Directory.CreateDirectory(cardPath);
-            this.CardConfigPath = Path.Join(cardPath, "card.json");
-
-            this.Data = new() { Path = Path.Join(cardPath, "data"), Type = type };
-            Directory.CreateDirectory(this.Data.Path);
-        }
-
         /// <inheritdoc/>
         public string Game { get; set; }
 
@@ -57,8 +31,15 @@ namespace CaelumCoreLibrary.Cards
         /// <inheritdoc/>
         public string Version { get; set; }
 
-        /// <inheritdoc/>
-        [JsonIgnore]
-        public CardData Data { get; init; }
+        /// <summary>
+        /// Gets or sets the card's type.
+        /// </summary>
+
+        public CardType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets card's data path.
+        /// </summary>
+        public string Path { get; set; }
     }
 }

@@ -14,9 +14,9 @@ namespace CaelumCoreLibrary.Cards
         /// Initializes a new instance of the <see cref="FolderCard"/> class.
         /// </summary>
         /// <param name="cardPath">Path to card.</param>
-        public FolderCard(string cardPath)
-            : base(cardPath, CardType.Folder)
+        public FolderCard()
         {
+            this.Type = CardType.Folder;
         }
     }
 }

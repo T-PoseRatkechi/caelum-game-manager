@@ -5,7 +5,7 @@
 
 namespace CaelumCoreLibrary.Cards
 {
-    using System;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// Interface that all package types implement.
@@ -50,8 +50,14 @@ namespace CaelumCoreLibrary.Cards
         public string Version { get; set; }
 
         /// <summary>
-        /// Gets card data, such as card type and path to data.
+        /// Gets or sets card type.
         /// </summary>
-        public CardData Data { get; }
+        public CardType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets card's data path.
+        /// </summary>
+        [JsonIgnore]
+        public string Path { get; set; }
     }
 }

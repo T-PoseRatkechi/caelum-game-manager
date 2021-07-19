@@ -8,6 +8,9 @@
       xmlns:cal="http://www.caliburnproject.org"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:ListToString x:Key="ListToString" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -36,15 +39,15 @@
                   AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
                   CanUserResizeRows="False" MouseLeftButtonDown="FilteredDeck_MouseDown">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=Card.IsEnabled}"
+                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Path=IsEnabled}"
                                                 IsReadOnly="False" />
-                <DataGridTextColumn Header="Type" Binding="{Binding Path=Card.Data.Type}"
+                <DataGridTextColumn Header="Type" Binding="{Binding Path=Type}"
                                             IsReadOnly="True"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Card.Name}"
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"
                                             IsReadOnly="True"/>
-                <DataGridTextColumn Header="Authors" Binding="{Binding Path=Authors}"
+                <DataGridTextColumn Header="Author(s)" Binding="{Binding Path=Authors, Converter={StaticResource ListToString}}" 
                                             IsReadOnly="True"/>
-                <DataGridTextColumn Header="Version" Binding="{Binding Path=Card.Version}"
+                <DataGridTextColumn Header="Version" Binding="{Binding Path=Version}"
                                             IsReadOnly="True"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>

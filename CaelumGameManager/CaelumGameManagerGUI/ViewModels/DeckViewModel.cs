@@ -5,12 +5,12 @@
 
 namespace CaelumGameManagerGUI.ViewModels
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Controls;
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
-    using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
 
     /// <summary>
@@ -19,8 +19,8 @@ namespace CaelumGameManagerGUI.ViewModels
     public class DeckViewModel : Screen
     {
         private readonly IWindowManager windowManager = new WindowManager();
-
-        private BindableCollection<CardModel> deck = new();
+        private IGame game;
+        private BindableCollection<ICard> deck;
 
         private string selectedFilter = "All";
 
@@ -30,8 +30,11 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel()
+        public DeckViewModel(IGame game, BindableCollection<ICard> deck)
         {
+            this.game = game;
+            this.deck = deck;
+
             this.FilteredDeck = CollectionViewSource.GetDefaultView(this.deck);
         }
 
@@ -104,11 +107,11 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 if (selectedItem != null)
                 {
-                    this.windowManager.ShowDialogAsync(new EditCardViewModel("edit", new GameP4G(), this.deck));
+                    this.windowManager.ShowDialogAsync(new EditCardViewModel(this.game, this.deck, selectedItem as ICard));
                     return;
                 }
 
-                this.windowManager.ShowDialogAsync(new EditCardViewModel("create", new GameP4G(), this.deck));
+                this.windowManager.ShowDialogAsync(new EditCardViewModel(this.game, this.deck));
             }
         }
 
@@ -120,10 +123,10 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <returns>Whether card passes filter.</returns>
         private static bool FilterCardsByType(object item, CardType type)
         {
-            CardModel cardModel = item as CardModel;
+            ICard cardModel = item as ICard;
             if (cardModel != null)
             {
-                if (cardModel.Card.Data.Type == type)
+                if (cardModel.Type == type)
                 {
                     return true;
                 }

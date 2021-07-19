@@ -6,7 +6,9 @@
 namespace CaelumCoreLibrary.Games
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text.Json;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
@@ -35,6 +37,7 @@ namespace CaelumCoreLibrary.Games
             this.CardsDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "cards"));
             this.DownloadsDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "downloads"));
             this.BuildDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "build"));
+            this.Deck = new List<ICard>();
 
             this.GameInit();
         }
@@ -68,9 +71,9 @@ namespace CaelumCoreLibrary.Games
         public string CardsDir { get; init; }
 
         /// <summary>
-        /// Gets game's cards directory.
+        /// Gets or sets game's deck.
         /// </summary>
-        public ICard[] Deck { get; private set; }
+        public List<ICard> Deck { get; set; }
 
         /// <summary>
         /// Gets game's downloads directory.
@@ -89,8 +92,8 @@ namespace CaelumCoreLibrary.Games
             {
                 case CardType.Folder:
                     {
-                        var cardFolderPath = Path.Join(this.CardsDir, id);
-                        var newFolderCard = new FolderCard(cardFolderPath)
+                        var cardFolderPath = CaelumFileIO.BuildDirectory(Path.Join(this.CardsDir, id));
+                        var newFolderCard = new FolderCard()
                         {
                             Id = id,
                             Name = name,
@@ -98,18 +101,19 @@ namespace CaelumCoreLibrary.Games
                             Description = description,
                             Game = this.Name,
                             Version = version,
+                            Path = cardFolderPath,
                         };
 
                         var cardText = JsonSerializer.Serialize(newFolderCard, new JsonSerializerOptions { WriteIndented = true });
-                        File.WriteAllText(newFolderCard.CardConfigPath, cardText);
+                        File.WriteAllText(Path.Join(this.CardsDir, id, "card.json"), cardText);
 
                         return newFolderCard;
                     }
 
                 case CardType.Tool:
                     {
-                        var cardToolPath = Path.Join(CaelumPaths.ToolsDir, id);
-                        var newToolCard = new ToolCard(cardToolPath)
+                        var cardToolPath = CaelumFileIO.BuildDirectory(Path.Join(CaelumPaths.ToolsDir, id));
+                        var newToolCard = new ToolCard()
                         {
                             Game = this.Name,
                             Id = id,
@@ -117,16 +121,29 @@ namespace CaelumCoreLibrary.Games
                             Authors = authors,
                             Description = description,
                             Version = version,
+                            Path = cardToolPath,
                         };
 
                         var cardText = JsonSerializer.Serialize(newToolCard, new JsonSerializerOptions { WriteIndented = true });
-                        File.WriteAllText(newToolCard.CardConfigPath, cardText);
+                        File.WriteAllText(Path.Join(CaelumPaths.ToolsDir, id, "card.json"), cardText);
 
                         return newToolCard;
                     }
+
                 default:
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Loads the game config, or creates a default if none is found.
+        /// </summary>
+        public void WriteConfig()
+        {
+            this.Config.CardsList = this.Deck.Select(card => card.Id).ToArray();
+
+            var configText = JsonSerializer.Serialize(this.Config, new JsonSerializerOptions() { WriteIndented = true });
+            File.WriteAllText(this.ConfigPath, configText);
         }
 
         /// <summary>
@@ -135,14 +152,58 @@ namespace CaelumCoreLibrary.Games
         protected virtual void GameInit()
         {
             this.LoadConfig();
+            this.LoadDeck();
         }
 
         private void LoadDeck()
         {
-            for (int i = 0, total = this.Config.Deck.Length; i < total; i++)
+            for (int i = 0, total = this.Config.CardsList.Length; i < total; i++)
             {
-
+                var currentCard = this.Config.CardsList[i];
+                this.Deck.Add(this.GetCard(currentCard));
             }
+        }
+
+        private ICard GetCard(string cardId)
+        {
+            // Card is mod type.
+            var modCardFile = Path.Join(this.DownloadsDir, cardId);
+            if (File.Exists(modCardFile))
+            {
+                // Mod card has data card.
+                var modDataDir = Path.Join(this.CardsDir, cardId);
+                if (Directory.Exists(modDataDir))
+                {
+                    // Add mod folder card.
+                    var modDataCard = CardUtils.ParseCard<ModCard>(Path.Join(modDataDir, "card.json"));
+                    return modDataCard;
+                }
+                else
+                {
+                    throw new ArgumentException($"{cardId} is missing its card data! Folder: {modDataDir}");
+                }
+            }
+
+
+            // Card is folder type.
+            var folderCardDir = Path.Join(this.CardsDir, cardId);
+            if (Directory.Exists(folderCardDir))
+            {
+                var folderCardPath = Path.Join(folderCardDir, "card.json");
+                var folderCard = CardUtils.ParseCard<FolderCard>(folderCardPath);
+                return folderCard;
+            }
+
+            // Card is tool type.
+            var toolCardDir = Path.Join(CaelumPaths.ToolsDir, cardId);
+            if (Directory.Exists(toolCardDir))
+            {
+                var toolCardPath = Path.Join(toolCardDir, "card.json");
+                var toolCard = CardUtils.ParseCard<ToolCard>(toolCardPath);
+                return toolCard;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -163,7 +224,7 @@ namespace CaelumCoreLibrary.Games
                     GameName = this.Name,
                     Version = this.ConfigVersion,
                     OutputDirectory = this.BuildDir,
-                    Deck = Array.Empty<string>(),
+                    CardsList = Array.Empty<string>(),
                 };
 
                 var defaultText = JsonSerializer.Serialize(defaultConfig, new JsonSerializerOptions() { WriteIndented = true });

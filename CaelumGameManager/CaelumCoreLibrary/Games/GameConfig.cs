@@ -43,6 +43,6 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets or sets the game's deck.
         /// </summary>
-        public string[] Deck { get; set; }
+        public string[] CardsList { get; set; }
     }
 }

@@ -5,6 +5,10 @@
 
 namespace CaelumCoreLibrary.Utilities
 {
+    using CaelumCoreLibrary.Cards;
+    using System;
+    using System.IO;
+    using System.Text.Json;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -39,6 +43,22 @@ namespace CaelumCoreLibrary.Utilities
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Parses the card at <paramref name="cardPath"/> and returns it.
+        /// </summary>
+        /// <param name="cardPath">Path to card.</param>
+        /// <returns><paramref name="cardPath"/> parsed as a new <seealso cref="ICard"/>.</returns>
+        public static ICard ParseCard<T>(string cardPath)
+        {
+            var cardText = File.ReadAllText(cardPath);
+            var card = JsonSerializer.Deserialize<T>(cardText);
+
+            // Set card data path.
+            (card as ICard).Path = Path.Join(Path.GetDirectoryName(cardPath), "data");
+
+            return (ICard)card;
         }
     }
 }
