@@ -1,5 +1,7 @@
 ﻿namespace CaelumGameManagerGUI.Views
 {
+    using CaelumCoreLibrary.Common;
+    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Windows.Controls;
@@ -95,14 +97,14 @@
     /// <summary>
     /// For converting authors array to single string.
     /// </summary>
-    public class ListToString : IValueConverter
+    public class AuthorsToString : IValueConverter
     {
         /// <inheritdoc/>
-        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string[])
+            if (value is Author[])
             {
-                var list = value as string[];
+                var list = value as Author[];
                 if (list.Length < 1)
                 {
                     return "Unknown";
@@ -110,10 +112,10 @@
 
                 if (list.Length == 1)
                 {
-                    return list[0];
+                    return list[0].Name;
                 }
 
-                return $"{list[0]} +{list.Length - 1} other(s)";
+                return $"{list[0].Name} +{list.Length - 1} other(s)";
             }
 
             return "Unknown";

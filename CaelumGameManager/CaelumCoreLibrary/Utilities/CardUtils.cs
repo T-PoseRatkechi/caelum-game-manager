@@ -46,19 +46,19 @@ namespace CaelumCoreLibrary.Utilities
         }
 
         /// <summary>
-        /// Parses the card at <paramref name="cardPath"/> and returns it.
+        /// Parses the card at <paramref name="cardFilePath"/> and returns it.
         /// </summary>
-        /// <param name="cardPath">Path to card.</param>
-        /// <returns><paramref name="cardPath"/> parsed as a new <seealso cref="ICard"/>.</returns>
-        public static ICard ParseCard<T>(string cardPath)
+        /// <param name="cardFilePath">Path to card.</param>
+        /// <returns><paramref name="cardFilePath"/> parsed as a new <seealso cref="ICard"/>.</returns>
+        public static ICard ParseCard<T>(string cardFilePath)
         {
-            var cardText = File.ReadAllText(cardPath);
-            var card = JsonSerializer.Deserialize<T>(cardText);
+            var cardText = File.ReadAllText(cardFilePath);
+            ICard card = (ICard)JsonSerializer.Deserialize<T>(cardText);
 
-            // Set card data path.
-            (card as ICard).Path = Path.Join(Path.GetDirectoryName(cardPath), "data");
+            // Set card path.
+            card.Path = Path.GetDirectoryName(cardFilePath);
 
-            return (ICard)card;
+            return card;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using System;
     using System.IO;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Utilities;
@@ -28,7 +29,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private string _cardId;
         private string _cardName;
 
-        private string _authors;
+        private Author[] _authors = Array.Empty<Author>();
 
         public CardViewModel CardDisplay { get; set; }
 
@@ -47,9 +48,11 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 this._cardId = card.Id;
                 this.CardName = card.Name;
-                this.Authors = string.Join(", ", card.Authors);
+                this.Authors = card.Authors;
                 this.SelectedType = card.Type.ToString();
                 this.Description = card.Description;
+
+                this.CardDisplay = new(card);
             }
 
             this.SetContextualNames();
@@ -64,29 +67,18 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 this._cardId = null;
 
-                if (string.IsNullOrEmpty(this.CardName) || string.IsNullOrEmpty(this.Authors))
+                if (string.IsNullOrEmpty(this.CardName) || string.IsNullOrEmpty(this.Authors?[0]?.Name))
                 {
                     return this._cardId;
                 }
 
-                try
+                if (this.Authors.Length > 0)
                 {
-                    if (this.Authors.Length > 0)
+                    var tempId = $"{this.Authors[0].Name}_{this.CardName}".ToLower().Replace(" ", string.Empty);
+                    if (CardUtils.IsValidId(tempId))
                     {
-                        var authorsList = this.Authors.Split(',');
-                        if (authorsList.Length > 0)
-                        {
-                            var tempId = $"{authorsList[0]}_{this.CardName}".ToLower().Replace(" ", string.Empty);
-                            if (CardUtils.IsValidId(tempId))
-                            {
-                                this._cardId = tempId;
-                            }
-                        }
+                        this._cardId = tempId;
                     }
-                }
-                catch (Exception e)
-                {
-
                 }
 
                 return this._cardId;
@@ -114,7 +106,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets or sets the authors.
         /// </summary>
-        public string Authors
+        public Author[] Authors
         {
             get
             {
@@ -194,7 +186,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 {
                     CardType cardType = (CardType)Enum.Parse(typeof(CardType), this.SelectedType);
                     string cardVersion = string.IsNullOrEmpty(this.Version) ? "1.0.0" : this.Version;
-                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors.Split(','), this.Description, cardVersion);
+                    ICard newCard = this.game.CreateCard(this.CardId, this.CardName, cardType, this.Authors, this.Description, cardVersion);
                     this.CardImage = Path.Join(Directory.GetCurrentDirectory(), "test.png");
 
                     this.CardDisplay = new(newCard);

@@ -9,6 +9,7 @@
         Height="400" Width="500"
                  WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
     <Grid>
+        <!--Grid Definitions-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
@@ -27,8 +28,18 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
+        
+        <!--Card Data Inputs-->
         <TextBox x:Name="CardName" Grid.Column="1" Grid.Row="1" mah:TextBoxHelper.Watermark="Name" Height="30" Margin="0 0 0 5"/>
-        <TextBox x:Name="Authors" Grid.Column="1" Grid.Row="2" mah:TextBoxHelper.Watermark="Author(s)" Height="30" Margin="0 0 0 5"/>
+        <Grid Grid.Column="1" Grid.Row="2" Margin="0 0 0 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="AuthorsText" Margin="0 0 5 0" Height="30" mah:TextBoxHelper.Watermark="Author(s)"
+                     IsReadOnly="True"/>
+            <Button x:Name="OpenAuthors" Grid.Column="1" Content="+"/>
+        </Grid>
         <TextBox x:Name="Version" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="Version" Height="30" Margin="0 0 0 5"/>
         <ComboBox Grid.Column="1" Grid.Row="4" Height="30" ItemsSource="{Binding CardTypes}"
                   SelectedItem="{Binding SelectedType}" Margin="0 0 0 5"/>
@@ -37,10 +48,14 @@
         <Button Grid.Column="1" Grid.Row="7"
                 x:Name="ConfirmCard" Content="{Binding ConfirmText}" />
 
+        <!--Bottom Right ID-->
         <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="8" StretchDirection="DownOnly" Stretch="Fill" HorizontalAlignment="Right">
             <TextBlock x:Name="CardId" Opacity="0.2" FontSize="15"/>
         </Viewbox>
-
-        <ContentControl x:Name="CardDisplay" Grid.Column="2" Grid.Row="1" Grid.RowSpan="7" Margin="10 0 0 10"/>
+        
+        <!--Card Display-->
+        <Rectangle Grid.Column="2" Grid.Row="1" Grid.RowSpan="6" Margin="10 0 0 5" Fill="Black" Opacity="0.3"
+                   Stroke="White" StrokeThickness="1" RadiusX="2" RadiusY="2"/>
+        <ContentControl x:Name="CardDisplay" Grid.Column="2" Grid.Row="1" Grid.RowSpan="6" Margin="10 0 0 5"/>
     </Grid>
 </mah:MetroWindow>

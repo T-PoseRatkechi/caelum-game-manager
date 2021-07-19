@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="34"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -25,7 +25,7 @@
 
         <!--Card Background-->
         <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="6" RadiusX="2" RadiusY="2"
-                   Stroke="Black"  StrokeThickness="1"
+                   Stroke="#4af6ff"  StrokeThickness="1"
                    >
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -43,11 +43,10 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <!--Card Background-->
-        <Rectangle Grid.Column="1" Grid.Row="1" RadiusX="2" RadiusY="2"
+        <!--Text Background-->
+        <Rectangle Grid.Column="1" Grid.Row="1" RadiusX="1" RadiusY="1"
                    Fill="Black"
-                   Opacity="0.7"
-                   />
+                   Opacity="0.7"/>
 
         <!--Card Title-->
         <Grid Grid.Column="1" Grid.Row="1">
@@ -65,11 +64,11 @@
         </Grid>
 
         <!--Card Content-->
-        <Image Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Source="{Binding CardImage}" Width="256"
+        <Image Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Source="{Binding CardImage}"
                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10"/>
 
         <mah:MetroTabControl Grid.Column="1" Grid.Row="4"
-                    mah:HeaderedControlHelper.HeaderFontSize="17">
+                    mah:HeaderedControlHelper.HeaderFontSize="15">
             <mah:MetroTabControl.Resources>
                 <SolidColorBrush x:Key="MahApps.Brushes.Accent" Color="#4A9ADA"/>
                 <SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="#2480C0"/>

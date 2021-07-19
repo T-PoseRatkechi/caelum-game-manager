@@ -5,8 +5,9 @@
 
 namespace CaelumCoreLibrary.Games
 {
-    using CaelumCoreLibrary.Cards;
     using System.Collections.Generic;
+    using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Common;
 
     /// <summary>
     /// Game interface for managing deck and card creation.
@@ -33,7 +34,7 @@ namespace CaelumCoreLibrary.Games
         /// <param name="description">Description of card.</param>
         /// <param name="version">Card version.</param>
         /// <returns>New <seealso cref="ICard"/> instance.</returns>
-        public ICard CreateCard(string id, string name, CardType type, string[] authors = null, string description = null, string version = null);
+        public ICard CreateCard(string id, string name, CardType type, Author[] authors = null, string description = null, string version = null);
 
         public void WriteConfig();
     }

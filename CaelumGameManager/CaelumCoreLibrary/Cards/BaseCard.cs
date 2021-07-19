@@ -5,6 +5,9 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using System.Text.Json.Serialization;
+    using CaelumCoreLibrary.Common;
+
     /// <summary>
     /// Base card implementation.
     /// </summary>
@@ -23,7 +26,7 @@ namespace CaelumCoreLibrary.Cards
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        public string[] Authors { get; set; }
+        public Author[] Authors { get; set; }
 
         /// <inheritdoc/>
         public string Description { get; set; }
@@ -40,6 +43,7 @@ namespace CaelumCoreLibrary.Cards
         /// <summary>
         /// Gets or sets card's data path.
         /// </summary>
+        [JsonIgnore]
         public string Path { get; set; }
     }
 }
