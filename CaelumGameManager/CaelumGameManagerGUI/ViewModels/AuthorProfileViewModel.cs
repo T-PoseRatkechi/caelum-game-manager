@@ -7,6 +7,7 @@ namespace CaelumGameManagerGUI.ViewModels
 {
     using System.Diagnostics;
     using System.IO;
+    using System.Reflection;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using CaelumCoreLibrary.Common;
@@ -53,8 +54,20 @@ namespace CaelumGameManagerGUI.ViewModels
                         return image;
                     }
                 }
-
-                return null;
+                else
+                {
+                    var assembly = Assembly.GetExecutingAssembly();
+                    var resourceName = "CaelumGameManagerGUI.Resources.Images.missing-preview.png";
+                    var stream = assembly.GetManifestResourceStream(resourceName);
+                    BitmapImage image = new();
+                    stream.Position = 0;
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+                    image.Freeze();
+                    return image;
+                }
             }
         }
 

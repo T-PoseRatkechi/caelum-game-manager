@@ -38,6 +38,15 @@
                    FontSize="25"/>
         <ContentControl x:Name="AuthorDisplay" Grid.Column="2" Grid.Row="2"/>
 
-        <Button x:Name="CreateAuthor" Grid.Column="1" Grid.Row="3" Content="Create"/>
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button}">
+                    <Setter Property="Margin" Value="0 0 5 0"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="AddAuthor" Content="Add Author"/>
+            <Button x:Name="CreateAuthor" Content="Create Author"/>
+            <Button x:Name="Cancel" Content="Cancel"/>
+        </StackPanel>
     </Grid>
 </mah:MetroWindow>

@@ -25,6 +25,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private string _githubUrl;
         private string _donateUrl;
         private string _miscUrl;
+        private string _about;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAuthorViewModel"/> class.
@@ -35,6 +36,14 @@ namespace CaelumGameManagerGUI.ViewModels
             this.AuthorDisplay = new(this.NewAuthor);
         }
 
+        /// <summary>
+        /// Gets author profile VM.
+        /// </summary>
+        public AuthorProfileViewModel AuthorDisplay { get; init; }
+
+        /// <summary>
+        /// Gets or sets new author object.
+        /// </summary>
         public Author NewAuthor { get; set; }
 
         /// <summary>
@@ -55,7 +64,6 @@ namespace CaelumGameManagerGUI.ViewModels
                 this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
             }
         }
-
 
         /// <summary>
         /// Gets or sets github url.
@@ -188,8 +196,6 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets or sets author about text.
         /// </summary>
-        private string _about;
-
         public string About
         {
             get
@@ -220,14 +226,12 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Writes author to author file.
+        /// </summary>
         public void CreateButton()
         {
             AuthorUtils.WriteAuthor(this.NewAuthor);
         }
-
-        /// <summary>
-        /// Gets or sets author display.
-        /// </summary>
-        public AuthorProfileViewModel AuthorDisplay { get; set; }
     }
 }

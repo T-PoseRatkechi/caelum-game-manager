@@ -18,7 +18,7 @@ namespace CaelumGameManagerGUI.ViewModels
     {
         private WindowManager windowManager = new();
 
-        private Author _selectedAuthor;
+        private Author _selectedAuthor = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorsViewModel"/> class.
@@ -26,6 +26,7 @@ namespace CaelumGameManagerGUI.ViewModels
         public AuthorsViewModel()
         {
             this.AuthorsList = AuthorUtils.AvailableAuthors();
+            this.AuthorDisplay = new(this._selectedAuthor);
         }
 
         /// <summary>
@@ -46,9 +47,33 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.AuthorDisplay = new AuthorProfileViewModel(this._selectedAuthor);
                     this.NotifyOfPropertyChange(() => this.AuthorDisplay);
                 }
+
+                this.NotifyOfPropertyChange(() => this.CanAddAuthor);
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether add author button is enabled.
+        /// </summary>
+        public bool CanAddAuthor
+        {
+            get
+            {
+                return !(this.SelectedAuthor == null);
+            }
+        }
+
+        /// <summary>
+        /// Adds selected author to card.
+        /// </summary>
+        public void AddAuthor()
+        {
+
+        }
+
+        /// <summary>
+        /// Opens Create Author VM.
+        /// </summary>
         public void CreateAuthor()
         {
             this.windowManager.ShowDialogAsync(new CreateAuthorViewModel());
