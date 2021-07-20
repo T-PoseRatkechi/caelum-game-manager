@@ -44,7 +44,7 @@ namespace CaelumCoreLibrary.Common
             using (BinaryReader reader = new(new FileStream(authorFile, FileMode.Open)))
             {
                 uint header = reader.ReadUInt32();
-                if (header != 0x41425553)
+                if (header != 0x41425553U)
                 {
                     throw new ArgumentException("Author file invalid!");
                 }
@@ -67,16 +67,18 @@ namespace CaelumCoreLibrary.Common
         /// <param name="author"><seealso cref="Author"/> to write.</param>
         public static void WriteAuthor(Author author)
         {
-            var authorFilePath = Path.Join(AuthorsDirectory, author.Name.GetHashCode().ToString(), ".author");
+            var authorFilePath = Path.Join(AuthorsDirectory, $"{author.Name.GetHashCode().ToString()}.author");
 
             var authorText = JsonSerializer.Serialize(author);
             var avatarBytes = author.AvatarBytes;
 
             using (BinaryWriter writer = new(new FileStream(authorFilePath, FileMode.Create)))
             {
-                writer.Write(0x53554344U);
+                writer.Write(0x41425553U);
+
                 var authorTextBytes = Encoding.UTF8.GetBytes(authorText);
-                writer.Write((uint)(authorTextBytes.Length + avatarBytes.Length));
+
+                writer.Write((uint)(authorTextBytes.Length + avatarBytes.Length + 8));
 
                 writer.Write((uint)authorTextBytes.Length);
                 writer.Write(authorTextBytes);

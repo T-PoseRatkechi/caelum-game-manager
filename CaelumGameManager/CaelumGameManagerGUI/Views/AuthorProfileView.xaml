@@ -1,4 +1,4 @@
-﻿<UserControl  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+﻿<UserControl xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Class="CaelumGameManagerGUI.Views.AuthorProfileView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

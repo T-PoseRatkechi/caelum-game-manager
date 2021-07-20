@@ -8,9 +8,11 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
+    using System.IO;
     using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Utilities;
     using Caliburn.Micro;
+    using Microsoft.Win32;
 
     /// <summary>
     /// Create Author VM.
@@ -203,6 +205,25 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Opens a file select to select the author avatar image.
+        /// </summary>
+        public void SelectAvatar()
+        {
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.Filter = "Images files|*.png;*.jpeg;*.jpg";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var imageBytes = File.ReadAllBytes(openFileDialog.FileName);
+                this.NewAuthor.AvatarBytes = imageBytes;
+                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.AuthorAvatar);
+            }
+        }
+
+        public void CreateButton()
+        {
+            AuthorUtils.WriteAuthor(this.NewAuthor);
+        }
 
         /// <summary>
         /// Gets or sets author display.
