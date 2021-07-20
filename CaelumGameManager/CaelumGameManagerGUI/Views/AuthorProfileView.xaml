@@ -25,7 +25,7 @@
         <Rectangle Fill="Black" Grid.ColumnSpan="5" Grid.RowSpan="5"
                    Opacity="0.3" Stroke="White" RadiusX="2" RadiusY="2"/>
 
-        <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" StretchDirection="DownOnly" Height="50">
+        <Viewbox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" StretchDirection="DownOnly" Height="40">
             <Label Content="{Binding Path=Profile.Name}"
                FontWeight="Bold" FontSize="30"/>
         </Viewbox>

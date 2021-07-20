@@ -67,7 +67,7 @@ namespace CaelumCoreLibrary.Common
         /// <param name="author"><seealso cref="Author"/> to write.</param>
         public static void WriteAuthor(Author author)
         {
-            var authorFilePath = Path.Join(AuthorsDirectory, $"{author.Name.GetHashCode().ToString()}.author");
+            var authorFilePath = Path.Join(AuthorsDirectory, $"{author.Name.GetHashCode()}.author");
 
             var authorText = JsonSerializer.Serialize(author);
             var avatarBytes = author.AvatarBytes;
