@@ -7,9 +7,9 @@
 
 namespace CaelumGameManagerGUI.ViewModels
 {
+    using System.IO;
     using CaelumCoreLibrary.Cards;
     using Caliburn.Micro;
-    using System.IO;
 
     /// <summary>
     /// Card display.

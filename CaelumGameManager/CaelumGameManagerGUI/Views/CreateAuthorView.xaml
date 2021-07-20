@@ -1,0 +1,44 @@
+﻿<mah:MetroWindow xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    x:Class="CaelumGameManagerGUI.Views.CreateAuthorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
+        mc:Ignorable="d"
+        Title="Create Author Profile" Height="400" Width="600"
+                 WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+                    <Setter Property="Margin" Value="0 0 0 5"/>
+                </Style>
+            </StackPanel.Resources>
+            <TextBox x:Name="Name" mah:TextBoxHelper.Watermark="Name"/>
+            <TextBox x:Name="TwitterUrl" mah:TextBoxHelper.Watermark="Twitter"/>
+            <TextBox x:Name="GithubUrl" mah:TextBoxHelper.Watermark="Github"/>
+            <TextBox x:Name="MiscUrl" mah:TextBoxHelper.Watermark="Other Link"/>
+        </StackPanel>
+        
+        <TextBox x:Name="About" Grid.Column="1" Grid.Row="2"
+                 mah:TextBoxHelper.Watermark="About Me" Margin="0 0 0 5"/>
+        <Button x:Name="CreateButton" Grid.Column="1" Grid.Row="3" Content="Create"/>
+
+        <ContentControl x:Name="AuthorDisplay" Grid.Column="2"/>
+    </Grid>
+</mah:MetroWindow>

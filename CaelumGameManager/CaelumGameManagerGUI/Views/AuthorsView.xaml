@@ -19,6 +19,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
@@ -36,5 +37,7 @@
         <TextBlock Grid.Column="2" Grid.Row="1" Text="Author" VerticalAlignment="Bottom"
                    FontSize="25"/>
         <ContentControl x:Name="AuthorDisplay" Grid.Column="2" Grid.Row="2"/>
+
+        <Button x:Name="CreateAuthor" Grid.Column="1" Grid.Row="3" Content="Create"/>
     </Grid>
 </mah:MetroWindow>

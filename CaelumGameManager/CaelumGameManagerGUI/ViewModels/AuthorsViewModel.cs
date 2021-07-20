@@ -3,9 +3,12 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+#pragma warning disable SA1309 // Field names should not begin with underscore
+
 namespace CaelumGameManagerGUI.ViewModels
 {
     using CaelumCoreLibrary.Common;
+    using CaelumGameManagerGUI.Views;
     using Caliburn.Micro;
 
     /// <summary>
@@ -13,6 +16,8 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class AuthorsViewModel : Screen
     {
+        private WindowManager windowManager = new();
+
         private Author _selectedAuthor;
 
         /// <summary>
@@ -42,6 +47,11 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.NotifyOfPropertyChange(() => this.AuthorDisplay);
                 }
             }
+        }
+
+        public void CreateAuthor()
+        {
+            this.windowManager.ShowDialogAsync(new CreateAuthorViewModel());
         }
 
         /// <summary>

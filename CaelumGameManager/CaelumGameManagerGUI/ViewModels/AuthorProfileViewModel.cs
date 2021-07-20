@@ -53,6 +53,54 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        public bool CanTwitterLink()
+        {
+            return !string.IsNullOrEmpty(this.AuthorProfile.TwitterUrl);
+        }
+
+        public void TwitterLink()
+        {
+            var open = new ProcessStartInfo()
+            {
+                FileName = this.AuthorProfile.TwitterUrl,
+                UseShellExecute = true,
+            };
+
+            Process.Start(open);
+        }
+
+        public bool CanGithubLink()
+        {
+            return !string.IsNullOrEmpty(this.AuthorProfile.GithubUrl);
+        }
+
+        public void GithubLink()
+        {
+            var open = new ProcessStartInfo()
+            {
+                FileName = this.AuthorProfile.GithubUrl,
+                UseShellExecute = true,
+            };
+
+            Process.Start(open);
+        }
+
+        public bool CanDonateLink()
+        {
+            return !string.IsNullOrEmpty(this.AuthorProfile.DonationUrl);
+        }
+
+        public void DonateLink()
+        {
+            var open = new ProcessStartInfo()
+            {
+                FileName = this.AuthorProfile.DonationUrl,
+                UseShellExecute = true,
+            };
+
+            Process.Start(open);
+        }
+
         public bool CanOtherLink()
         {
             return !string.IsNullOrEmpty(this.AuthorProfile.MiscUrl);

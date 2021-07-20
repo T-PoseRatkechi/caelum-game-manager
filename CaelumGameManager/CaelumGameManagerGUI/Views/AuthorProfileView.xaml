@@ -31,9 +31,9 @@
         </Viewbox>
 
         <!--Profile Image-->
-        <Viewbox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+        <Viewbox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                  MaxHeight="512" MaxWidth="512">
-            <Border BorderThickness="1" BorderBrush="White">
+            <Border BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.Button.Border}">
                 <Image x:Name="AuthorAvatar"/>
             </Border>
         </Viewbox>
@@ -47,28 +47,28 @@
                     <Setter Property="FontSize" Value="13"/>
                 </Style>
             </StackPanel.Resources>
-            <Button>
+            <Button x:Name="TwitterLink" ToolTip="{Binding Path=AuthorProfile.TwitterUrl}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconFontAwesome Kind="TwitterBrands"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <Label Content="Twitter"/>
                 </StackPanel>
             </Button>
-            <Button>
+            <Button x:Name="GithubLink" ToolTip="{Binding Path=AuthorProfile.GithubUrl}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconFontAwesome Kind="GithubBrands"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <Label Content="Github"/>
                 </StackPanel>
             </Button>
-            <Button>
+            <Button x:Name="DonateLink" ToolTip="{Binding Path=AuthorProfile.DonationUrl}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Kind="CardsHeart"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <Label Content="Donate"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="OtherLink" Clik>
+            <Button x:Name="OtherLink" ToolTip="{Binding Path=AuthorProfile.MiscUrl}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconFontAwesome Kind="ExternalLinkAltSolid"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>

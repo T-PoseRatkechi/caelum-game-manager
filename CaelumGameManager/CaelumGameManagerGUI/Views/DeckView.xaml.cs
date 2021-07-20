@@ -1,12 +1,16 @@
-﻿namespace CaelumGameManagerGUI.Views
+﻿// Copyright (c) T-Pose Ratkechi. All rights reserved.
+// Licensed under the GNU GPLv3 license. See LICENSE file in the project root for full license information.
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+namespace CaelumGameManagerGUI.Views
 {
-    using CaelumCoreLibrary.Common;
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Input;
+    using CaelumCoreLibrary.Common;
 
     /// <summary>
     /// Interaction logic for DeckView.xaml
@@ -49,7 +53,7 @@
         /// 1. First column (Enabled) is set to disable resize.
         /// 2. All columns between first and last have their min width set to current width (Size to Header).
         ///    then have their current widths set to fit their content.
-        /// 4. The last column has their width set to fill remaining space.
+        /// 3. The last column has their width set to fill remaining space.
         /// </summary>
         private void SetColumnWidth()
         {
