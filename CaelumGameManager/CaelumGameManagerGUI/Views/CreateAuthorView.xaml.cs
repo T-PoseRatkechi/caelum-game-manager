@@ -8,7 +8,7 @@ namespace CaelumGameManagerGUI.Views
     using MahApps.Metro.Controls;
 
     /// <summary>
-    /// Interaction logic for CreateAuthorView.xaml
+    /// Interaction logic for CreateAuthorView.xaml.
     /// </summary>
     public partial class CreateAuthorView : MetroWindow
     {

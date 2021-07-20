@@ -6,16 +6,17 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System.Diagnostics;
-    using System.Drawing;
     using System.IO;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using CaelumCoreLibrary.Common;
+    using CaelumGameManagerGUI.Models;
+    using Caliburn.Micro;
 
     /// <summary>
     /// Author Profile VM.
     /// </summary>
-    public class AuthorProfileViewModel
+    public class AuthorProfileViewModel : Screen
     {
 
         /// <summary>
@@ -24,13 +25,13 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <param name="author">Author to display.</param>
         public AuthorProfileViewModel(Author author)
         {
-            this.AuthorProfile = author;
+            this.Profile = author;
         }
 
         /// <summary>
         /// Gets or sets the author's profile.
         /// </summary>
-        public Author AuthorProfile { get; set; }
+        public Author Profile { get; set; }
 
         /// <summary>
         /// Gets the author's avatar.
@@ -39,78 +40,95 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                using (MemoryStream ms = new(this.AuthorProfile.AvatarBytes))
+                if (this.Profile?.AvatarBytes?.Length > 0)
                 {
-                    BitmapImage image = new();
-                    ms.Position = 0;
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.StreamSource = ms;
-                    image.EndInit();
-                    image.Freeze();
-                    return image;
+                    using (MemoryStream ms = new(this.Profile.AvatarBytes))
+                    {
+                        BitmapImage image = new();
+                        ms.Position = 0;
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = ms;
+                        image.EndInit();
+                        image.Freeze();
+                        return image;
+                    }
                 }
+
+                return null;
             }
         }
 
-        public bool CanTwitterLink()
+        public bool CanTwitterLink
         {
-            return !string.IsNullOrEmpty(this.AuthorProfile.TwitterUrl);
+            get
+            {
+                return !string.IsNullOrEmpty(this.Profile.TwitterUrl);
+            }
         }
 
         public void TwitterLink()
         {
             var open = new ProcessStartInfo()
             {
-                FileName = this.AuthorProfile.TwitterUrl,
+                FileName = this.Profile.TwitterUrl,
                 UseShellExecute = true,
             };
 
             Process.Start(open);
         }
 
-        public bool CanGithubLink()
+        public bool CanGithubLink
         {
-            return !string.IsNullOrEmpty(this.AuthorProfile.GithubUrl);
+            get
+            {
+                return !string.IsNullOrEmpty(this.Profile.GithubUrl);
+            }
         }
 
         public void GithubLink()
         {
             var open = new ProcessStartInfo()
             {
-                FileName = this.AuthorProfile.GithubUrl,
+                FileName = this.Profile.GithubUrl,
                 UseShellExecute = true,
             };
 
             Process.Start(open);
         }
 
-        public bool CanDonateLink()
+        public bool CanDonateLink
         {
-            return !string.IsNullOrEmpty(this.AuthorProfile.DonationUrl);
+            get
+            {
+                return !string.IsNullOrEmpty(this.Profile.DonationUrl);
+            }
         }
 
         public void DonateLink()
         {
             var open = new ProcessStartInfo()
             {
-                FileName = this.AuthorProfile.DonationUrl,
+                FileName = this.Profile.DonationUrl,
                 UseShellExecute = true,
             };
 
             Process.Start(open);
         }
 
-        public bool CanOtherLink()
+        public bool CanOtherLink
         {
-            return !string.IsNullOrEmpty(this.AuthorProfile.MiscUrl);
+            get
+            {
+                return !string.IsNullOrEmpty(this.Profile.MiscUrl);
+            }
         }
 
         public void OtherLink()
         {
             var open = new ProcessStartInfo()
             {
-                FileName = this.AuthorProfile.MiscUrl,
+                FileName = this.Profile.MiscUrl,
                 UseShellExecute = true,
             };
 

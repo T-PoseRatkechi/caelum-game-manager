@@ -32,6 +32,7 @@
             <TextBox x:Name="Name" mah:TextBoxHelper.Watermark="Name"/>
             <TextBox x:Name="TwitterUrl" mah:TextBoxHelper.Watermark="Twitter"/>
             <TextBox x:Name="GithubUrl" mah:TextBoxHelper.Watermark="Github"/>
+            <TextBox x:Name="DonateUrl" mah:TextBoxHelper.Watermark="Donation"/>
             <TextBox x:Name="MiscUrl" mah:TextBoxHelper.Watermark="Other Link"/>
         </StackPanel>
         
@@ -39,6 +40,6 @@
                  mah:TextBoxHelper.Watermark="About Me" Margin="0 0 0 5"/>
         <Button x:Name="CreateButton" Grid.Column="1" Grid.Row="3" Content="Create"/>
 
-        <ContentControl x:Name="AuthorDisplay" Grid.Column="2"/>
+        <ContentControl x:Name="AuthorDisplay" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Margin="5 0 0 0"/>
     </Grid>
 </mah:MetroWindow>
