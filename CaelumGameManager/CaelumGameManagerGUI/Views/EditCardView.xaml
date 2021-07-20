@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
         mc:Ignorable="d"
-        Height="400" Width="500"
+        MinWidth="700" MinHeight="550" Width="700" Height="550"
                  WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
     <Grid>
         <!--Grid Definitions-->

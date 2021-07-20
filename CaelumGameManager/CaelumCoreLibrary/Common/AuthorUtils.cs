@@ -83,9 +83,16 @@ namespace CaelumCoreLibrary.Common
         /// Writes <paramref name="author"/> to file at <see cref="AuthorsDirectory"/> as a <c>.author</c> JSON.
         /// </summary>
         /// <param name="author"><seealso cref="Author"/> to write.</param>
-        public static void WriteAuthor(Author author)
+        /// <param name="output">Output file of author, if null then defaults to app authors folder.</param>
+        public static void WriteAuthor(Author author, string output = null)
         {
-            var authorFilePath = Path.Join(AuthorsDirectory, $"{author.Name.GetHashCode()}.author");
+            var authorFilePath = output == null ? Path.Join(AuthorsDirectory, $"{author.Name.GetHashCode()}.author") : output;
+
+            // Create parent directory if missing.
+            if (!Directory.Exists(Path.GetDirectoryName(authorFilePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(authorFilePath));
+            }
 
             var authorText = JsonSerializer.Serialize(author);
             var avatarBytes = author.AvatarBytes;

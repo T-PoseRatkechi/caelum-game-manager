@@ -107,6 +107,11 @@ namespace CaelumCoreLibrary.Games
                         var cardText = JsonSerializer.Serialize(newFolderCard, new JsonSerializerOptions { WriteIndented = true });
                         File.WriteAllText(Path.Join(this.CardsDir, id, "card.json"), cardText);
 
+                        foreach (var author in authors)
+                        {
+                            AuthorUtils.WriteAuthor(author, Path.Join(this.CardsDir, id, "authors", $"{author.Name.GetHashCode()}.author"));
+                        }
+
                         return newFolderCard;
                     }
 
@@ -126,6 +131,12 @@ namespace CaelumCoreLibrary.Games
 
                         var cardText = JsonSerializer.Serialize(newToolCard, new JsonSerializerOptions { WriteIndented = true });
                         File.WriteAllText(Path.Join(CaelumPaths.ToolsDir, id, "card.json"), cardText);
+                        File.WriteAllText(Path.Join(this.CardsDir, id, "card.json"), cardText);
+
+                        foreach (var author in authors)
+                        {
+                            AuthorUtils.WriteAuthor(author, Path.Join(this.CardsDir, id, "authors", $"{author.Name.GetHashCode()}.author"));
+                        }
 
                         return newToolCard;
                     }

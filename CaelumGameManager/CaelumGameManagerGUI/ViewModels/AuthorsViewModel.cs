@@ -53,6 +53,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 }
 
                 this.NotifyOfPropertyChange(() => this.CanAddAuthor);
+                this.NotifyOfPropertyChange(() => this.AuthorDescription);
             }
         }
 
@@ -63,7 +64,30 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this.SelectedAuthor != null && this.cardAuthors != null;
+                return this.SelectedAuthor != null && this.cardAuthors != null && (this.cardAuthors.FindIndex(a => a.Name.Equals(this.SelectedAuthor.Name)) == -1);
+            }
+        }
+
+        public string AuthorDescription
+        {
+            get
+            {
+                if (this.SelectedAuthor != null)
+                {
+                    return this.SelectedAuthor.Description;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            set
+            {
+                if (this.SelectedAuthor != null)
+                {
+                    this.SelectedAuthor.Description = value;
+                }
             }
         }
 
@@ -73,6 +97,7 @@ namespace CaelumGameManagerGUI.ViewModels
         public void AddAuthor()
         {
             this.cardAuthors.Add(this.SelectedAuthor);
+            this.NotifyOfPropertyChange(() => this.CanAddAuthor);
         }
 
         /// <summary>

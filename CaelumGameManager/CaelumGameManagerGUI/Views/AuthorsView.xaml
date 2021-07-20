@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
         mc:Ignorable="d"
-        Title="Add Authors" Height="450" Width="800"
+        Title="Add Authors" MinHeight="600" MinWidth="800" Height="600" Width="800"
                  WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,6 +19,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -38,15 +39,20 @@
                    FontSize="25"/>
         <ContentControl x:Name="AuthorDisplay" Grid.Column="2" Grid.Row="2"/>
 
-        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+        <TextBox x:Name="AuthorDescription" Grid.Column="1" Grid.Row="3" Margin="0 0 5 5"
+                 mah:TextBoxHelper.Watermark="Author's Description (Creator, Programmer, Writer, etc)"
+                 Height="30"
+                 />
+        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button}">
                     <Setter Property="Margin" Value="0 0 5 0"/>
+                    <Setter Property="Height" Value="30"/>
                 </Style>
             </StackPanel.Resources>
             <Button x:Name="AddAuthor" Content="Add Author"/>
             <Button x:Name="CreateAuthor" Content="Create Author"/>
-            <Button x:Name="Cancel" Content="Cancel"/>
+            <Button x:Name="Close" Content="Close"/>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>

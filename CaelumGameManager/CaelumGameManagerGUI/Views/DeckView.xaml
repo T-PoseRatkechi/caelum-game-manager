@@ -45,7 +45,7 @@
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"
                                             IsReadOnly="True"/>
-                <DataGridTextColumn Header="Author(s)" Binding="{Binding Path=Authors, Converter={StaticResource AuthorsToString}}" 
+                <DataGridTextColumn Header="Author(s)" Binding="{Binding Path=Authors[0].Name}" 
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="Version" Binding="{Binding Path=Version}"
                                             IsReadOnly="True"/>
