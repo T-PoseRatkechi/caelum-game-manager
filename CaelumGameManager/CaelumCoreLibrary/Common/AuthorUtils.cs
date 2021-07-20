@@ -5,13 +5,15 @@
 
 namespace CaelumCoreLibrary.Common
 {
+    using System;
     using System.IO;
+    using System.Text;
     using System.Text.Json;
 
     /// <summary>
     /// Utility functinos related to <seealso cref="Author"/>.
     /// </summary>
-    public class AuthorUtls
+    public class AuthorUtils
     {
         private static readonly string AuthorsDirectory = Path.Join(Directory.GetCurrentDirectory(), "authors");
 
@@ -39,9 +41,24 @@ namespace CaelumCoreLibrary.Common
         /// <returns><paramref name="authorFile"/> parsed as <seealso cref="Author"/>.</returns>
         public static Author ParseAuthor(string authorFile)
         {
-            var authorText = File.ReadAllText(authorFile);
-            var author = JsonSerializer.Deserialize<Author>(authorText);
-            return author;
+            using (BinaryReader reader = new(new FileStream(authorFile, FileMode.Open)))
+            {
+                uint header = reader.ReadUInt32();
+                if (header != 0x41425553)
+                {
+                    throw new ArgumentException("Author file invalid!");
+                }
+
+                uint size = reader.ReadUInt32();
+                uint authorSize = reader.ReadUInt32();
+                byte[] authorBytes = reader.ReadBytes((int)authorSize);
+                uint imageSize = reader.ReadUInt32();
+                byte[] imageBytes = reader.ReadBytes((int)imageSize);
+
+                Author author = JsonSerializer.Deserialize<Author>(authorBytes);
+                author.AvatarBytes = imageBytes;
+                return author;
+            }
         }
 
         /// <summary>
@@ -50,8 +67,23 @@ namespace CaelumCoreLibrary.Common
         /// <param name="author"><seealso cref="Author"/> to write.</param>
         public static void WriteAuthor(Author author)
         {
-            var authorText = JsonSerializer.Serialize(author, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(Path.Join(AuthorsDirectory, author.Name), authorText);
+            var authorFilePath = Path.Join(AuthorsDirectory, author.Name, ".author");
+
+            var authorText = JsonSerializer.Serialize(author);
+            var avatarBytes = author.AvatarBytes;
+
+            using (BinaryWriter writer = new(new FileStream(authorFilePath, FileMode.Create)))
+            {
+                writer.Write(0x53554344U);
+                var authorTextBytes = Encoding.UTF8.GetBytes(authorText);
+                writer.Write((uint)(authorTextBytes.Length + avatarBytes.Length));
+
+                writer.Write((uint)authorTextBytes.Length);
+                writer.Write(authorTextBytes);
+
+                writer.Write((uint)avatarBytes.Length);
+                writer.Write(avatarBytes);
+            }
         }
     }
 }

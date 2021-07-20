@@ -1,0 +1,40 @@
+﻿<mah:MetroWindow xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        x:Class="CaelumGameManagerGUI.Views.AuthorsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
+        mc:Ignorable="d"
+        Title="Add Authors" Height="450" Width="800"
+                 WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Available Authors" VerticalAlignment="Bottom"
+                   FontSize="25"/>
+        <ListBox x:Name="AuthorsList" Grid.Column="1" Grid.Row="2"
+                 Margin="5" SelectedItem="{Binding Path=SelectedAuthor, Mode=OneWayToSource}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Grid.Column="2" Grid.Row="1" Text="Author" VerticalAlignment="Bottom"
+                   FontSize="25"/>
+        <ContentControl x:Name="AuthorDisplay" Grid.Column="2" Grid.Row="2"/>
+    </Grid>
+</mah:MetroWindow>

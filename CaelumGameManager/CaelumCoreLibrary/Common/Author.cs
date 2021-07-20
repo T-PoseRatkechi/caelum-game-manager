@@ -3,8 +3,13 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+using System.Text.Json.Serialization;
+
 namespace CaelumCoreLibrary.Common
 {
+    /// <summary>
+    /// Author object.
+    /// </summary>
     public class Author
     {
         /// <summary>
@@ -43,8 +48,12 @@ namespace CaelumCoreLibrary.Common
         /// <summary>
         /// Gets or sets the author's about me text.
         /// </summary>
-
         public string About { get; set; }
 
+        /// <summary>
+        /// Gets or sets the author's avatar bytes.
+        /// </summary>
+        [JsonIgnore]
+        public byte[] AvatarBytes { get; set; }
     }
 }

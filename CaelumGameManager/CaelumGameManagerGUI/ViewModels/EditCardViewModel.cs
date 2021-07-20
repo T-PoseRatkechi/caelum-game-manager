@@ -21,6 +21,8 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class EditCardViewModel : Screen
     {
+        private WindowManager windowManager = new WindowManager();
+
         private string selectedType = CardType.Mod.ToString();
         private BindableCollection<ICard> cards;
         private ICard card;
@@ -199,6 +201,11 @@ namespace CaelumGameManagerGUI.ViewModels
                     throw new NotImplementedException();
                 }
             }
+        }
+
+        public void OpenAuthors()
+        {
+            this.windowManager.ShowDialogAsync(new AuthorsViewModel());
         }
 
         /// <summary>
