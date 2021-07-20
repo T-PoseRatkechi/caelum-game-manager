@@ -86,7 +86,7 @@ namespace CaelumCoreLibrary.Games
         public string BuildDir { get; init; }
 
         /// <inheritdoc/>
-        public ICard CreateCard(string id, string name, CardType type, Author[] authors, string description, string version)
+        public ICard CreateCard(string id, string name, CardType type, List<Author> authors, string description, string version)
         {
             switch (type)
             {

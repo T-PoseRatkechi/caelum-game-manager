@@ -35,6 +35,24 @@ namespace CaelumCoreLibrary.Common
         }
 
         /// <summary>
+        /// Parses and returns all available in authors in <paramref name="directory"/>.
+        /// </summary>
+        /// <param name="directory">Directory to check for author files.</param>
+        /// <returns>List of authors in <paramref name="directory"/>.</returns>
+        public static Author[] GetAllAuthors(string directory)
+        {
+            var authorFiles = Directory.GetFiles(directory, "*.author", SearchOption.TopDirectoryOnly);
+
+            Author[] authors = new Author[authorFiles.Length];
+            for (int i = 0, total = authorFiles.Length; i < total; i++)
+            {
+                authors[i] = ParseAuthor(authorFiles[i]);
+            }
+
+            return authors;
+        }
+
+        /// <summary>
         /// Parses the file given by <paramref name="authorFile"/> as <seealso cref="Author"/> and returns it.
         /// </summary>
         /// <param name="authorFile">Author file to parse.</param>

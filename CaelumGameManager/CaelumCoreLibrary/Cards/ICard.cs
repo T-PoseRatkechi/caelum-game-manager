@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Cards
 {
     using CaelumCoreLibrary.Common;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interface that all package types implement.
@@ -30,9 +31,9 @@ namespace CaelumCoreLibrary.Cards
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets name(s) of authors that created the card.
+        /// Gets or sets authors of the card.
         /// </summary>
-        public Author[] Authors { get; set; }
+        public List<Author> Authors { get; set; }
 
         /// <summary>
         /// Gets or sets description of card.

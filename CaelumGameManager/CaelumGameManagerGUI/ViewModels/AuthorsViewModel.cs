@@ -7,9 +7,11 @@
 
 namespace CaelumGameManagerGUI.ViewModels
 {
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
     using CaelumGameManagerGUI.Views;
     using Caliburn.Micro;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Authors VM.
@@ -17,16 +19,18 @@ namespace CaelumGameManagerGUI.ViewModels
     public class AuthorsViewModel : Screen
     {
         private WindowManager windowManager = new();
+        private List<Author> cardAuthors;
 
         private Author _selectedAuthor = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorsViewModel"/> class.
         /// </summary>
-        public AuthorsViewModel()
+        public AuthorsViewModel(List<Author> cardAuthors = null)
         {
             this.AuthorsList = AuthorUtils.AvailableAuthors();
             this.AuthorDisplay = new(this._selectedAuthor);
+            this.cardAuthors = cardAuthors;
         }
 
         /// <summary>
@@ -59,7 +63,7 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return !(this.SelectedAuthor == null);
+                return this.SelectedAuthor != null && this.cardAuthors != null;
             }
         }
 
@@ -68,7 +72,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public void AddAuthor()
         {
-
+            this.cardAuthors.Add(this.SelectedAuthor);
         }
 
         /// <summary>

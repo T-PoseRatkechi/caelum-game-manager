@@ -5,6 +5,7 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using CaelumCoreLibrary.Common;
 
@@ -26,7 +27,8 @@ namespace CaelumCoreLibrary.Cards
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        public Author[] Authors { get; set; }
+        [JsonIgnore]
+        public List<Author> Authors { get; set; }
 
         /// <inheritdoc/>
         public string Description { get; set; }

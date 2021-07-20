@@ -18,7 +18,6 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class AuthorProfileViewModel : Screen
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorProfileViewModel"/> class.
         /// </summary>
@@ -71,13 +70,10 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-        public bool CanTwitterLink
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(this.Profile.TwitterUrl);
-            }
-        }
+        // Caliburn button bindings.
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1201 // Elements should appear in the correct order
+        public bool CanTwitterLink => !string.IsNullOrEmpty(this.Profile.TwitterUrl);
 
         public void TwitterLink()
         {
@@ -90,13 +86,7 @@ namespace CaelumGameManagerGUI.ViewModels
             Process.Start(open);
         }
 
-        public bool CanGithubLink
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(this.Profile.GithubUrl);
-            }
-        }
+        public bool CanGithubLink => !string.IsNullOrEmpty(this.Profile.GithubUrl);
 
         public void GithubLink()
         {
@@ -109,13 +99,7 @@ namespace CaelumGameManagerGUI.ViewModels
             Process.Start(open);
         }
 
-        public bool CanDonateLink
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(this.Profile.DonationUrl);
-            }
-        }
+        public bool CanDonateLink => !string.IsNullOrEmpty(this.Profile.DonationUrl);
 
         public void DonateLink()
         {
@@ -128,13 +112,7 @@ namespace CaelumGameManagerGUI.ViewModels
             Process.Start(open);
         }
 
-        public bool CanOtherLink
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(this.Profile.MiscUrl);
-            }
-        }
+        public bool CanOtherLink => !string.IsNullOrEmpty(this.Profile.MiscUrl);
 
         public void OtherLink()
         {

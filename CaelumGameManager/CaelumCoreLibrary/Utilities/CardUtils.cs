@@ -5,11 +5,12 @@
 
 namespace CaelumCoreLibrary.Utilities
 {
-    using CaelumCoreLibrary.Cards;
-    using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text.Json;
     using System.Text.RegularExpressions;
+    using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Common;
 
     /// <summary>
     /// Utility functions related to Cards.
@@ -57,6 +58,11 @@ namespace CaelumCoreLibrary.Utilities
 
             // Set card path.
             card.Path = Path.GetDirectoryName(cardFilePath);
+
+            // Load authors.
+            var cardAuthorsPath = Path.Join(card.Path, "authors");
+            var cardAuthors = AuthorUtils.GetAllAuthors(cardAuthorsPath);
+            card.Authors = new List<Author>(cardAuthors);
 
             return card;
         }

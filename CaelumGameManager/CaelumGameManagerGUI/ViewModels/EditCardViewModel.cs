@@ -8,6 +8,7 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
@@ -31,7 +32,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private string _cardId;
         private string _cardName;
 
-        private Author[] _authors = Array.Empty<Author>();
+        private List<Author> _authors = new();
 
         public CardViewModel CardDisplay { get; set; }
 
@@ -67,14 +68,11 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                this._cardId = null;
-
-                if (string.IsNullOrEmpty(this.CardName) || string.IsNullOrEmpty(this.Authors?[0]?.Name))
+                if (string.IsNullOrEmpty(this.CardName) || this.Authors.Count < 1)
                 {
-                    return this._cardId;
+                    this._cardId = null;
                 }
-
-                if (this.Authors.Length > 0)
+                else
                 {
                     var tempId = $"{this.Authors[0].Name}_{this.CardName}".ToLower().Replace(" ", string.Empty);
                     if (CardUtils.IsValidId(tempId))
@@ -108,7 +106,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets or sets the authors.
         /// </summary>
-        public Author[] Authors
+        public List<Author> Authors
         {
             get
             {
@@ -203,9 +201,33 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Opens Available Authors view.
+        /// </summary>
         public void OpenAuthors()
         {
-            this.windowManager.ShowDialogAsync(new AuthorsViewModel());
+            this.windowManager.ShowDialogAsync(new AuthorsViewModel(this.Authors));
+            this.NotifyOfPropertyChange(() => this.AuthorText);
+            this.NotifyOfPropertyChange(() => this.CardId);
+        }
+
+        public string AuthorText
+        {
+            get
+            {
+                if (this.Authors.Count == 0)
+                {
+                    return null;
+                }
+                else if (this.Authors.Count == 1)
+                {
+                    return this.Authors[0].Name;
+                }
+                else
+                {
+                    return $"{this.Authors[0].Name} +{this.Authors.Count - 1} other(s)";
+                }
+            }
         }
 
         /// <summary>

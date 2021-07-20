@@ -31,19 +31,16 @@ namespace CaelumCoreLibrary.Common
         /// <summary>
         /// Gets or sets author's Github url.
         /// </summary>
-
         public string GithubUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the author's donation url.
         /// </summary>
-
         public string DonationUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the author's misc. url.
         /// </summary>
-
         public string MiscUrl { get; set; }
 
         /// <summary>
