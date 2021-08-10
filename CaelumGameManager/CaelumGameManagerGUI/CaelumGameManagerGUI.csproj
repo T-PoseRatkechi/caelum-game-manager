@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Images\missing-preview.png" />
+    <Resource Include="Assets\Images\missing-preview.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +30,4 @@
     <ProjectReference Include="..\CaelumCoreLibrary\CaelumCoreLibrary.csproj" />
     <ProjectReference Include="..\Dependencies\phos-music-converter\PhosMusicConverterCMD\PhosMusicConverterCMD.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

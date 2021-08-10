@@ -39,7 +39,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
             {
                 if (Card == null)
                 {
-                    return "/Resources/Images/missing-preview.png";
+                    return null;
                 }
 
                 string cardImagePath = Path.Join(Card.Path, "card.png");
@@ -49,7 +49,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                 }
                 else
                 {
-                    return "/Resources/Images/missing-preview.png";
+                    return null;
                 }
             }
         }

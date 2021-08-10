@@ -64,7 +64,7 @@
         </Grid>
 
         <!--Card Content-->
-        <Image Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Source="{Binding CardImage}"
+        <Image Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Source="{Binding CardImage, TargetNullValue={StaticResource MissingPreview}}"
                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10"/>
 
         <mah:MetroTabControl Grid.Column="1" Grid.Row="4"

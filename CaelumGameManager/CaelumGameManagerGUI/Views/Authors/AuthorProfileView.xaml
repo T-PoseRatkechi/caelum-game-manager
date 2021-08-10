@@ -34,7 +34,7 @@
         <Viewbox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                  MaxHeight="512" MaxWidth="512">
             <Border BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.Button.Border}">
-                <Image x:Name="AuthorAvatar"/>
+                <Image Source="{Binding AuthorAvatar, TargetNullValue={StaticResource MissingPreview}}" />
             </Border>
         </Viewbox>
         
