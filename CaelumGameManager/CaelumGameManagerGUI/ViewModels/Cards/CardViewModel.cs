@@ -5,7 +5,7 @@
 
 #pragma warning disable SA1309 // Field names should not begin with underscore
 
-namespace CaelumGameManagerGUI.ViewModels
+namespace CaelumGameManagerGUI.ViewModels.Cards
 {
     using System.IO;
     using CaelumCoreLibrary.Cards;
@@ -22,7 +22,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <param name="card"><seealso cref="ICard"/> instance to dispaly.</param>
         public CardViewModel(ICard card = null)
         {
-            this.Card = card;
+            Card = card;
         }
 
         /// <summary>
@@ -37,12 +37,12 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                if (this.Card == null)
+                if (Card == null)
                 {
                     return "/Resources/Images/missing-preview.png";
                 }
 
-                string cardImagePath = Path.Join(this.Card.Path, "card.png");
+                string cardImagePath = Path.Join(Card.Path, "card.png");
                 if (File.Exists(cardImagePath))
                 {
                     return cardImagePath;
@@ -58,9 +58,9 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                if (this.Card != null)
+                if (Card != null)
                 {
-                    switch (this.Card.Type)
+                    switch (Card.Type)
                     {
                         case CardType.Folder:
                             return "FolderOpen";

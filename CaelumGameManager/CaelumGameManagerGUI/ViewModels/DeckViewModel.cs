@@ -11,6 +11,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
+    using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
 
     /// <summary>
