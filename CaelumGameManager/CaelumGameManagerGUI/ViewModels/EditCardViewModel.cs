@@ -15,6 +15,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Utilities;
+    using CaelumGameManagerGUI.ViewModels.Authors;
     using Caliburn.Micro;
 
     /// <summary>

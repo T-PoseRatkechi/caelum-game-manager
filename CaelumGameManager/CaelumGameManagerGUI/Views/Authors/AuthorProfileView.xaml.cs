@@ -3,19 +3,19 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumGameManagerGUI.Views
+namespace CaelumGameManagerGUI.Views.Authors
 {
-    using MahApps.Metro.Controls;
+    using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for AuthorsView.xaml
+    /// Interaction logic for AuthorProfileView.xaml.
     /// </summary>
-    public partial class AuthorsView : MetroWindow
+    public partial class AuthorProfileView : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorsView"/> class.
+        /// Initializes a new instance of the <see cref="AuthorProfileView"/> class.
         /// </summary>
-        public AuthorsView()
+        public AuthorProfileView()
         {
             this.InitializeComponent();
         }

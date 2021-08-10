@@ -5,13 +5,12 @@
 
 #pragma warning disable SA1309 // Field names should not begin with underscore
 
-namespace CaelumGameManagerGUI.ViewModels
+namespace CaelumGameManagerGUI.ViewModels.Authors
 {
-    using CaelumCoreLibrary.Cards;
-    using CaelumCoreLibrary.Common;
-    using CaelumGameManagerGUI.Views;
-    using Caliburn.Micro;
     using System.Collections.Generic;
+    using CaelumCoreLibrary.Common;
+    using CaelumGameManagerGUI.ViewModels;
+    using Caliburn.Micro;
 
     /// <summary>
     /// Authors VM.
@@ -28,8 +27,8 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public AuthorsViewModel(List<Author> cardAuthors = null)
         {
-            this.AuthorsList = AuthorUtils.AvailableAuthors();
-            this.AuthorDisplay = new(this._selectedAuthor);
+            AuthorsList = AuthorUtils.AvailableAuthors();
+            AuthorDisplay = new(_selectedAuthor);
             this.cardAuthors = cardAuthors;
         }
 
@@ -40,20 +39,20 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._selectedAuthor;
+                return _selectedAuthor;
             }
 
             set
             {
-                this._selectedAuthor = value;
-                if (this._selectedAuthor != null)
+                _selectedAuthor = value;
+                if (_selectedAuthor != null)
                 {
-                    this.AuthorDisplay = new AuthorProfileViewModel(this._selectedAuthor);
-                    this.NotifyOfPropertyChange(() => this.AuthorDisplay);
+                    AuthorDisplay = new AuthorProfileViewModel(_selectedAuthor);
+                    NotifyOfPropertyChange(() => AuthorDisplay);
                 }
 
-                this.NotifyOfPropertyChange(() => this.CanAddAuthor);
-                this.NotifyOfPropertyChange(() => this.AuthorDescription);
+                NotifyOfPropertyChange(() => CanAddAuthor);
+                NotifyOfPropertyChange(() => AuthorDescription);
             }
         }
 
@@ -64,7 +63,7 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this.SelectedAuthor != null && this.cardAuthors != null && (this.cardAuthors.FindIndex(a => a.Name.Equals(this.SelectedAuthor.Name)) == -1);
+                return SelectedAuthor != null && cardAuthors != null && cardAuthors.FindIndex(a => a.Name.Equals(SelectedAuthor.Name)) == -1;
             }
         }
 
@@ -72,9 +71,9 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                if (this.SelectedAuthor != null)
+                if (SelectedAuthor != null)
                 {
-                    return this.SelectedAuthor.Description;
+                    return SelectedAuthor.Description;
                 }
                 else
                 {
@@ -84,9 +83,9 @@ namespace CaelumGameManagerGUI.ViewModels
 
             set
             {
-                if (this.SelectedAuthor != null)
+                if (SelectedAuthor != null)
                 {
-                    this.SelectedAuthor.Description = value;
+                    SelectedAuthor.Description = value;
                 }
             }
         }
@@ -96,8 +95,8 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public void AddAuthor()
         {
-            this.cardAuthors.Add(this.SelectedAuthor);
-            this.NotifyOfPropertyChange(() => this.CanAddAuthor);
+            cardAuthors.Add(SelectedAuthor);
+            NotifyOfPropertyChange(() => CanAddAuthor);
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public void CreateAuthor()
         {
-            this.windowManager.ShowDialogAsync(new CreateAuthorViewModel());
+            windowManager.ShowDialogAsync(new CreateAuthorViewModel());
         }
 
         /// <summary>

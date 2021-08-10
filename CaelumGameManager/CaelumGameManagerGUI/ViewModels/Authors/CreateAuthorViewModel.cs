@@ -5,7 +5,7 @@
 
 #pragma warning disable SA1309 // Field names should not begin with underscore
 
-namespace CaelumGameManagerGUI.ViewModels
+namespace CaelumGameManagerGUI.ViewModels.Authors
 {
     using System;
     using System.IO;
@@ -32,8 +32,8 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public CreateAuthorViewModel()
         {
-            this.NewAuthor = new();
-            this.AuthorDisplay = new(this.NewAuthor);
+            NewAuthor = new();
+            AuthorDisplay = new(NewAuthor);
         }
 
         /// <summary>
@@ -53,15 +53,15 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._name;
+                return _name;
             }
 
             set
             {
-                this._name = value;
-                this.NewAuthor.Name = value;
+                _name = value;
+                NewAuthor.Name = value;
 
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.Profile);
             }
         }
 
@@ -72,32 +72,32 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._githubUrl;
+                return _githubUrl;
             }
 
             set
             {
-                this._githubUrl = value;
+                _githubUrl = value;
 
                 if (CaelumUtils.IsValidUrl(value))
                 {
                     Uri url = new(value);
                     if (url.Host.Equals("github.com") || url.Host.Equals("www.github.com"))
                     {
-                        this.NewAuthor.GithubUrl = value;
+                        NewAuthor.GithubUrl = value;
                     }
                     else
                     {
-                        this.NewAuthor.GithubUrl = null;
+                        NewAuthor.GithubUrl = null;
                     }
                 }
                 else
                 {
-                    this.NewAuthor.GithubUrl = null;
+                    NewAuthor.GithubUrl = null;
                 }
 
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.CanGithubLink);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.Profile);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.CanGithubLink);
             }
         }
 
@@ -108,32 +108,32 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._twitterUrl;
+                return _twitterUrl;
             }
 
             set
             {
-                this._twitterUrl = value;
+                _twitterUrl = value;
 
                 if (CaelumUtils.IsValidUrl(value))
                 {
                     Uri url = new(value);
                     if (url.Host.Equals("twitter.com") || url.Host.Equals("www.twitter.com"))
                     {
-                        this.NewAuthor.TwitterUrl = value;
+                        NewAuthor.TwitterUrl = value;
                     }
                     else
                     {
-                        this.NewAuthor.TwitterUrl = null;
+                        NewAuthor.TwitterUrl = null;
                     }
                 }
                 else
                 {
-                    this.NewAuthor.TwitterUrl = null;
+                    NewAuthor.TwitterUrl = null;
                 }
 
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.CanTwitterLink);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.Profile);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.CanTwitterLink);
             }
         }
 
@@ -144,24 +144,24 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._donateUrl;
+                return _donateUrl;
             }
 
             set
             {
-                this._donateUrl = value;
+                _donateUrl = value;
 
                 if (CaelumUtils.IsValidUrl(value))
                 {
-                    this.NewAuthor.DonationUrl = value;
+                    NewAuthor.DonationUrl = value;
                 }
                 else
                 {
-                    this.NewAuthor.DonationUrl = null;
+                    NewAuthor.DonationUrl = null;
                 }
 
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.CanDonateLink);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.Profile);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.CanDonateLink);
             }
         }
 
@@ -172,24 +172,24 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._miscUrl;
+                return _miscUrl;
             }
 
             set
             {
-                this._miscUrl = value;
+                _miscUrl = value;
 
                 if (CaelumUtils.IsValidUrl(value))
                 {
-                    this.NewAuthor.MiscUrl = value;
+                    NewAuthor.MiscUrl = value;
                 }
                 else
                 {
-                    this.NewAuthor.MiscUrl = null;
+                    NewAuthor.MiscUrl = null;
                 }
 
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.CanOtherLink);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.Profile);
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.CanOtherLink);
             }
         }
 
@@ -200,14 +200,14 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this._about;
+                return _about;
             }
 
             set
             {
-                this._about = value;
-                this.NewAuthor.About = value;
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.Profile);
+                _about = value;
+                NewAuthor.About = value;
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.Profile);
             }
         }
 
@@ -221,8 +221,8 @@ namespace CaelumGameManagerGUI.ViewModels
             if (openFileDialog.ShowDialog() == true)
             {
                 var imageBytes = File.ReadAllBytes(openFileDialog.FileName);
-                this.NewAuthor.AvatarBytes = imageBytes;
-                this.AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.AuthorAvatar);
+                NewAuthor.AvatarBytes = imageBytes;
+                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.AuthorAvatar);
             }
         }
 
@@ -231,7 +231,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public void CreateButton()
         {
-            AuthorUtils.WriteAuthor(this.NewAuthor);
+            AuthorUtils.WriteAuthor(NewAuthor);
         }
     }
 }
