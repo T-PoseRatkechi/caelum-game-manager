@@ -6,6 +6,8 @@
 namespace CaelumGameManagerGUI
 {
     using System;
+    using System.Diagnostics;
+    using System.IO;
     using System.Windows;
     using System.Windows.Threading;
     using Serilog;
@@ -15,6 +17,15 @@ namespace CaelumGameManagerGUI
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Path to app exe.
+        /// </summary>
+        public static readonly string AppPath = Process.GetCurrentProcess().MainModule.FileName;
+
+        /// <summary>
+        /// Path to app log file.
+        /// </summary>
+        public static readonly string LogFilePath = $@"{Path.GetDirectoryName(AppPath)}\caelum.log";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
@@ -25,7 +36,7 @@ namespace CaelumGameManagerGUI
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(AppLogSink)
-                .WriteTo.File("caelum.log", outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}")
+                .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}")
                 .Enrich.WithThreadId()
                 .CreateLogger();
 
@@ -41,7 +52,7 @@ namespace CaelumGameManagerGUI
                     Log.Information("Hello {count}", count);
                     try
                     {
-                        if (count == 256)
+                        if (count == 50)
                         {
                             int z = 0;
                             int test = 20 / z;

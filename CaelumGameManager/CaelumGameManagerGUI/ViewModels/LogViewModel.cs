@@ -35,11 +35,23 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.LogLines.RemoveAt(0);
                 }
             };
-
         }
 
+        /// <summary>
+        /// Gets or sets the currently selected log line.
+        /// </summary>
         public string SelectedLine { get; set; }
 
+        /// <summary>
+        /// Gets log lines.
+        /// </summary>
+        public BindableCollection<string> LogLines { get; } = new();
+
+        /// <summary>
+        /// Log context menu.
+        /// </summary>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="command">String command.</param>
         public void OpenLogContext(object sender, string command = null)
         {
             try
@@ -48,7 +60,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 {
                     case "openLog":
                         var proc = new System.Diagnostics.Process();
-                        proc.StartInfo.FileName = "caelum.log";
+                        proc.StartInfo.FileName = App.LogFilePath;
                         proc.StartInfo.UseShellExecute = true;
                         proc.Start();
                         break;
@@ -60,16 +72,14 @@ namespace CaelumGameManagerGUI.ViewModels
 
                         break;
                     default:
-                        Log.Warning("LogContext received unknown command! Command failed: {command}", command);
+                        Log.Warning("Log context menu received unknown command! Command: {command}", command);
                         break;
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Expected LogContext sender to be menu item! Command failed: {command}", command);
+                Log.Warning(ex, "Log context menu command failed! Command: {command}", command);
             }
         }
-
-        public BindableCollection<string> LogLines { get; } = new();
     }
 }
