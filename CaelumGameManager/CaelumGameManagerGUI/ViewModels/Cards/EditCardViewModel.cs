@@ -16,6 +16,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
     using CaelumCoreLibrary.Utilities;
     using CaelumGameManagerGUI.ViewModels.Authors;
     using Caliburn.Micro;
+    using Serilog;
 
     /// <summary>
     /// EditCard VM.
@@ -238,11 +239,13 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         {
             if (card == null)
             {
+                Log.Information("Opening Create Card window");
                 DisplayName = "Create Card";
                 ConfirmText = "Create";
             }
             else
             {
+                Log.Information("Opening Edit Card window");
                 DisplayName = "Edit Card";
                 ConfirmText = "Confirm";
             }

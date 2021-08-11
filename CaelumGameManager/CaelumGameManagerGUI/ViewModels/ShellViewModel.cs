@@ -49,5 +49,7 @@ namespace CaelumGameManagerGUI.ViewModels
             get { return _currentGame; }
             set { _currentGame = value; }
         }
+
+        public LogViewModel Log { get; } = new();
     }
 }

@@ -5,8 +5,9 @@
 
 namespace CaelumGameManagerGUI
 {
+    using System;
     using System.Windows;
-    using Microsoft.Extensions.Configuration;
+    using System.Windows.Threading;
     using Serilog;
 
     /// <summary>
@@ -14,18 +15,52 @@ namespace CaelumGameManagerGUI
     /// </summary>
     public partial class App : Application
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
         /// </summary>
         public App()
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
+                .MinimumLevel.Verbose()
+                .WriteTo.Sink(AppLogSink)
+                .WriteTo.File("caelum.log", outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}")
+                .Enrich.WithThreadId()
                 .CreateLogger();
 
             Log.Information("Caelum Game Manager starting");
+            var dispatchTimer = new DispatcherTimer();
+
+            int count = 0;
+            dispatchTimer.Tick += (object sender, EventArgs args) =>
+            {
+                if (count < 5000)
+                {
+                    Log.Information("Hello {count}", count);
+                    try
+                    {
+                        if (count == 256)
+                        {
+                            int z = 0;
+                            int test = 20 / z;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Exception caught");
+                        dispatchTimer.Stop();
+                    }
+                    count++;
+                }
+            };
+
+            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            dispatchTimer.Start();
         }
+
+        /// <summary>
+        /// Gets the log sink for app GUI.
+        /// </summary>
+        public static CustomSink AppLogSink { get; } = new();
     }
 }

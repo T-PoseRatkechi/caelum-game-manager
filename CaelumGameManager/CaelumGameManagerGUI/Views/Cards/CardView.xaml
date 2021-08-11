@@ -68,7 +68,7 @@
                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10"/>
 
         <mah:MetroTabControl Grid.Column="1" Grid.Row="4"
-                    mah:HeaderedControlHelper.HeaderFontSize="15">
+                    mah:HeaderedControlHelper.HeaderFontSize="18">
             <mah:MetroTabControl.Resources>
                 <SolidColorBrush x:Key="MahApps.Brushes.Accent" Color="#4A9ADA"/>
                 <SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="#2480C0"/>
@@ -76,11 +76,14 @@
                 <SolidColorBrush x:Key="MahApps.Brushes.Control.Background" Color="Transparent" Opacity="0.4"/>
             </mah:MetroTabControl.Resources>
             <mah:MetroTabItem Header="Description">
-                <TextBox Text="{Binding Path=Card.Description}" TextWrapping="Wrap" AcceptsReturn="True"
-                 IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Text="{Binding Path=Card.Description}" FontSize="15"
+                         TextWrapping="Wrap" AcceptsReturn="True"
+                         IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
             </mah:MetroTabItem>
+            <!--
             <mah:MetroTabItem Header="Authors">
-                <DataGrid x:Name="Card">
+                <DataGrid ItemsSource="{Binding Path=Card.Authors}">
+                    <TextBlock Text="{Binding Path=Name}" />
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="MahApps.Brushes.Accent" Color="#4A9ADA"/>
                         <SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="#2480C0"/>
@@ -88,6 +91,25 @@
                         <SolidColorBrush x:Key="MahApps.Brushes.Control.Background" Color="Transparent" Opacity="0.4"/>
                     </DataGrid.Resources>
                 </DataGrid>
+            </mah:MetroTabItem>
+            -->
+
+            <mah:MetroTabItem Header="Author(s)">
+                <ListBox Grid.Column="1" Grid.Row="2"
+                         Margin="5" ItemsSource="{Binding Path=Card.Authors}"
+                         >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.Resources>
+                        <SolidColorBrush x:Key="MahApps.Brushes.Accent" Color="#4A9ADA"/>
+                        <SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="#2480C0"/>
+                        <SolidColorBrush x:Key="MahApps.Brushes.ThemeBackground" Color="Black" Opacity="0.0"/>
+                        <SolidColorBrush x:Key="MahApps.Brushes.Control.Background" Color="Transparent" Opacity="0.4"/>
+                    </ListBox.Resources>
+                </ListBox>
             </mah:MetroTabItem>
         </mah:MetroTabControl>
     </Grid>

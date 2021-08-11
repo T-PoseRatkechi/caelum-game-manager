@@ -16,6 +16,7 @@
 
                 <ResourceDictionary Source="/Resources/ImageDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="RobotoMonoRegular">pack://application:,,,/Assets/Fonts/Roboto Mono/#Roboto Mono</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
