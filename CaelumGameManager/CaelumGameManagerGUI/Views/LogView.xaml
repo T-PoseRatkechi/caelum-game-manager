@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
              xmlns:controls="clr-namespace:CaelumGameManagerGUI.Controls"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -20,6 +21,16 @@
         </Grid.RowDefinitions>
 
         <controls:ListViewAutoScroll x:Name="LogLines" Grid.Column="1" Grid.Row="1"
-                                     FontSize="13" FontFamily="{StaticResource RobotoMonoRegular}"/>
+                                     FontSize="13" FontFamily="{StaticResource RobotoMonoRegular}"
+                                     SelectedItem="{Binding SelectedLine, Mode=OneWayToSource}">
+            <controls:ListViewAutoScroll.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy"
+                              cal:Message.Attach="OpenLogContext($source, 'copy')"/>
+                    <MenuItem Header="Open Log"
+                              cal:Message.Attach="OpenLogContext($source, 'openLog')"/>
+                </ContextMenu>
+            </controls:ListViewAutoScroll.ContextMenu>
+        </controls:ListViewAutoScroll>
     </Grid>
 </UserControl>

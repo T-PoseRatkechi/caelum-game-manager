@@ -11,6 +11,8 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Threading;
     using Caliburn.Micro;
     using Serilog;
@@ -34,6 +36,38 @@ namespace CaelumGameManagerGUI.ViewModels
                 }
             };
 
+        }
+
+        public string SelectedLine { get; set; }
+
+        public void OpenLogContext(object sender, string command = null)
+        {
+            try
+            {
+                switch (command)
+                {
+                    case "openLog":
+                        var proc = new System.Diagnostics.Process();
+                        proc.StartInfo.FileName = "caelum.log";
+                        proc.StartInfo.UseShellExecute = true;
+                        proc.Start();
+                        break;
+                    case "copy":
+                        if (this.SelectedLine != null)
+                        {
+                            Clipboard.SetText(this.SelectedLine);
+                        }
+
+                        break;
+                    default:
+                        Log.Warning("LogContext received unknown command! Command failed: {command}", command);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Expected LogContext sender to be menu item! Command failed: {command}", command);
+            }
         }
 
         public BindableCollection<string> LogLines { get; } = new();
