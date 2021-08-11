@@ -19,7 +19,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <controls:ListViewAutoScroll x:Name="LogLines" Grid.Column="1" Grid.Row="1" FontSize="13"
-                  FontFamily="{StaticResource RobotoMonoRegular}"/>
+        <controls:ListViewAutoScroll x:Name="LogLines" Grid.Column="1" Grid.Row="1"
+                                     FontSize="13" FontFamily="{StaticResource RobotoMonoRegular}"/>
     </Grid>
 </UserControl>
