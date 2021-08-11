@@ -21,6 +21,7 @@ namespace CaelumGameManagerGUI
         /// </summary>
         public App()
         {
+            // Configure logger.
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(AppLogSink)
@@ -29,8 +30,9 @@ namespace CaelumGameManagerGUI
                 .CreateLogger();
 
             Log.Information("Caelum Game Manager starting");
-            var dispatchTimer = new DispatcherTimer();
 
+            // Temp performance testing for GUI console log display.
+            var dispatchTimer = new DispatcherTimer();
             int count = 0;
             dispatchTimer.Tick += (object sender, EventArgs args) =>
             {
@@ -50,6 +52,7 @@ namespace CaelumGameManagerGUI
                         Log.Error(ex, "Exception caught");
                         dispatchTimer.Stop();
                     }
+
                     count++;
                 }
             };

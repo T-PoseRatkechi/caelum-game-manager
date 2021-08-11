@@ -1,9 +1,11 @@
 ﻿<Application x:Class="CaelumGameManagerGUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CaelumGameManagerGUI">
+             xmlns:local="clr-namespace:CaelumGameManagerGUI"
+        xmlns:controls="clr-namespace:CaelumGameManagerGUI.Controls">
     <Application.Resources>
         <ResourceDictionary>
+            <!--Merged resources-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="Bootstrapper" />
@@ -16,7 +18,11 @@
 
                 <ResourceDictionary Source="/Resources/ImageDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <!--Apply custom font and MahApps style to log control.-->
             <FontFamily x:Key="RobotoMonoRegular">pack://application:,,,/Assets/Fonts/Roboto Mono/#Roboto Mono</FontFamily>
+            <Style x:Key="{x:Type controls:ListViewAutoScroll}" TargetType="{x:Type controls:ListViewAutoScroll}"
+               BasedOn="{StaticResource MahApps.Styles.ListView}"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
