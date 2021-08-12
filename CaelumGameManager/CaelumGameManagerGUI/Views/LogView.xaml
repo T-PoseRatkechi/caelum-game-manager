@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
              xmlns:controls="clr-namespace:CaelumGameManagerGUI.Controls"
+             xmlns:events="clr-namespace:Serilog.Events;assembly=Serilog"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -20,9 +21,28 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <controls:ListViewAutoScroll x:Name="LogLines" Grid.Column="1" Grid.Row="1"
+        <controls:ListViewAutoScroll x:Name="Log" Grid.Column="1" Grid.Row="1"
                                      FontSize="13" FontFamily="{StaticResource RobotoMonoRegular}"
-                                     SelectedItem="{Binding SelectedLine, Mode=OneWayToSource}">
+                                     SelectedItem="{Binding SelectedLogItem, Mode=OneWayToSource}">
+            <controls:ListViewAutoScroll.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Message}"/>
+                </DataTemplate>
+            </controls:ListViewAutoScroll.ItemTemplate>
+            <controls:ListViewAutoScroll.ItemContainerStyle>
+                <Style TargetType="ListViewItem" BasedOn="{StaticResource MahApps.Styles.ListViewItem}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Level}" Value="{x:Static events:LogEventLevel.Error}">
+                            <Setter Property="Background" Value="#9a2617"/>
+                            <Setter Property="TextBlock.Foreground" Value="White"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Level}" Value="{x:Static events:LogEventLevel.Warning}">
+                            <Setter Property="Background" Value="#fcc133"/>
+                            <Setter Property="TextBlock.Foreground" Value="Black"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:ListViewAutoScroll.ItemContainerStyle>
             <controls:ListViewAutoScroll.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Copy"

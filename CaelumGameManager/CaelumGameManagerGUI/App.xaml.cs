@@ -49,7 +49,19 @@ namespace CaelumGameManagerGUI
             {
                 if (count < 5000)
                 {
-                    Log.Information("Hello {count}", count);
+                    if (count > 40 && count < 44)
+                    {
+                        Log.Warning("Test warning {count}", count);
+                    }
+                    else if (count > 42 && count < 48)
+                    {
+                        Log.Error("Test error {count}", count);
+                    }
+                    else
+                    {
+                        Log.Information("Hello {count}", count);
+                    }
+
                     try
                     {
                         if (count == 50)

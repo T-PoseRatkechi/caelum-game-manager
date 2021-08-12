@@ -6,14 +6,8 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Threading;
+    using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
     using Serilog;
 
@@ -27,12 +21,12 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public LogViewModel()
         {
-            App.AppLogSink.LogReceived += (object sender, string s) =>
+            App.AppLogSink.LogReceived += (object sender, LogItemModel logItem) =>
             {
-                this.LogLines.Add(s);
-                if (this.LogLines.Count > 500)
+                this.Log.Add(logItem);
+                if (this.Log.Count > 500)
                 {
-                    this.LogLines.RemoveAt(0);
+                    this.Log.RemoveAt(0);
                 }
             };
         }
@@ -40,12 +34,12 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets or sets the currently selected log line.
         /// </summary>
-        public string SelectedLine { get; set; }
+        public LogItemModel SelectedLogItem { get; set; }
 
         /// <summary>
         /// Gets log lines.
         /// </summary>
-        public BindableCollection<string> LogLines { get; } = new();
+        public BindableCollection<LogItemModel> Log { get; } = new();
 
         /// <summary>
         /// Log context menu.
@@ -65,20 +59,20 @@ namespace CaelumGameManagerGUI.ViewModels
                         proc.Start();
                         break;
                     case "copy":
-                        if (this.SelectedLine != null)
+                        if (this.SelectedLogItem?.Message != null)
                         {
-                            Clipboard.SetText(this.SelectedLine);
+                            Clipboard.SetText(this.SelectedLogItem.Message);
                         }
 
                         break;
                     default:
-                        Log.Warning("Log context menu received unknown command! Command: {command}", command);
+                        Serilog.Log.Warning("Log context menu received unknown command! Command: {command}", command);
                         break;
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Log context menu command failed! Command: {command}", command);
+                Serilog.Log.Warning(ex, "Log context menu command failed! Command: {command}", command);
             }
         }
     }

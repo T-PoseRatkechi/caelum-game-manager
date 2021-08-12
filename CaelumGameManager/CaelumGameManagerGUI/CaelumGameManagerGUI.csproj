@@ -44,6 +44,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="appsettings" /></VisualStudio></ProjectExtensions>
 </Project>

@@ -7,6 +7,7 @@ namespace CaelumGameManagerGUI
 {
     using System;
     using System.IO;
+    using CaelumGameManagerGUI.Models;
     using Serilog.Core;
     using Serilog.Events;
     using Serilog.Formatting;
@@ -28,8 +29,8 @@ namespace CaelumGameManagerGUI
         /// Log event handler.
         /// </summary>
         /// <param name="sender">Sender object.</param>
-        /// <param name="s">Formatted log event as string.</param>
-        public delegate void LogEventHandler(object sender, string s);
+        /// <param name="logItem">Log item containing log message and level.</param>
+        public delegate void LogEventHandler(object sender, LogItemModel logItem);
 
         /// <summary>
         /// Log received event.
@@ -46,7 +47,7 @@ namespace CaelumGameManagerGUI
 
             this.stringWriter.GetStringBuilder().Clear();
             this.textFormatter.Format(logEvent, this.stringWriter);
-            this.LogReceived?.Invoke(this, this.stringWriter.ToString());
+            this.LogReceived?.Invoke(this, new LogItemModel() { Message = this.stringWriter.ToString(), Level = logEvent.Level});
         }
     }
 }
