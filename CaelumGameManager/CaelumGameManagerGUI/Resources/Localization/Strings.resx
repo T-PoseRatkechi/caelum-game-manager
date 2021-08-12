@@ -157,4 +157,22 @@
   <data name="OtherText" xml:space="preserve">
     <value>Other</value>
   </data>
+  <data name="AvailableAuthorsText" xml:space="preserve">
+    <value>Available Authors</value>
+  </data>
+  <data name="AddAuthorsText" xml:space="preserve">
+    <value>Add Authors</value>
+  </data>
+  <data name="AuthorText" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="CloseText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CreateAuthorText" xml:space="preserve">
+    <value>Create Author</value>
+  </data>
+  <data name="AuthorsDescriptionTextBox" xml:space="preserve">
+    <value>Author's Description (Creator, Programmer, Writer, etc.)</value>
+  </data>
 </root>

@@ -61,11 +61,29 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Authors.
+        /// </summary>
+        public static string AddAuthorsText {
+            get {
+                return ResourceManager.GetString("AddAuthorsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string AllText {
             get {
                 return ResourceManager.GetString("AllText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author&apos;s Description (Creator, Programmer, Writer, etc.).
+        /// </summary>
+        public static string AuthorsDescriptionTextBox {
+            get {
+                return ResourceManager.GetString("AuthorsDescriptionTextBox", resourceCulture);
             }
         }
         
@@ -79,6 +97,24 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string AuthorText {
+            get {
+                return ResourceManager.GetString("AuthorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Authors.
+        /// </summary>
+        public static string AvailableAuthorsText {
+            get {
+                return ResourceManager.GetString("AvailableAuthorsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cards.
         /// </summary>
         public static string CardsText {
@@ -88,11 +124,29 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string CloseText {
+            get {
+                return ResourceManager.GetString("CloseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string ConfirmText {
             get {
                 return ResourceManager.GetString("ConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Author.
+        /// </summary>
+        public static string CreateAuthorText {
+            get {
+                return ResourceManager.GetString("CreateAuthorText", resourceCulture);
             }
         }
         
