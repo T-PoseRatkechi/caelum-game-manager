@@ -151,4 +151,10 @@
   <data name="DescriptionText" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="DonateText" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="OtherText" xml:space="preserve">
+    <value>Other</value>
+  </data>
 </root>

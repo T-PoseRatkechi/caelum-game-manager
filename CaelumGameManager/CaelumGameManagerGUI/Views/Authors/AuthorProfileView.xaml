@@ -1,12 +1,17 @@
-﻿<UserControl xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Class="CaelumGameManagerGUI.Views.Authors.AuthorProfileView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CaelumGameManagerGUI.Views.Authors"
-             mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="500">
+﻿<UserControl
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        x:Class="CaelumGameManagerGUI.Views.Authors.AuthorProfileView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:CaelumGameManagerGUI.Views.Authors"
+        mc:Ignorable="d" 
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="es"
+        lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
+        lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+        d:DesignHeight="500" d:DesignWidth="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -65,14 +70,14 @@
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Kind="CardsHeart"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <Label Content="Donate"/>
+                    <Label Content="{lex:Loc DonateText}"/>
                 </StackPanel>
             </Button>
             <Button x:Name="OtherLink" ToolTip="{Binding Path=Profile.MiscUrl}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconFontAwesome Kind="ExternalLinkAltSolid"
                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <Label Content="Other"/>
+                    <Label Content="{lex:Loc OtherText}"/>
                 </StackPanel>
             </Button>
         </StackPanel>

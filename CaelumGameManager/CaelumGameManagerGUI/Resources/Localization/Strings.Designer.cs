@@ -133,6 +133,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        public static string DonateText {
+            get {
+                return ResourceManager.GetString("DonateText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Card.
         /// </summary>
         public static string EditCardText {
@@ -183,6 +192,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string OthersText {
             get {
                 return ResourceManager.GetString("OthersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string OtherText {
+            get {
+                return ResourceManager.GetString("OtherText", resourceCulture);
             }
         }
         
