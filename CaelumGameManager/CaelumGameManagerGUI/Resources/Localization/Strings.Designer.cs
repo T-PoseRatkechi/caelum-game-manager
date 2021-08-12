@@ -302,5 +302,23 @@ namespace CaelumGameManagerGUI.Resources.Localization {
                 return ResourceManager.GetString("VersionText", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image File.
+        /// </summary>
+        public static string WindowImageFileFilter {
+            get {
+                return ResourceManager.GetString("WindowImageFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Profile Image....
+        /// </summary>
+        public static string WindowSelectAvatarTitle {
+            get {
+                return ResourceManager.GetString("WindowSelectAvatarTitle", resourceCulture);
+            }
+        }
     }
 }

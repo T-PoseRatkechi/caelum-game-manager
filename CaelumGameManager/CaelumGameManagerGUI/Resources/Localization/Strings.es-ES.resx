@@ -178,4 +178,10 @@
   <data name="AboutMeText" xml:space="preserve">
     <value>Sobre Mí</value>
   </data>
+  <data name="WindowImageFileFilter" xml:space="preserve">
+    <value>Archivo de Imagen</value>
+  </data>
+  <data name="WindowSelectAvatarTitle" xml:space="preserve">
+    <value>Seleccionar Imagen de Perfil...</value>
+  </data>
 </root>

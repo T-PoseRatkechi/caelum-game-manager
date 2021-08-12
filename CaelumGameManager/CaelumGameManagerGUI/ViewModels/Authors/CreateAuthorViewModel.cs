@@ -11,6 +11,7 @@ namespace CaelumGameManagerGUI.ViewModels.Authors
     using System.IO;
     using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Utilities;
+    using CaelumGameManagerGUI.Resources.Localization;
     using Caliburn.Micro;
     using Microsoft.Win32;
 
@@ -217,12 +218,13 @@ namespace CaelumGameManagerGUI.ViewModels.Authors
         public void SelectAvatar()
         {
             OpenFileDialog openFileDialog = new();
-            openFileDialog.Filter = "Images files|*.png;*.jpeg;*.jpg";
+            openFileDialog.Filter = $"{LocalizedStrings.Instance["WindowImageFileFilter"]}| *.png;*.jpeg;*.jpg";
+            openFileDialog.Title = LocalizedStrings.Instance["WindowSelectAvatarTitle"];
             if (openFileDialog.ShowDialog() == true)
             {
                 var imageBytes = File.ReadAllBytes(openFileDialog.FileName);
                 NewAuthor.AvatarBytes = imageBytes;
-                AuthorDisplay.NotifyOfPropertyChange(() => AuthorDisplay.AuthorAvatar);
+                AuthorDisplay.NotifyOfPropertyChange(() => this.AuthorDisplay.AuthorAvatar);
             }
         }
 
