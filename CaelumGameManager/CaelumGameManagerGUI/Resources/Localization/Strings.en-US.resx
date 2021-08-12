@@ -175,4 +175,7 @@
   <data name="AuthorsDescriptionTextBox" xml:space="preserve">
     <value>Author's Description (Creator, Programmer, Writer, etc.)</value>
   </data>
+  <data name="AboutMeText" xml:space="preserve">
+    <value>About Me</value>
+  </data>
 </root>

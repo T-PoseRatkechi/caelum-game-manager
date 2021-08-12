@@ -61,6 +61,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About Me.
+        /// </summary>
+        public static string AboutMeText {
+            get {
+                return ResourceManager.GetString("AboutMeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Authors.
         /// </summary>
         public static string AddAuthorsText {
