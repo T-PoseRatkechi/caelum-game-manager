@@ -5,6 +5,7 @@
 
 namespace CaelumCoreLibrary.Common
 {
+    using CaelumCoreLibrary.Utilities;
     using System;
     using System.IO;
     using System.Text;
@@ -18,20 +19,36 @@ namespace CaelumCoreLibrary.Common
         private static readonly string AuthorsDirectory = Path.Join(Directory.GetCurrentDirectory(), "authors");
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorUtils"/> class.
+        /// </summary>
+        public AuthorUtils()
+        {
+            CaelumFileIO.BuildDirectory(AuthorsDirectory);
+        }
+
+        /// <summary>
         /// Parses and returns all available in authors in the authors directory.
         /// </summary>
         /// <returns>List of authors.</returns>
         public static Author[] AvailableAuthors()
         {
-            var authorFiles = Directory.GetFiles(AuthorsDirectory, "*.author", SearchOption.TopDirectoryOnly);
-
-            Author[] authors = new Author[authorFiles.Length];
-            for (int i = 0, total = authorFiles.Length; i < total; i++)
+            if (Directory.Exists(AuthorsDirectory))
             {
-                authors[i] = ParseAuthor(authorFiles[i]);
-            }
+                var authorFiles = Directory.GetFiles(AuthorsDirectory, "*.author", SearchOption.TopDirectoryOnly);
 
-            return authors;
+                Author[] authors = new Author[authorFiles.Length];
+                for (int i = 0, total = authorFiles.Length; i < total; i++)
+                {
+                    authors[i] = ParseAuthor(authorFiles[i]);
+                }
+
+                return authors;
+            }
+            else
+            {
+                CaelumFileIO.BuildDirectory(AuthorsDirectory);
+                return null;
+            }
         }
 
         /// <summary>

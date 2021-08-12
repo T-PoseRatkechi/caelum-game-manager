@@ -38,7 +38,7 @@
 
             <TextBlock Text="{lex:Loc DeckText}" FontSize="25" Grid.Column="0" />
             <TextBlock Text="{lex:Loc CardsText}" FontSize="25" Grid.Column="3" HorizontalAlignment="Right" Padding="0 0 10 0"/>
-            <ComboBox Grid.Column="4" ItemsSource="{Binding Filters}" SelectedValue="{Binding SelectedFilter}"/>
+            <ComboBox Grid.Column="4" ItemsSource="{Binding FilterKeys}" SelectedValue="{Binding SelectedFilter}"/>
         </Grid>
 
          <DataGrid x:Name="FilteredDeck" Grid.Column="0" Grid.Row="1" CanUserAddRows="False"

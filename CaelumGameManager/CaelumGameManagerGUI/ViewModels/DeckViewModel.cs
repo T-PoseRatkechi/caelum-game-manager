@@ -11,8 +11,11 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
+    using CaelumGameManagerGUI.Models;
+    using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
+    using Serilog;
 
     /// <summary>
     /// Deck VM.
@@ -23,7 +26,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private IGame game;
         private BindableCollection<ICard> deck;
 
-        private string selectedFilter = "All";
+        private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
         private ICollectionView filteredDeck;
 
@@ -59,7 +62,20 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets list of available filters.
         /// </summary>
-        public string[] Filters { get; } = new string[] { "All", "Mods", "Tools", "Folder" };
+        private static Dictionary<string, CardType> Filters = new()
+        {
+            // No filter uses the card type Update since Update cards are never displayed in deck.
+            // They're only used overwrite another card's files.
+            { LocalizedStrings.Instance["AllText"], CardType.Update },
+            { LocalizedStrings.Instance["ModsText"], CardType.Mod },
+            { LocalizedStrings.Instance["ToolsText"], CardType.Tool },
+            { LocalizedStrings.Instance["FoldersText"], CardType.Folder },
+        };
+
+        /// <summary>
+        /// Gets a list of filters by name.
+        /// </summary>
+        public List<string> FilterKeys { get; } = new(Filters.Keys);
 
         /// <summary>
         /// Gets or sets the selected filter on deck.
@@ -74,21 +90,21 @@ namespace CaelumGameManagerGUI.ViewModels
             set
             {
                 this.selectedFilter = value;
-                switch (value)
+                if (Filters.ContainsKey(this.selectedFilter))
                 {
-                    case "Mods":
-                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, CardType.Mod);
-                        break;
-                    case "Tools":
-                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, CardType.Tool);
-                        break;
-                    case "Folder":
-                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, CardType.Folder);
-                        break;
-                    case "All":
-                    default:
+                    var cardType = Filters[this.selectedFilter];
+                    if (cardType == CardType.Update)
+                    {
                         this.FilteredDeck.Filter = null;
-                        break;
+                    }
+                    else
+                    {
+                        this.FilteredDeck.Filter = (obj) => FilterCardsByType(obj, cardType);
+                    }
+                }
+                else
+                {
+                    Log.Warning("Unrecognized card filter! Filter name: {filter}", this.selectedFilter);
                 }
             }
         }

@@ -118,4 +118,16 @@
   <data name="VersionText" xml:space="preserve">
     <value>Versión</value>
   </data>
+  <data name="AllText" xml:space="preserve">
+    <value>Todas</value>
+  </data>
+  <data name="ModsText" xml:space="preserve">
+    <value>Mods</value>
+  </data>
+  <data name="ToolsText" xml:space="preserve">
+    <value>Útiles</value>
+  </data>
+  <data name="FoldersText" xml:space="preserve">
+    <value>Carpetas</value>
+  </data>
 </root>
