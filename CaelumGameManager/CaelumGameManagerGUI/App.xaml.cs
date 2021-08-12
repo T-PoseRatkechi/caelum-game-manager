@@ -7,10 +7,13 @@ namespace CaelumGameManagerGUI
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Threading;
     using Serilog;
+    using WPFLocalizeExtension.Engine;
 
     /// <summary>
     /// Interaction logic for App.xaml.
@@ -32,6 +35,17 @@ namespace CaelumGameManagerGUI
         /// </summary>
         public App()
         {
+            /*
+            LocalizeDictionary.Instance.Culture = CultureInfo.CurrentCulture;
+            */
+
+            LocalizeDictionary.Instance.Culture = new CultureInfo("es-ES");
+
+            LocalizeDictionary.Instance.MissingKeyEvent += (object sender, MissingKeyEventArgs evt) =>
+            {
+                Log.Warning("String key missing! Key: {key}, Culture: {culture}", evt.Key, LocalizeDictionary.Instance.Culture.Name);
+            };
+
             // Configure logger.
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
