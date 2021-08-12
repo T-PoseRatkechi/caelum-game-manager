@@ -130,4 +130,25 @@
   <data name="FoldersText" xml:space="preserve">
     <value>Carpetas</value>
   </data>
+  <data name="EditCardText" xml:space="preserve">
+    <value>Editar Carta</value>
+  </data>
+  <data name="CreateCardText" xml:space="preserve">
+    <value>Crear Carta</value>
+  </data>
+  <data name="UnknownText" xml:space="preserve">
+    <value>Desconocido</value>
+  </data>
+  <data name="OthersText" xml:space="preserve">
+    <value>Otro(s)</value>
+  </data>
+  <data name="CreateText" xml:space="preserve">
+    <value>Crear</value>
+  </data>
+  <data name="ConfirmText" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="DescriptionText" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
 </root>

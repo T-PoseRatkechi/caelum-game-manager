@@ -14,6 +14,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
     using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Utilities;
+    using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Authors;
     using Caliburn.Micro;
     using Serilog;
@@ -237,17 +238,17 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// <param name="context">Context the VM was opened with.</param>
         private void SetContextualNames()
         {
-            if (card == null)
+            if (this.card == null)
             {
-                Log.Information("Opening Create Card window");
-                DisplayName = "Create Card";
-                ConfirmText = "Create";
+                Log.Debug("Opening Create Card window");
+                this.DisplayName = LocalizedStrings.Instance["CreateCardText"];
+                this.ConfirmText = LocalizedStrings.Instance["CreateText"];
             }
             else
             {
-                Log.Information("Opening Edit Card window");
-                DisplayName = "Edit Card";
-                ConfirmText = "Confirm";
+                Log.Debug("Opening Edit Card window");
+                this.DisplayName = LocalizedStrings.Instance["EditCardText"];
+                this.ConfirmText = LocalizedStrings.Instance["ConfirmText"];
             }
         }
     }

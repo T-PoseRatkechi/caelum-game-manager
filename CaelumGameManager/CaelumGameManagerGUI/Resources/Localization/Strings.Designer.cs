@@ -88,11 +88,56 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string ConfirmText {
+            get {
+                return ResourceManager.GetString("ConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Card.
+        /// </summary>
+        public static string CreateCardText {
+            get {
+                return ResourceManager.GetString("CreateCardText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string CreateText {
+            get {
+                return ResourceManager.GetString("CreateText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deck.
         /// </summary>
         public static string DeckText {
             get {
                 return ResourceManager.GetString("DeckText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string DescriptionText {
+            get {
+                return ResourceManager.GetString("DescriptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Card.
+        /// </summary>
+        public static string EditCardText {
+            get {
+                return ResourceManager.GetString("EditCardText", resourceCulture);
             }
         }
         
@@ -133,6 +178,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other(s).
+        /// </summary>
+        public static string OthersText {
+            get {
+                return ResourceManager.GetString("OthersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tools.
         /// </summary>
         public static string ToolsText {
@@ -147,6 +201,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string TypeText {
             get {
                 return ResourceManager.GetString("TypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string UnknownText {
+            get {
+                return ResourceManager.GetString("UnknownText", resourceCulture);
             }
         }
         

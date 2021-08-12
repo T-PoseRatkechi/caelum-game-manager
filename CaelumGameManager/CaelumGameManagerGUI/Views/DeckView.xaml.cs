@@ -11,6 +11,7 @@ namespace CaelumGameManagerGUI.Views
     using System.Windows.Data;
     using System.Windows.Input;
     using CaelumCoreLibrary.Common;
+    using CaelumGameManagerGUI.Resources.Localization;
 
     /// <summary>
     /// Interaction logic for DeckView.xaml
@@ -37,11 +38,11 @@ namespace CaelumGameManagerGUI.Views
 
                     if (selectedItem != null)
                     {
-                        this.OpenEditCard.Header = "Edit Card";
+                        this.OpenEditCard.Header = LocalizedStrings.Instance["EditCardText"];
                     }
                     else
                     {
-                        this.OpenEditCard.Header = "Create Card";
+                        this.OpenEditCard.Header = LocalizedStrings.Instance["CreateCardText"];
                     }
                 }
             };
@@ -111,7 +112,7 @@ namespace CaelumGameManagerGUI.Views
                 var list = value as Author[];
                 if (list.Length < 1)
                 {
-                    return "Unknown";
+                    return LocalizedStrings.Instance["UnknownText"];
                 }
 
                 if (list.Length == 1)
@@ -119,10 +120,10 @@ namespace CaelumGameManagerGUI.Views
                     return list[0].Name;
                 }
 
-                return $"{list[0].Name} +{list.Length - 1} other(s)";
+                return $"{list[0].Name} +{list.Length - 1} {LocalizedStrings.Instance["OthersText"]}";
             }
 
-            return "Unknown";
+            return LocalizedStrings.Instance["UnknownText"];
         }
 
         /// <inheritdoc/>

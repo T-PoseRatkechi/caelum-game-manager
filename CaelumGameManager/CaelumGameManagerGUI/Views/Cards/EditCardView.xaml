@@ -6,9 +6,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views.Cards"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="es"
+        lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
+        lex:ResxLocalizationProvider.DefaultDictionary="Strings"
         mc:Ignorable="d"
         MinWidth="700" MinHeight="550" Width="700" Height="550"
-                 WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
+        WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
     <Grid>
         <!--Grid Definitions-->
         <Grid.ColumnDefinitions>
@@ -31,23 +35,23 @@
         </Grid.RowDefinitions>
         
         <!--Card Data Inputs-->
-        <TextBox x:Name="CardName" Grid.Column="1" Grid.Row="1" mah:TextBoxHelper.Watermark="Name" Height="30" Margin="0 0 0 5"/>
+        <TextBox x:Name="CardName" Grid.Column="1" Grid.Row="1" mah:TextBoxHelper.Watermark="{lex:Loc NameText}" Height="30" Margin="0 0 0 5"/>
         <Grid Grid.Column="1" Grid.Row="2" Margin="0 0 0 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="AuthorText" Margin="0 0 5 0" Height="30" mah:TextBoxHelper.Watermark="Author(s)"
+            <TextBox x:Name="AuthorText" Margin="0 0 5 0" Height="30" mah:TextBoxHelper.Watermark="{lex:Loc AuthorsText}"
                      IsReadOnly="True"/>
             <Button x:Name="OpenAuthors" Grid.Column="1" VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center">
                 <iconPacks:BootstrapIcons Kind="PersonPlusFill"/>
             </Button>
         </Grid>
-        <TextBox x:Name="Version" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="Version" Height="30" Margin="0 0 0 5"/>
+        <TextBox x:Name="Version" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="{lex:Loc VersionText}" Height="30" Margin="0 0 0 5"/>
         <ComboBox Grid.Column="1" Grid.Row="4" Height="30" ItemsSource="{Binding CardTypes}"
                   SelectedItem="{Binding SelectedType}" Margin="0 0 0 5"/>
-        <TextBox x:Name="Description" Grid.Column="1" Grid.Row="6" mah:TextBoxHelper.Watermark="Description" Margin="0 0 0 5"
+        <TextBox x:Name="Description" Grid.Column="1" Grid.Row="6" mah:TextBoxHelper.Watermark="{lex:Loc DescriptionText}" Margin="0 0 0 5"
                  TextWrapping="Wrap" AcceptsReturn="True"/>
         <Button Grid.Column="1" Grid.Row="7"
                 x:Name="ConfirmCard" Content="{Binding ConfirmText}" />
