@@ -1,13 +1,18 @@
-﻿<UserControl xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Class="CaelumGameManagerGUI.Views.Cards.CardView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CaelumGameManagerGUI.Views.Cards"
-             mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="400">
+﻿<UserControl
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        x:Class="CaelumGameManagerGUI.Views.Cards.CardView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:CaelumGameManagerGUI.Views.Cards"
+        mc:Ignorable="d" 
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="es"
+        lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
+        lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+        d:DesignHeight="550" d:DesignWidth="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -75,26 +80,13 @@
                 <SolidColorBrush x:Key="MahApps.Brushes.ThemeBackground" Color="Black" Opacity="0.7"/>
                 <SolidColorBrush x:Key="MahApps.Brushes.Control.Background" Color="Transparent" Opacity="0.4"/>
             </mah:MetroTabControl.Resources>
-            <mah:MetroTabItem Header="Description">
+            <mah:MetroTabItem Header="{lex:Loc DescriptionText}">
                 <TextBox Text="{Binding Path=Card.Description}" FontSize="15"
                          TextWrapping="Wrap" AcceptsReturn="True"
                          IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
             </mah:MetroTabItem>
-            <!--
-            <mah:MetroTabItem Header="Authors">
-                <DataGrid ItemsSource="{Binding Path=Card.Authors}">
-                    <TextBlock Text="{Binding Path=Name}" />
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="MahApps.Brushes.Accent" Color="#4A9ADA"/>
-                        <SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="#2480C0"/>
-                        <SolidColorBrush x:Key="MahApps.Brushes.ThemeBackground" Color="Black" Opacity="0.7"/>
-                        <SolidColorBrush x:Key="MahApps.Brushes.Control.Background" Color="Transparent" Opacity="0.4"/>
-                    </DataGrid.Resources>
-                </DataGrid>
-            </mah:MetroTabItem>
-            -->
 
-            <mah:MetroTabItem Header="Author(s)">
+            <mah:MetroTabItem Header="{lex:Loc AuthorsText}">
                 <ListBox Grid.Column="1" Grid.Row="2"
                          Margin="5" ItemsSource="{Binding Path=Card.Authors}"
                          >
