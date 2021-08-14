@@ -16,50 +16,43 @@ namespace CaelumCoreLibrary.Cards
         /// <summary>
         /// Gets or sets a value indicating whether the card is enabled.
         /// </summary>
-        public bool IsEnabled { get; set; }
+        bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
         /// Should typically be: {author_name}-{card_name}
         /// Update Cards must have the same id as the card they are updating.
         /// </summary>
-        public string CardId { get; set; }
+        string CardId { get; set; }
 
         /// <summary>
         /// Gets or sets name of card.
         /// </summary>
-        public string Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets name of game this card is for.
         /// </summary>
-        public string Game { get; set; }
+        string Game { get; set; }
 
         /// <summary>
         /// Gets or sets authors of the card.
         /// </summary>
-        public List<Author> Authors { get; set; }
+        List<Author> Authors { get; set; }
 
         /// <summary>
         /// Gets or sets description of card.
         /// </summary>
-        public string Description { get; set; }
+        string Description { get; set; }
 
         /// <summary>
         /// Gets or sets version of card.
         /// </summary>
-        public string Version { get; set; }
+        string Version { get; set; }
 
         /// <summary>
         /// Gets or sets card type.
         /// </summary>
-        public CardType Type { get; set; }
-
-        /*
-        /// <summary>
-        /// Gets or sets card's data path.
-        /// </summary>
-        public string Path { get; set; }
-        */
+        CardType Type { get; set; }
     }
 }
