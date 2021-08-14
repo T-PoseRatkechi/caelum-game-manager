@@ -6,46 +6,36 @@
 namespace CaelumCoreLibrary.Cards
 {
     using System.Collections.Generic;
-    using System.Text.Json.Serialization;
     using CaelumCoreLibrary.Common;
 
     /// <summary>
-    /// Base card implementation.
+    /// Empty card.
     /// </summary>
-    public abstract class BaseCard : ICard
+    public class EmptyCard : ICard
     {
-        /// <inheritdoc/>
-        public string Game { get; set; }
 
         /// <inheritdoc/>
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; } = false;
 
         /// <inheritdoc/>
-        public string Id { get; set; }
+        public string Id { get; set; } = null;
 
         /// <inheritdoc/>
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        [JsonIgnore]
-        public List<Author> Authors { get; set; }
+        public string Game { get; set; }
 
         /// <inheritdoc/>
-        public string Description { get; set; }
+        public List<Author> Authors { get; set; } = null;
 
         /// <inheritdoc/>
-        public string Version { get; set; }
+        public string Description { get; set; } = null;
 
-        /// <summary>
-        /// Gets or sets the card's type.
-        /// </summary>
+        /// <inheritdoc/>
+        public string Version { get; set; } = null;
 
-        public CardType Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets card's data path.
-        /// </summary>
-        [JsonIgnore]
-        public string Path { get; set; }
+        /// <inheritdoc/>
+        public CardType Type { get; set; } = CardType.Empty;
     }
 }

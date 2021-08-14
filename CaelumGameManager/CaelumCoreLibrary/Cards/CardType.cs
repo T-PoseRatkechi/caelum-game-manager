@@ -54,5 +54,11 @@ namespace CaelumCoreLibrary.Cards
         /// They are installed the app's <c>Dependencies</c> folder.
         /// </summary>
         Dependency = 6,
+
+        /// <summary>
+        /// Simply a placeholder. Placeholder cards don't contain any data outside of a name.
+        /// Installed in the game's <c>cards</c> folder.
+        /// </summary>
+        Empty = 7,
     }
 }
