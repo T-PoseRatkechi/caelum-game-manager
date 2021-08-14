@@ -22,13 +22,13 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// <param name="card"><seealso cref="ICard"/> instance to dispaly.</param>
         public CardViewModel(ICard card = null)
         {
-            Card = card;
+            // Card = card;
         }
 
         /// <summary>
         /// Gets or sets card to display;
         /// </summary>
-        public ICard Card { get; set; }
+        public IInstallableCard Card { get; set; }
 
         /// <summary>
         /// Gets the card image source, if available. Else returns default missing-preview image.
@@ -42,7 +42,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                     return null;
                 }
 
-                string cardImagePath = Path.Join(Card.Path, "card.png");
+                string cardImagePath = Path.Join(this.Card.InstallPath, "card.png");
                 if (File.Exists(cardImagePath))
                 {
                     return cardImagePath;

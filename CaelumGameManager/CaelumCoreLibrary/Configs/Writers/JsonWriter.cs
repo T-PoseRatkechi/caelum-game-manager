@@ -3,25 +3,21 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Games
+namespace CaelumCoreLibrary.Configs.Writers
 {
-    using CaelumCoreLibrary.Configs;
+    using System.IO;
+    using System.Text.Json;
 
     /// <summary>
-    /// Game instance interface.
+    /// Json writer.
     /// </summary>
-    public interface IGame
+    public class JsonWriter : IWriter
     {
-        /// <summary>
-        /// Gets game install.
-        /// </summary>
-        IGameInstall Install { get; init; }
-
-        /// <summary>
-        /// Gets game config manager.
-        /// </summary>
-        IConfigManager Manager { get; init; }
-
-        // TODO: Add deck prop?
+        /// <inheritdoc/>
+        public void WriteFile(string filePath, object obj)
+        {
+            var jsonText = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, jsonText);
+        }
     }
 }

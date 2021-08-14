@@ -3,25 +3,16 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Games
+namespace CaelumCoreLibrary.Configs
 {
-    using CaelumCoreLibrary.Configs;
-
     /// <summary>
-    /// Game instance interface.
+    /// Base interface for configs.
     /// </summary>
-    public interface IGame
+    public interface IConfig
     {
         /// <summary>
-        /// Gets game install.
+        /// Gets file path of config.
         /// </summary>
-        IGameInstall Install { get; init; }
-
-        /// <summary>
-        /// Gets game config manager.
-        /// </summary>
-        IConfigManager Manager { get; init; }
-
-        // TODO: Add deck prop?
+        string ConfigFilePath { get; init; }
     }
 }

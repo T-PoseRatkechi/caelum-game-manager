@@ -57,12 +57,12 @@ namespace CaelumCoreLibrary.Utilities
             ICard card = (ICard)JsonSerializer.Deserialize<T>(cardText);
 
             // Set card path.
-            card.Path = Path.GetDirectoryName(cardFilePath);
+            // card.Path = Path.GetDirectoryName(cardFilePath);
 
             // Load authors.
-            var cardAuthorsPath = Path.Join(card.Path, "authors");
-            var cardAuthors = AuthorUtils.GetAllAuthors(cardAuthorsPath);
-            card.Authors = new List<Author>(cardAuthors);
+            // var cardAuthorsPath = Path.Join(card.Path, "authors");
+            // var cardAuthors = AuthorUtils.GetAllAuthors(cardAuthorsPath);
+           //  card.Authors = new List<Author>(cardAuthors);
 
             return card;
         }

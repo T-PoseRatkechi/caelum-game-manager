@@ -50,7 +50,7 @@ namespace CaelumGameManagerGUI
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Sink(AppLogSink)
-                .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}")
+                .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
                 .Enrich.WithThreadId()
                 .CreateLogger();
 

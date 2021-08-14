@@ -23,7 +23,7 @@ namespace CaelumGameManagerGUI.ViewModels
     public class DeckViewModel : Screen
     {
         private readonly IWindowManager windowManager = new WindowManager();
-        private IGame game;
+        private IGameInstall game;
         private BindableCollection<ICard> deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
@@ -34,7 +34,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGame game, BindableCollection<ICard> deck)
+        public DeckViewModel(IGameInstall game, BindableCollection<ICard> deck)
         {
             this.game = game;
             this.deck = deck;

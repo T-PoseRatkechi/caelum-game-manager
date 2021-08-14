@@ -5,13 +5,14 @@
 
 namespace CaelumGameManagerGUI.ViewModels
 {
-    using CaelumCoreLibrary.Cards;
-    using CaelumCoreLibrary.Games;
-    using Caliburn.Micro;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Threading;
     using System.Threading.Tasks;
+    using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Games;
+    using Caliburn.Micro;
+    using Serilog;
 
     /// <summary>
     /// Shell VM.
@@ -19,6 +20,7 @@ namespace CaelumGameManagerGUI.ViewModels
     public class ShellViewModel : Conductor<Screen>
     {
         private IGame _currentGame = new GameP4G();
+
         private BindableCollection<ICard> gameDeck;
 
         /// <summary>
@@ -26,10 +28,10 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
-            this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Deck);
+            this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Install.Deck);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
-            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this.gameDeck));
+            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame.Install, this.gameDeck));
         }
 
         private void OnDeckChange(object sender, NotifyCollectionChangedEventArgs e)
@@ -39,8 +41,8 @@ namespace CaelumGameManagerGUI.ViewModels
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            this.CurrentGame.Deck = new List<ICard>(this.gameDeck);
-            this.CurrentGame.WriteConfig();
+            // this.CurrentGame.Deck = new List<ICard>(this.gameDeck);
+            // this.CurrentGame.WriteConfig();
             return base.OnDeactivateAsync(close, cancellationToken);
         }
 

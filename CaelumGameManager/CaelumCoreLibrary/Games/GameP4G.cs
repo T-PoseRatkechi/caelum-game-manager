@@ -6,22 +6,27 @@
 namespace CaelumCoreLibrary.Games
 {
     using CaelumCoreLibrary.Configs;
+    using CaelumCoreLibrary.Configs.Writers;
 
     /// <summary>
-    /// Game instance interface.
+    /// Game instance for Persona 4 Golden.
     /// </summary>
-    public interface IGame
+    public class GameP4G : IGame
     {
         /// <summary>
-        /// Gets game install.
+        /// Initializes a new instance of the <see cref="GameP4G"/> class.
         /// </summary>
-        IGameInstall Install { get; init; }
+        public GameP4G()
+        {
+            this.Install = new GameInstall("Persona 4 Golden");
 
-        /// <summary>
-        /// Gets game config manager.
-        /// </summary>
-        IConfigManager Manager { get; init; }
+            this.Manager = new ConfigManager(new GameConfig(this.Install), new JsonWriter());
+        }
 
-        // TODO: Add deck prop?
+        /// <inheritdoc/>
+        public IGameInstall Install { get; init; }
+
+        /// <inheritdoc/>
+        public IConfigManager Manager { get; init; }
     }
 }
