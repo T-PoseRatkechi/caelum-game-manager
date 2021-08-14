@@ -9,12 +9,8 @@ namespace CaelumCoreLibrary.Games
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Linq;
-    using System.Text.Json;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
-    using CaelumCoreLibrary.Configs;
-    using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Utilities;
     using Serilog;
 
@@ -41,25 +37,21 @@ namespace CaelumCoreLibrary.Games
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
             }
 
-            this.Name = name;
-            this.BaseDir = CaelumFileIO.BuildDirectory(Path.Join(Path.GetDirectoryName(AppPath), "Games", this.Name));
+            this.GameName = name;
+            this.BaseDir = CaelumFileIO.BuildDirectory(Path.Join(Path.GetDirectoryName(AppPath), "Games", this.GameName));
             this.CardsDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "Cards"));
             this.DownloadsDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "Downloads"));
             this.BuildDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "Build"));
-            this.Deck = new List<ICard>();
         }
 
         /// <inheritdoc/>
-        public string Name { get; init; }
+        public string GameName { get; init; }
 
         /// <inheritdoc/>
         public string BaseDir { get; init; }
 
         /// <inheritdoc/>
         public string CardsDir { get; init; }
-
-        /// <inheritdoc/>
-        public List<ICard> Deck { get; init; }
 
         /// <summary>
         /// Gets game's downloads directory.

@@ -8,25 +8,29 @@ namespace CaelumCoreLibrary.Games
     using System.Collections.Generic;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
+    using CaelumCoreLibrary.Configs.Writers;
 
     /// <summary>
-    /// Game instance interface.
+    /// Game instance for Kingdom Hearts 3.
     /// </summary>
-    public interface IGame
+    public class GameKH3 : IGame
     {
         /// <summary>
-        /// Gets game install.
+        /// Initializes a new instance of the <see cref="GameKH3"/> class.
         /// </summary>
-        IGameInstall Install { get; init; }
+        public GameKH3()
+        {
+            this.Install = new GameInstall("Kingdom Hearts 3");
+            this.Manager = new ConfigManager(new GameConfig(this.Install), new JsonWriter());
+        }
 
-        /// <summary>
-        /// Gets game config manager.
-        /// </summary>
-        IConfigManager Manager { get; init; }
+        /// <inheritdoc/>
+        public IGameInstall Install { get; init; }
 
-        /// <summary>
-        /// Gets game's deck of cards.
-        /// </summary>
-        List<ICard> Deck { get; init; }
+        /// <inheritdoc/>
+        public IConfigManager Manager { get; init; }
+
+        /// <inheritdoc/>
+        public List<ICard> Deck { get; init; } = new();
     }
 }

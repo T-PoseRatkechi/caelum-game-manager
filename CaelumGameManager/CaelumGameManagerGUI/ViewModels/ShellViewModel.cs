@@ -28,7 +28,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
-            this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Install.Deck);
+            this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Deck);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
             this.ActivateItemAsync(new DeckViewModel(this.CurrentGame.Install, this.gameDeck));

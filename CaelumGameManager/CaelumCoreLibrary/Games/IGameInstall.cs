@@ -17,7 +17,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game's name.
         /// </summary>
-        string Name { get; init; }
+        string GameName { get; init; }
 
         /// <summary>
         /// Gets game's base directory.
@@ -38,10 +38,5 @@ namespace CaelumCoreLibrary.Games
         /// Gets game's downloads dir.
         /// </summary>
         string DownloadsDir { get; init; }
-
-        /// <summary>
-        /// Gets game's deck of cards.
-        /// </summary>
-        List<ICard> Deck { get; init; }
     }
 }

@@ -5,8 +5,10 @@
 
 namespace CaelumCoreLibrary.Games
 {
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Configs.Writers;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Game instance for Persona 4 Golden.
@@ -28,5 +30,8 @@ namespace CaelumCoreLibrary.Games
 
         /// <inheritdoc/>
         public IConfigManager Manager { get; init; }
+
+        /// <inheritdoc/>
+        public List<ICard> Deck { get; init; } = new();
     }
 }
