@@ -19,11 +19,11 @@ namespace CaelumCoreLibrary.Cards
         public bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets card id that. Must be unique with the deck with only Update Card being the exception.
+        /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
         /// Should typically be: {author_name}-{card_name}
         /// Update Cards must have the same id as the card they are updating.
         /// </summary>
-        public string Id { get; set; }
+        public string CardId { get; set; }
 
         /// <summary>
         /// Gets or sets name of card.
