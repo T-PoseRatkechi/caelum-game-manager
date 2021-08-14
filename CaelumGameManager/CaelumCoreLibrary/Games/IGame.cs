@@ -10,32 +10,48 @@ namespace CaelumCoreLibrary.Games
     using CaelumCoreLibrary.Common;
 
     /// <summary>
-    /// Game interface for managing deck and card creation.
+    /// Game interface.
     /// </summary>
     public interface IGame
     {
         /// <summary>
-        /// Gets game name.
+        /// Gets game's name.
         /// </summary>
-        public string Name { get; init; }
+        string Name { get; init; }
 
         /// <summary>
-        /// Gets or sets game deck.
+        /// Gets path to game's config.
         /// </summary>
-        public List<ICard> Deck { get; set; }
+        public string ConfigPath { get; init; }
 
         /// <summary>
-        /// Handles creating a new card with the given name and <seealso cref="CardType"/>.
+        /// Gets game's config.
         /// </summary>
-        /// <param name="id">Card ID.</param>
-        /// <param name="name">Name of card.</param>
-        /// <param name="type">Card type.</param>
-        /// <param name="authors">Authors of card.</param>
-        /// <param name="description">Description of card.</param>
-        /// <param name="version">Card version.</param>
-        /// <returns>New <seealso cref="ICard"/> instance.</returns>
-        public ICard CreateCard(string id, string name, CardType type, List<Author> authors = null, string description = null, string version = null);
+        GameConfig Config { get; init; }
 
-        public void WriteConfig();
+        /// <summary>
+        /// Gets game's base directory.
+        /// </summary>
+        string BaseDir { get; init; }
+
+        /// <summary>
+        /// Gets game's build directory.
+        /// </summary>
+        string BuildDir { get; init; }
+
+        /// <summary>
+        /// Gets game's card directory.
+        /// </summary>
+        string CardsDir { get; init; }
+
+        /// <summary>
+        /// Gets game's downloads dir.
+        /// </summary>
+        string DownloadsDir { get; init; }
+
+        /// <summary>
+        /// Gets game's deck of cards.
+        /// </summary>
+        List<ICard> Deck { get; init; }
     }
 }
