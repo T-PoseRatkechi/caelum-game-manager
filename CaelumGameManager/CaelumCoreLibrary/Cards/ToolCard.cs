@@ -5,17 +5,36 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using System.Collections.Generic;
+    using CaelumCoreLibrary.Common;
+
     /// <summary>
     /// Tool card.
     /// </summary>
-    public class ToolCard : BaseCard
+    public class ToolCard : ICard
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolCard"/> class.
-        /// </summary>
-        public ToolCard()
-        {
-            this.Type = CardType.Tool;
-        }
+        /// <inheritdoc/>
+        public bool IsEnabled { get; set; }
+
+        /// <inheritdoc/>
+        public string Id { get; set; }
+
+        /// <inheritdoc/>
+        public string Name { get; set; }
+
+        /// <inheritdoc/>
+        public string Game { get; set; }
+
+        /// <inheritdoc/>
+        public List<Author> Authors { get; set; }
+
+        /// <inheritdoc/>
+        public string Description { get; set; }
+
+        /// <inheritdoc/>
+        public string Version { get; set; }
+
+        /// <inheritdoc/>
+        public CardType Type { get; set; } = CardType.Tool;
     }
 }

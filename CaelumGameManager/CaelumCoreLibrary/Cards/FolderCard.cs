@@ -5,18 +5,36 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using System.Collections.Generic;
+    using CaelumCoreLibrary.Common;
+
     /// <summary>
     /// Folder card implementation.
     /// </summary>
-    public class FolderCard : BaseCard
+    public class FolderCard : ICard
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderCard"/> class.
-        /// </summary>
-        /// <param name="cardPath">Path to card.</param>
-        public FolderCard()
-        {
-            this.Type = CardType.Folder;
-        }
+        /// <inheritdoc/>
+        public bool IsEnabled { get; set; }
+
+        /// <inheritdoc/>
+        public string Id { get; set; }
+
+        /// <inheritdoc/>
+        public string Name { get; set; }
+
+        /// <inheritdoc/>
+        public string Game { get; set; }
+
+        /// <inheritdoc/>
+        public List<Author> Authors { get; set; }
+
+        /// <inheritdoc/>
+        public string Description { get; set; }
+
+        /// <inheritdoc/>
+        public string Version { get; set; }
+
+        /// <inheritdoc/>
+        public CardType Type { get; set; } = CardType.Folder;
     }
 }

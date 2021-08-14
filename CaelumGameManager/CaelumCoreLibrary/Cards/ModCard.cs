@@ -5,17 +5,36 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using System.Collections.Generic;
+    using CaelumCoreLibrary.Common;
+
     /// <summary>
     /// Mod card.
     /// </summary>
-    public class ModCard : BaseCard
+    public class ModCard : ICard
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModCard"/> class.
-        /// </summary>
-        public ModCard()
-        {
-            this.Type = CardType.Mod;
-        }
+        /// <inheritdoc/>
+        public bool IsEnabled { get; set; }
+
+        /// <inheritdoc/>
+        public string Id { get; set; }
+
+        /// <inheritdoc/>
+        public string Name { get; set; }
+
+        /// <inheritdoc/>
+        public string Game { get; set; }
+
+        /// <inheritdoc/>
+        public List<Author> Authors { get; set; }
+
+        /// <inheritdoc/>
+        public string Description { get; set; }
+
+        /// <inheritdoc/>
+        public string Version { get; set; }
+
+        /// <inheritdoc/>
+        public CardType Type { get; set; } = CardType.Mod;
     }
 }
