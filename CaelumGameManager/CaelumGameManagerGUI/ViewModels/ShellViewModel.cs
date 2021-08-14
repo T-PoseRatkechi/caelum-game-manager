@@ -52,6 +52,8 @@ namespace CaelumGameManagerGUI.ViewModels
             set { _currentGame = value; }
         }
 
+        public string GameName { get => this.CurrentGame.Install.GameName; }
+
         public LogViewModel Log { get; } = new();
     }
 }
