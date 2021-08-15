@@ -8,7 +8,6 @@ namespace CaelumCoreLibrary.Games
     using System.Collections.Generic;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
-    using CaelumCoreLibrary.Configs.Writers;
 
     /// <summary>
     /// Game instance interface.

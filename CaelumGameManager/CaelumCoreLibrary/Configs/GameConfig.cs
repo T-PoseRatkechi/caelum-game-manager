@@ -5,9 +5,6 @@
 
 namespace CaelumCoreLibrary.Configs
 {
-    using System.IO;
-    using CaelumCoreLibrary.Games;
-
     /// <summary>
     /// Game config implementation.
     /// </summary>

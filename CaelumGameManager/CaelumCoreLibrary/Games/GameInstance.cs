@@ -9,7 +9,7 @@ namespace CaelumCoreLibrary.Games
     using System.IO;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
-    using CaelumCoreLibrary.Configs.Writers;
+    using CaelumCoreLibrary.Writers;
 
     /// <summary>
     /// Base class for game instances.
@@ -32,6 +32,8 @@ namespace CaelumCoreLibrary.Games
 
             this.Install = gameInstallFactory.GetGameInstall(gameName);
             this.configFilePath = Path.Join(this.Install.BaseDirectory, "game-config.json");
+
+            this.LoadGameConfig();
         }
 
         /// <inheritdoc/>

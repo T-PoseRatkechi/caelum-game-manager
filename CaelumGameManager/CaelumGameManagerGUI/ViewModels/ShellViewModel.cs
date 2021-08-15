@@ -33,7 +33,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
             using (var scope = container.BeginLifetimeScope())
             {
-                this._currentGame = scope.Resolve<IGameInstance>(new NamedParameter("gameName", "Kingdom Hearts 3"));
+                this._currentGame = scope.Resolve<IGameInstance>(new NamedParameter("gameName", "Kingdom Hearts 2"));
             }
 
             this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Deck);
