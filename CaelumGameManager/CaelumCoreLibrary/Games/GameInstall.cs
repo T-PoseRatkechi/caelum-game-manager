@@ -6,21 +6,15 @@
 namespace CaelumCoreLibrary.Games
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using CaelumCoreLibrary.Cards;
-    using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Utilities;
-    using Serilog;
 
     /// <summary>
     /// Base implementation of <seealso cref="IGameInstall"/>.
     /// </summary>
     public class GameInstall : IGameInstall
     {
-        private readonly ILogger log = Log.Logger.WithCallerSyntax();
-
         /// <summary>
         /// Exe path.
         /// </summary>
@@ -38,30 +32,30 @@ namespace CaelumCoreLibrary.Games
             }
 
             this.GameName = name;
-            this.BaseDir = CaelumFileIO.BuildDirectory(Path.Join(Path.GetDirectoryName(AppPath), "Games", this.GameName));
-            this.CardsDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "Cards"));
-            this.DownloadsDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "Downloads"));
-            this.BuildDir = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDir, "Build"));
+            this.BaseDirectory = CaelumFileIO.BuildDirectory(Path.Join(Path.GetDirectoryName(AppPath), "Games", this.GameName));
+            this.CardsDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Cards"));
+            this.DownloadsDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Downloads"));
+            this.BuildDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Build"));
         }
 
         /// <inheritdoc/>
-        public string GameName { get; init; }
+        public string GameName { get; }
 
         /// <inheritdoc/>
-        public string BaseDir { get; init; }
+        public string BaseDirectory { get; }
 
         /// <inheritdoc/>
-        public string CardsDir { get; init; }
+        public string CardsDirectory { get; }
 
         /// <summary>
         /// Gets game's downloads directory.
         /// </summary>
-        public string DownloadsDir { get; init; }
+        public string DownloadsDirectory { get; }
 
         /// <summary>
         /// Gets game's build directory.
         /// </summary>
-        public string BuildDir { get; init; }
+        public string BuildDirectory { get; }
 
         //public ICard CreateCard(string id, string name, CardType type, List<Author> authors, string description, string version)
         //{

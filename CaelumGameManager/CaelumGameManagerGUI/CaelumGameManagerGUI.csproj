@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Assets\Fonts\Roboto Mono\RobotoMono-Regular.ttf" />
     <Resource Include="Assets\Images\missing-preview.png" />
   </ItemGroup>

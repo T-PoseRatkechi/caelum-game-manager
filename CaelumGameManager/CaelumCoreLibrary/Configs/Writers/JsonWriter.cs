@@ -7,17 +7,30 @@ namespace CaelumCoreLibrary.Configs.Writers
 {
     using System.IO;
     using System.Text.Json;
+    using CaelumCoreLibrary.Common;
+    using Serilog;
 
     /// <summary>
     /// Json writer.
     /// </summary>
     public class JsonWriter : IWriter
     {
+        private readonly ILogger log = Log.Logger.WithCallerSyntax();
+
         /// <inheritdoc/>
         public void WriteFile(string filePath, object obj)
         {
+            this.log.Debug($"Writing {nameof(obj)} to {filePath}");
             var jsonText = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, jsonText);
+        }
+
+        /// <inheritdoc/>
+        public T ParseFile<T>(string filePath)
+        {
+            this.log.Debug($"Parsing {filePath} as {nameof(T)}");
+            var fileText = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<T>(fileText);
         }
     }
 }

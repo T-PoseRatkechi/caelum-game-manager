@@ -16,5 +16,13 @@ namespace CaelumCoreLibrary.Configs.Writers
         /// <param name="filePath">Output file path.</param>
         /// <param name="obj">Object to write.</param>
         void WriteFile(string filePath, object obj);
+
+        /// <summary>
+        /// Reads and parses <paramref name="filePath"/> as <typeparamref name="T"/> from a file written in the same format as <see cref="WriteFile(string, object)"/>.
+        /// </summary>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <param name="filePath">File to parse.</param>
+        /// <returns><paramref name="filePath"/> parsed as <typeparamref name="T"/>.</returns>
+        T ParseFile<T>(string filePath);
     }
 }

@@ -8,7 +8,7 @@ namespace CaelumCoreLibrary.Configs
     /// <summary>
     /// Interface for game configs.
     /// </summary>
-    public interface IGameConfig : IConfig
+    public interface IGameConfig
     {
         /// <summary>
         /// Gets or sets the game install path.
@@ -29,10 +29,5 @@ namespace CaelumCoreLibrary.Configs
         /// Gets or sets the game's output directory.
         /// </summary>
         string OutputDirectory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the game's deck.
-        /// </summary>
-        public string[] CardsList { get; set; }
     }
 }

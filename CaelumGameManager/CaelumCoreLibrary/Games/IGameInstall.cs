@@ -17,26 +17,26 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game's name.
         /// </summary>
-        string GameName { get; init; }
+        string GameName { get; }
 
         /// <summary>
         /// Gets game's base directory.
         /// </summary>
-        string BaseDir { get; init; }
+        string BaseDirectory { get; }
 
         /// <summary>
         /// Gets game's build directory.
         /// </summary>
-        string BuildDir { get; init; }
+        string BuildDirectory { get; }
 
         /// <summary>
         /// Gets game's card directory.
         /// </summary>
-        string CardsDir { get; init; }
+        string CardsDirectory { get; }
 
         /// <summary>
         /// Gets game's downloads dir.
         /// </summary>
-        string DownloadsDir { get; init; }
+        string DownloadsDirectory { get; }
     }
 }

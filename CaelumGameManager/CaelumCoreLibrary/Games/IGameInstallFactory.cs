@@ -3,16 +3,18 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Configs
+namespace CaelumCoreLibrary.Games
 {
     /// <summary>
-    /// Base interface for configs.
+    /// Interface for create game installs.
     /// </summary>
-    public interface IConfig
+    public interface IGameInstallFactory
     {
         /// <summary>
-        /// Gets file path of config.
+        /// Creates a new <seealso cref="IGameInstall"/> instance.
         /// </summary>
-        string ConfigFilePath { get; init; }
+        /// <param name="name">Game name.</param>
+        /// <returns>New <seealso cref="IGameInstall"/> instance.</returns>
+        IGameInstall GetGameInstall(string name);
     }
 }

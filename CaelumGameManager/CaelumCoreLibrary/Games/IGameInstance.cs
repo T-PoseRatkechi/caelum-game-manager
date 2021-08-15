@@ -8,25 +8,36 @@ namespace CaelumCoreLibrary.Games
     using System.Collections.Generic;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
+    using CaelumCoreLibrary.Configs.Writers;
 
     /// <summary>
     /// Game instance interface.
     /// </summary>
-    public interface IGame
+    public interface IGameInstance
     {
         /// <summary>
         /// Gets game install.
         /// </summary>
-        IGameInstall Install { get; init; }
+        IGameInstall Install { get; }
 
         /// <summary>
-        /// Gets game config manager.
+        /// Gets game config.
         /// </summary>
-        IConfigManager Manager { get; init; }
+        IGameConfig GameConfig { get; }
 
         /// <summary>
         /// Gets game's deck of cards.
         /// </summary>
-        List<ICard> Deck { get; init; }
+        List<ICard> Deck { get; }
+
+        /// <summary>
+        /// Save config to file.
+        /// </summary>
+        void SaveGameConfig();
+
+        /// <summary>
+        /// Load config from file.
+        /// </summary>
+        void LoadGameConfig();
     }
 }

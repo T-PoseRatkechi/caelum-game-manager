@@ -9,6 +9,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Collections.Specialized;
     using System.Threading;
     using System.Threading.Tasks;
+    using Autofac;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
     using Caliburn.Micro;
@@ -19,7 +20,7 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class ShellViewModel : Conductor<Screen>
     {
-        private IGame _currentGame = new GameP4G();
+        private IGameInstance _currentGame;
 
         private BindableCollection<ICard> gameDeck;
 
@@ -28,6 +29,13 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
+            var container = ContainerConfig.Configure();
+
+            using (var scope = container.BeginLifetimeScope())
+            {
+                this._currentGame = scope.Resolve<IGameInstance>(new NamedParameter("gameName", "Kingdom Hearts 3"));
+            }
+
             this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Deck);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
@@ -46,7 +54,7 @@ namespace CaelumGameManagerGUI.ViewModels
             return base.OnDeactivateAsync(close, cancellationToken);
         }
 
-        public IGame CurrentGame
+        public IGameInstance CurrentGame
         {
             get { return _currentGame; }
             set { _currentGame = value; }

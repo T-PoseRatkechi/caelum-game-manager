@@ -3,27 +3,23 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Configs
+namespace CaelumCoreLibrary.Games
 {
-    using System.IO;
-    using CaelumCoreLibrary.Games;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
     /// <summary>
-    /// Game config implementation.
+    /// Base implementation of <seealso cref="IGameInstallFactory"/>.
     /// </summary>
-    public class GameConfig : IGameConfig
+    public class GameInstallFactory : IGameInstallFactory
     {
-
         /// <inheritdoc/>
-        public string GameInstallPath { get; set; }
-
-        /// <inheritdoc/>
-        public string GameLauncher { get; set; }
-
-        /// <inheritdoc/>
-        public string GameTheme { get; set; }
-
-        /// <inheritdoc/>
-        public string OutputDirectory { get; set; }
+        public IGameInstall GetGameInstall(string name)
+        {
+            return new GameInstall(name);
+        }
     }
 }
