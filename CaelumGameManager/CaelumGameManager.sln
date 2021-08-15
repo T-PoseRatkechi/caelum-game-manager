@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhosMusicConverterCMD", "De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaelumGameManagerCMD", "CaelumGameManagerCMD\CaelumGameManagerCMD.csproj", "{51D64E03-C622-42EE-BF1E-EEA7C2844C26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaelumCoreLibrary", "CaelumCoreLibrary\CaelumCoreLibrary.csproj", "{BBD7CB76-605B-43C4-B736-44273BEBFFBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaelumCoreLibrary", "CaelumCoreLibrary\CaelumCoreLibrary.csproj", "{BBD7CB76-605B-43C4-B736-44273BEBFFBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8FC2BCFF-DFAB-4B25-938B-D981F41152D5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

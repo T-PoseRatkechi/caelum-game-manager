@@ -1,24 +1,31 @@
-﻿using CaelumGameManagerGUI.ViewModels;
-using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿// Copyright (c) T-Pose Ratkechi. All rights reserved.
+// Licensed under the GNU GPLv3 license. See LICENSE file in the project root for full license information.
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 namespace CaelumGameManagerGUI
 {
+    using System.Windows;
+    using CaelumGameManagerGUI.ViewModels;
+    using Caliburn.Micro;
+
+    /// <summary>
+    /// Bootstrapper for Caliburn.
+    /// </summary>
     public class Bootstrapper : BootstrapperBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Bootstrapper"/> class.
+        /// </summary>
         public Bootstrapper()
         {
-            Initialize();
+            this.Initialize();
         }
 
+        /// <inheritdoc/>
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ShellViewModel>();
+            this.DisplayRootViewFor<ShellViewModel>();
         }
     }
 }
