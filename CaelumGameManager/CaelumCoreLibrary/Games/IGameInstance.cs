@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Games
 {
     using System.Collections.Generic;
+    using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
 
@@ -17,7 +18,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game install.
         /// </summary>
-        IGameInstall Install { get; }
+        IGameInstall GameInstall { get; }
 
         /// <summary>
         /// Gets game config.
@@ -27,7 +28,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game's deck of cards.
         /// </summary>
-        List<ICard> Deck { get; }
+        List<IInstallableCard> Deck { get; }
 
         /// <summary>
         /// Save config to file.
@@ -38,5 +39,17 @@ namespace CaelumCoreLibrary.Games
         /// Load config from file.
         /// </summary>
         void LoadGameConfig();
+
+        /// <summary>
+        /// Builds current card in deck to output.
+        /// </summary>
+        void BuildDeck();
+
+        /// <summary>
+        /// Creates a new card.
+        /// </summary>
+        /// <param name="cardType">Type of card to create.</param>
+        /// <returns>The created card.</returns>
+        ICard CreateCard(CardType cardType);
     }
 }

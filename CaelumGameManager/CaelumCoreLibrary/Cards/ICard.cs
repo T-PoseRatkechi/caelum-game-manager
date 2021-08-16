@@ -9,15 +9,10 @@ namespace CaelumCoreLibrary.Cards
     using CaelumCoreLibrary.Common;
 
     /// <summary>
-    /// Interface that all package types implement.
+    /// Base interface for all cards.
     /// </summary>
     public interface ICard
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the card is enabled.
-        /// </summary>
-        bool IsEnabled { get; set; }
-
         /// <summary>
         /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
         /// Should typically be: {author_name}-{card_name}
@@ -31,9 +26,9 @@ namespace CaelumCoreLibrary.Cards
         string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets name of game this card is for.
+        /// Gets or sets games card is for.
         /// </summary>
-        string Game { get; set; }
+        string[] Games { get; set; }
 
         /// <summary>
         /// Gets or sets authors of the card.

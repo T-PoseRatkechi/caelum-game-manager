@@ -22,5 +22,8 @@ namespace CaelumCoreLibrary.Configs
 
         /// <inheritdoc/>
         public string OutputDirectory { get; set; }
+
+        /// <inheritdoc/>
+        public string DeckBuilderName { get; set; }
     }
 }

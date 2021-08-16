@@ -3,17 +3,20 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Games
+namespace CaelumCoreLibrary.Builders
 {
+    using CaelumCoreLibrary.Cards;
+
     /// <summary>
-    /// Base implementation of <seealso cref="IGameInstallFactory"/>.
+    /// Base interface for building cards.
     /// </summary>
-    public class GameInstallFactory : IGameInstallFactory
+    public interface IDeckBuilder
     {
-        /// <inheritdoc/>
-        public IGameInstall GetGameInstall(string name)
-        {
-            return new GameInstall(name);
-        }
+        /// <summary>
+        /// Builds card in deck.
+        /// </summary>
+        /// <param name="deck">Deck of cards to build.</param>
+        /// <param name="outputDir">Directory to build card at.</param>
+        void Build(IInstallableCard[] deck, string outputDir);
     }
 }

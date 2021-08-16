@@ -3,17 +3,20 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Cards
+namespace CaelumCoreLibrary.Builders
 {
+    using CaelumCoreLibrary.Cards;
+    using Serilog;
+
     /// <summary>
-    /// Base interface for building cards.
+    /// Deck builder for Persona 4 Golden.
     /// </summary>
-    public interface ICardBuilder
+    public class DeckBuilderP4G : IDeckBuilder
     {
-        /// <summary>
-        /// Build card.
-        /// </summary>
-        /// <param name="outputDir">Directory to build card at.</param>
-        void Build(string outputDir);
+        /// <inheritdoc/>
+        public void Build(IInstallableCard[] deck, string outputDir)
+        {
+            Log.Information($"Building deck for P4G. Total Cards: {deck.Length} - Output: {outputDir}");
+        }
     }
 }

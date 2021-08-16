@@ -11,7 +11,7 @@ namespace CaelumCoreLibrary.Cards
     /// <summary>
     /// Empty card.
     /// </summary>
-    public class EmptyCard : ICard
+    public class EmptyCard : IInstallableCard
     {
 
         /// <inheritdoc/>
@@ -24,7 +24,7 @@ namespace CaelumCoreLibrary.Cards
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        public string Game { get; set; }
+        public string[] Games { get; set; }
 
         /// <inheritdoc/>
         public List<Author> Authors { get; set; } = null;
@@ -37,5 +37,7 @@ namespace CaelumCoreLibrary.Cards
 
         /// <inheritdoc/>
         public CardType Type { get; set; } = CardType.Empty;
+
+        public string InstallPath { get; set; }
     }
 }

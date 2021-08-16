@@ -7,17 +7,20 @@ namespace CaelumCoreLibrary.Games
 {
     using System.Collections.Generic;
     using System.IO;
+    using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Writers;
+    using Serilog;
 
     /// <summary>
     /// Base class for game instances.
     /// </summary>
     public class GameInstance : IGameInstance
     {
+        private ILogger log = Log.Logger.WithCallerSyntax();
         private IWriter writer;
-
         private string configFilePath;
 
         /// <summary>
@@ -26,24 +29,29 @@ namespace CaelumCoreLibrary.Games
         /// <param name="gameName">Name of game.</param>
         /// <param name="writer">Writer to use.</param>
         /// <param name="gameInstallFactory">Game install factory.</param>
-        public GameInstance(string gameName, IWriter writer, IGameInstallFactory gameInstallFactory)
+        /// <param name="deckBuilderFactory">Deck builder factory.</param>
+        public GameInstance(string gameName, IWriter writer, IGameInstallFactory gameInstallFactory, IDeckBuilderFactory deckBuilderFactory)
         {
             this.writer = writer;
+            this.GameInstall = gameInstallFactory.GetGameInstall(gameName);
 
-            this.Install = gameInstallFactory.GetGameInstall(gameName);
-            this.configFilePath = Path.Join(this.Install.BaseDirectory, "game-config.json");
+            this.configFilePath = Path.Join(this.GameInstall.BaseDirectory, "game-config.json");
 
             this.LoadGameConfig();
+
+            this.DeckBuilder = deckBuilderFactory.GetDeckBuilderByName(this.GameConfig.DeckBuilderName);
         }
 
         /// <inheritdoc/>
-        public IGameInstall Install { get; init; }
+        public IGameInstall GameInstall { get; init; }
 
         /// <inheritdoc/>
         public IGameConfig GameConfig { get; private set; }
 
         /// <inheritdoc/>
-        public List<ICard> Deck { get; init; } = new();
+        public List<IInstallableCard> Deck { get; init; } = new();
+
+        private IDeckBuilder DeckBuilder { get; set; }
 
         /// <inheritdoc/>
         public void LoadGameConfig()
@@ -63,6 +71,40 @@ namespace CaelumCoreLibrary.Games
         public void SaveGameConfig()
         {
             this.writer.WriteFile(this.configFilePath, this.GameConfig);
+        }
+
+        /// <inheritdoc/>
+        public void BuildDeck()
+        {
+            this.DeckBuilder.Build(this.Deck.ToArray(), this.GameConfig.OutputDirectory);
+        }
+
+        /// <inheritdoc/>
+        public ICard CreateCard(CardType cardType)
+        {
+            switch (cardType)
+            {
+                case CardType.Mod:
+                case CardType.Tool:
+                case CardType.Launcher:
+                    return new InstallableCard() { Type = cardType };
+                default:
+                    return null;
+            }
+        }
+
+        private void LoadDeck()
+        {
+            string[] gameCardsList = Directory.GetDirectories(this.GameInstall.CardsDirectory);
+
+            foreach (var gameCardDir in gameCardsList)
+            {
+                var gameCardFile = Path.Join(gameCardDir, "card.json");
+                var gameCard = this.writer.ParseFile<InstallableCard>(gameCardFile);
+                gameCard.InstallPath = gameCardDir;
+                this.Deck.Add(gameCard);
+                this.log.Debug("Loaded card {CardName}", gameCard.Name);
+            }
         }
     }
 }

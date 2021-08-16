@@ -3,25 +3,20 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Decks
+namespace CaelumCoreLibrary.Builders
 {
     using CaelumCoreLibrary.Cards;
+    using Serilog;
 
     /// <summary>
-    /// Deck instance.
+    /// Simple deck builder: copy and paste, file overwriting, patching, etc.
     /// </summary>
-    public class Deck : IDeck
+    public class DeckBuilderSimple : IDeckBuilder
     {
         /// <inheritdoc/>
-        public string Game { get; set; }
-
-        /// <inheritdoc/>
-        public string Format { get; set; } = "1.0.0";
-
-        /// <inheritdoc/>
-        public string Name { get; set; }
-
-        /// <inheritdoc/>
-        public ICard[] Cards { get; set; }
+        public void Build(IInstallableCard[] deck, string outputDir)
+        {
+            Log.Information("Building with simple deck builder");
+        }
     }
 }

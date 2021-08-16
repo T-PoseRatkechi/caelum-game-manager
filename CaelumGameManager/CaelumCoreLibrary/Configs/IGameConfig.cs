@@ -29,5 +29,10 @@ namespace CaelumCoreLibrary.Configs
         /// Gets or sets the game's output directory.
         /// </summary>
         string OutputDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the game's deck builder by name.
+        /// </summary>
+        string DeckBuilderName { get; set; }
     }
 }

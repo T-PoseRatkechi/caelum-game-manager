@@ -8,6 +8,7 @@ namespace CaelumGameManagerGUI
     using System.Linq;
     using System.Reflection;
     using Autofac;
+    using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Writers;
 
     /// <summary>
@@ -27,7 +28,8 @@ namespace CaelumGameManagerGUI
                 .Where(t => t.Namespace.Contains("Configs") || t.Namespace.Contains("Games"))
                 .As(t => t.GetInterfaces().FirstOrDefault(i => i.Name == "I" + t.Name));
 
-            builder.RegisterType<JsonWriter>().As<IWriter>();
+            builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
+            builder.RegisterType<DeckBuilderFactory>().As<IDeckBuilderFactory>().SingleInstance();
 
             return builder.Build();
         }
