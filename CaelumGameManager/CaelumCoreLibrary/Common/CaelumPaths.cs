@@ -16,6 +16,6 @@ namespace CaelumCoreLibrary.Common
         /// <summary>
         /// Gets path of tools directory.
         /// </summary>
-        public static string ToolsDir => CaelumFileIO.BuildDirectory(Path.Join(Directory.GetCurrentDirectory(), "tools"));
+        public static string ToolsDir => CaelumFileIO.BuildDirectory(Path.Join(Directory.GetCurrentDirectory(), "Tools"));
     }
 }

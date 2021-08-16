@@ -256,13 +256,13 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         {
             if (this.card == null)
             {
-                Log.Debug("Opening Create Card window");
+                Log.Verbose("Opening Create Card window");
                 this.DisplayName = LocalizedStrings.Instance["CreateCardText"];
                 this.ConfirmText = LocalizedStrings.Instance["CreateText"];
             }
             else
             {
-                Log.Debug("Opening Edit Card window");
+                Log.Verbose("Opening Edit Card window");
                 this.DisplayName = LocalizedStrings.Instance["EditCardText"];
                 this.ConfirmText = LocalizedStrings.Instance["ConfirmText"];
             }

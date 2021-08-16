@@ -148,11 +148,18 @@ namespace CaelumCoreLibrary.Games
 
             string[] toolCardsList = Directory.GetDirectories(CaelumPaths.ToolsDir);
 
-            foreach (var toolCards in toolCardsList)
+            foreach (var toolCardDir in toolCardsList)
             {
-                var toolCardFile = Path.Join(toolCards, "card.json");
+                var toolCardFile = Path.Join(toolCardDir, "card.json");
                 var toolCard = this.writer.ParseFile<InstallableCard>(toolCardFile);
-                toolCard.InstallDirectory = toolCards;
+                toolCard.InstallDirectory = toolCardDir;
+
+                // Load authors.
+                foreach (var authorFile in Directory.GetFiles(Path.Join(toolCardDir, "Authors")))
+                {
+                    toolCard.Authors.Add(AuthorUtils.ParseAuthor(authorFile));
+                }
+
                 this.Deck.Add(toolCard);
                 this.log.Debug("Loaded card {CardName}", toolCard.Name);
             }
