@@ -41,7 +41,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="Name" mah:TextBoxHelper.Watermark="{lex:Loc NameText}"/>
+                <TextBox x:Name="AuthorName" mah:TextBoxHelper.Watermark="{lex:Loc NameText}"/>
                 <Button x:Name="SelectAvatar" Grid.Column="1" Margin="5 0 0 5">
                     <iconPacks:PackIconRemixIcon Kind="ImageAddFill"/>
                 </Button>
