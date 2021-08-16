@@ -12,7 +12,7 @@
         lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
         mc:Ignorable="d" FontSize="18"
-        Title="Caelum Game Manager" Height="550" MinHeight="600" Width="1000" MinWidth="900"
+        Title="Caelum Game Manager" Height="600" MinHeight="600" Width="900" MinWidth="900"
                  WindowTitleBrush="{DynamicResource MahApps.Brushes.Window.Background}">
     <Grid>
         <Grid.ColumnDefinitions>
