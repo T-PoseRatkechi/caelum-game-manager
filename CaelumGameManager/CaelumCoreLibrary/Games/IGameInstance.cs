@@ -48,8 +48,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Creates a new card.
         /// </summary>
-        /// <param name="cardType">Type of card to create.</param>
-        /// <returns>The created card.</returns>
-        ICard CreateCard(CardType cardType);
+        /// <param name="newCard">New card to create.</param>
+        void CreateCard(ICard newCard);
     }
 }

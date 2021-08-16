@@ -18,6 +18,6 @@ namespace CaelumCoreLibrary.Cards
         /// <summary>
         /// Gets or sets the install path of the card.
         /// </summary>
-        string InstallPath { get; set; }
+        string InstallDirectory { get; set; }
     }
 }

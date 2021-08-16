@@ -48,10 +48,10 @@
                 <iconPacks:BootstrapIcons Kind="PersonPlusFill"/>
             </Button>
         </Grid>
-        <TextBox x:Name="Version" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="{lex:Loc VersionText}" Height="30" Margin="0 0 0 5"/>
+        <TextBox x:Name="CardVersion" Grid.Column="1" Grid.Row="3" mah:TextBoxHelper.Watermark="{lex:Loc VersionText}" Height="30" Margin="0 0 0 5"/>
         <ComboBox Grid.Column="1" Grid.Row="4" Height="30" ItemsSource="{Binding CardTypes}"
                   SelectedItem="{Binding SelectedType}" Margin="0 0 0 5"/>
-        <TextBox x:Name="Description" Grid.Column="1" Grid.Row="6" mah:TextBoxHelper.Watermark="{lex:Loc DescriptionText}" Margin="0 0 0 5"
+        <TextBox x:Name="CardDescription" Grid.Column="1" Grid.Row="6" mah:TextBoxHelper.Watermark="{lex:Loc DescriptionText}" Margin="0 0 0 5"
                  TextWrapping="Wrap" AcceptsReturn="True"/>
         <Button Grid.Column="1" Grid.Row="7"
                 x:Name="ConfirmCard" Content="{Binding ConfirmText}" />

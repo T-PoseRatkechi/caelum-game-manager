@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Common
 {
     using System.IO;
+    using CaelumCoreLibrary.Utilities;
 
     /// <summary>
     /// Contains paths don't relate to single game.
@@ -15,6 +16,6 @@ namespace CaelumCoreLibrary.Common
         /// <summary>
         /// Gets path of tools directory.
         /// </summary>
-        public static string ToolsDir => Path.Join(Directory.GetCurrentDirectory(), "tools");
+        public static string ToolsDir => CaelumFileIO.BuildDirectory(Path.Join(Directory.GetCurrentDirectory(), "tools"));
     }
 }

@@ -6,12 +6,17 @@
 namespace CaelumCoreLibrary.Cards
 {
     using System.Collections.Generic;
+    using System.Text.Json.Serialization;
     using CaelumCoreLibrary.Common;
 
+    /// <summary>
+    /// Base implementation for installable cards.
+    /// </summary>
     public class InstallableCard : IInstallableCard
     {
         /// <inheritdoc/>
-        public string InstallPath { get; set; }
+        [JsonIgnore]
+        public string InstallDirectory { get; set; }
 
         /// <inheritdoc/>
         public bool IsEnabled { get; set; }
@@ -26,7 +31,8 @@ namespace CaelumCoreLibrary.Cards
         public string[] Games { get; set; }
 
         /// <inheritdoc/>
-        public List<Author> Authors { get; set; }
+        [JsonIgnore]
+        public List<Author> Authors { get; set; } = new();
 
         /// <inheritdoc/>
         public string Description { get; set; }

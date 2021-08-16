@@ -22,13 +22,13 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// <param name="card"><seealso cref="ICard"/> instance to dispaly.</param>
         public CardViewModel(ICard card = null)
         {
-            // Card = card;
+            Card = card;
         }
 
         /// <summary>
         /// Gets or sets card to display;
         /// </summary>
-        public IInstallableCard Card { get; set; }
+        public ICard Card { get; set; }
 
         /// <summary>
         /// Gets the card image source, if available. Else returns default missing-preview image.
@@ -37,30 +37,38 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         {
             get
             {
-                if (Card == null)
+                if (this.Card == null)
                 {
                     return null;
                 }
 
-                string cardImagePath = Path.Join(this.Card.InstallPath, "card.png");
-                if (File.Exists(cardImagePath))
+                if (this.Card is IInstallableCard installedCard)
                 {
-                    return cardImagePath;
+                    string cardImagePath = Path.Join(installedCard.InstallDirectory, "card.png");
+                    if (File.Exists(cardImagePath))
+                    {
+                        return cardImagePath;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
 
+        /// <summary>
+        /// Gets top-right card icon.
+        /// </summary>
         public string CardIcon
         {
             get
             {
-                if (Card != null)
+                if (this.Card != null)
                 {
-                    switch (Card.Type)
+                    switch (this.Card.Type)
                     {
                         case CardType.Folder:
                             return "FolderOpen";
@@ -70,6 +78,8 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                             return "Update";
                         case CardType.Preset:
                             return "Cards";
+                        case CardType.Mod:
+                            return "Plus";
                         default:
                             return "HelpBox";
                     }
