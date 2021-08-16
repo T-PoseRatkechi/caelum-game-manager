@@ -20,30 +20,28 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
     using Serilog;
 
     /// <summary>
-    /// EditCard VM.
+    /// CreateCard VM.
     /// </summary>
-    public class EditCardViewModel : Screen
+    public class CreateCardViewModel : Screen
     {
         private WindowManager windowManager = new WindowManager();
 
         private string selectedType = CardType.Mod.ToString();
         private BindableCollection<ICard> cards;
         private ICard card;
-        private IGameInstall game;
+        private IGameInstance game;
 
         private string _cardId;
         private string _cardName;
 
         private List<Author> _authors = new();
 
-        public CardViewModel CardDisplay { get; set; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditCardViewModel"/> class.
+        /// Initializes a new instance of the <see cref="CreateCardViewModel"/> class.
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public EditCardViewModel(IGameInstall game, BindableCollection<ICard> deckCards, ICard card = null)
+        public CreateCardViewModel(IGameInstance game, BindableCollection<ICard> deckCards, ICard card = null)
         {
             cards = deckCards;
             this.game = game;
@@ -62,6 +60,11 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
 
             SetContextualNames();
         }
+
+        /// <summary>
+        /// Gets or sets card display VM.
+        /// </summary>
+        public CardViewModel CardDisplay { get; set; }
 
         /// <summary>
         /// Gets the card ID with validation.
@@ -188,7 +191,8 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                 {
                     CardType cardType = (CardType)Enum.Parse(typeof(CardType), SelectedType);
                     string cardVersion = string.IsNullOrEmpty(Version) ? "1.0.0" : Version;
-                    ICard newCard = null; // game.CreateCard(CardId, CardName, cardType, Authors, Description, cardVersion);
+                    ICard newCard = game.CreateCard(cardType);
+
                     CardImage = Path.Join(Directory.GetCurrentDirectory(), "test.png");
 
                     CardDisplay = new(newCard);

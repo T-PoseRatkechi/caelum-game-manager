@@ -5,11 +5,13 @@
 
 namespace CaelumGameManagerGUI.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Threading;
     using System.Threading.Tasks;
     using Autofac;
+    using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
     using Caliburn.Micro;
@@ -33,13 +35,24 @@ namespace CaelumGameManagerGUI.ViewModels
 
             using (var scope = container.BeginLifetimeScope())
             {
-                this._currentGame = scope.Resolve<IGameInstance>(new NamedParameter("gameName", "Kingdom Hearts 2"));
+                this._currentGame = scope.Resolve<IGameInstance>(
+                    new NamedParameter("gameName", "Persona 4 Golden")
+                    );
             }
 
             this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Deck);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
-            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame.Install, this.gameDeck));
+            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this.gameDeck));
+
+            try
+            {
+                this.CurrentGame.BuildDeck();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         private void OnDeckChange(object sender, NotifyCollectionChangedEventArgs e)
@@ -60,7 +73,7 @@ namespace CaelumGameManagerGUI.ViewModels
             set { _currentGame = value; }
         }
 
-        public string GameName { get => this.CurrentGame.Install.GameName; }
+        public string GameName { get => this.CurrentGame.GameInstall.GameName; }
 
         public LogViewModel Log { get; } = new();
     }

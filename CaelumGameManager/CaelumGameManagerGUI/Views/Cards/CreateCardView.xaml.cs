@@ -8,14 +8,14 @@ namespace CaelumGameManagerGUI.Views.Cards
     using MahApps.Metro.Controls;
 
     /// <summary>
-    /// Interaction logic for EditCardView.xaml.
+    /// Interaction logic for CreateCardView.xaml.
     /// </summary>
-    public partial class EditCardView : MetroWindow
+    public partial class CreateCardView : MetroWindow
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditCardView"/> class.
+        /// Initializes a new instance of the <see cref="CreateCardView"/> class.
         /// </summary>
-        public EditCardView()
+        public CreateCardView()
         {
             this.InitializeComponent();
         }
