@@ -41,6 +41,7 @@
                             <Setter Property="TextBlock.Foreground" Value="Black"/>
                         </DataTrigger>
                     </Style.Triggers>
+                    <Setter Property="MinHeight" Value="15"/>
                 </Style>
             </controls:ListViewAutoScroll.ItemContainerStyle>
             <controls:ListViewAutoScroll.ContextMenu>
