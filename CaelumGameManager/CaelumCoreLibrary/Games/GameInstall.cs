@@ -8,6 +8,7 @@ namespace CaelumCoreLibrary.Games
     using System;
     using System.Diagnostics;
     using System.IO;
+    using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Utilities;
 
     /// <summary>
@@ -16,15 +17,11 @@ namespace CaelumCoreLibrary.Games
     public class GameInstall : IGameInstall
     {
         /// <summary>
-        /// Exe path.
-        /// </summary>
-        private static readonly string AppPath = Process.GetCurrentProcess().MainModule.FileName;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GameInstall"/> class.
         /// </summary>
         /// <param name="name">Name of game.</param>
-        public GameInstall(string name)
+        /// <param name="directory">Directory to create game install in.</param>
+        public GameInstall(string name, string directory)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -32,7 +29,7 @@ namespace CaelumCoreLibrary.Games
             }
 
             this.GameName = name;
-            this.BaseDirectory = CaelumFileIO.BuildDirectory(Path.Join(Path.GetDirectoryName(AppPath), "Games", this.GameName));
+            this.BaseDirectory = CaelumFileIO.BuildDirectory(Path.Join(directory, this.GameName));
             this.CardsDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Cards"));
             this.DownloadsDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Downloads"));
             this.BuildDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Build"));

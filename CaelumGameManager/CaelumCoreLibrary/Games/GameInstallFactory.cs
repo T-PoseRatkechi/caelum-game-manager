@@ -11,9 +11,9 @@ namespace CaelumCoreLibrary.Games
     public class GameInstallFactory : IGameInstallFactory
     {
         /// <inheritdoc/>
-        public IGameInstall GetGameInstall(string name)
+        public IGameInstall GetGameInstall(string name, string gamesDirectory)
         {
-            return new GameInstall(name);
+            return new GameInstall(name, gamesDirectory);
         }
     }
 }

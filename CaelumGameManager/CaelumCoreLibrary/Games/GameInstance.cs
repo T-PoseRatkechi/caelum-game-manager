@@ -39,7 +39,7 @@ namespace CaelumCoreLibrary.Games
         {
             this.writer = writer;
             this.caelumConfig = caelumConfig;
-            this.GameInstall = gameInstallFactory.GetGameInstall(gameName);
+            this.GameInstall = gameInstallFactory.GetGameInstall(gameName, caelumConfig.GamesDirectory);
 
             this.configFilePath = Path.Join(this.GameInstall.BaseDirectory, "game-config.json");
 
@@ -103,7 +103,7 @@ namespace CaelumCoreLibrary.Games
 
                 case CardType.Tool:
                     {
-                        newCardDir = CaelumFileIO.BuildDirectory(Path.Join(CaelumPaths.ToolsDir, newCard.CardId));
+                        newCardDir = CaelumFileIO.BuildDirectory(Path.Join(this.caelumConfig.ToolsDirectory, newCard.CardId));
                         break;
                     }
 
@@ -150,7 +150,7 @@ namespace CaelumCoreLibrary.Games
                 this.log.Debug("Loaded card {CardName}", gameCard.Name);
             }
 
-            string[] toolCardsList = Directory.GetDirectories(CaelumPaths.ToolsDir);
+            string[] toolCardsList = Directory.GetDirectories(this.caelumConfig.ToolsDirectory);
 
             foreach (var toolCardDir in toolCardsList)
             {
