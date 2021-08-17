@@ -16,9 +16,9 @@ namespace CaelumCoreLibrary.Cards
         public bool IsEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets whether the card is hidden.
+        /// Gets or sets a value indicating whether the card is hidden in the deck.
         /// </summary>
-        public string IsHidden { get; set; }
+        public bool IsHidden { get; set; }
 
         /// <summary>
         /// Gets or sets the install path of the card.

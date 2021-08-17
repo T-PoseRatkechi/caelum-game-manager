@@ -1,4 +1,5 @@
-﻿using CaelumCoreLibrary.Cards;
+﻿using Autofac.Extras.Moq;
+using CaelumCoreLibrary.Cards;
 using CaelumCoreLibrary.Decks;
 using System;
 using Xunit;
@@ -60,7 +61,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         }
 
         [Fact]
-        public void HideCard_HidingCard_ShouldRemoveFromDeck()
+        public void HideCard_HidingCard_ShouldSetHidePropTrueInDeck()
         {
             // Arrange
             var deck = new Deck(); // TODO: Mock.
@@ -71,24 +72,8 @@ namespace CaelumCoreLibrary.Tests.Decks
             deck.HideCard(newCard);
 
             // Assert
-            Assert.True(deck.Cards.Count == 0);
-            Assert.DoesNotContain(newCard, deck.Cards);
-        }
-
-        [Fact]
-        public void DeleteCard_DeletingCard_ShouldRemoveFromDeck()
-        {
-            // Arrange
-            var deck = new Deck(); // TODO: Mock.
-            var newCard = new InstallableCardModel();
-
-            // Act
-            deck.AddCard(newCard);
-            deck.DeleteCard(newCard);
-
-            // Assert
-            Assert.True(deck.Cards.Count == 0);
-            Assert.DoesNotContain(newCard, deck.Cards);
+            Assert.Contains(newCard, deck.Cards);
+            Assert.True(deck.Cards.Find(x => x == newCard).IsHidden);
         }
     }
 }

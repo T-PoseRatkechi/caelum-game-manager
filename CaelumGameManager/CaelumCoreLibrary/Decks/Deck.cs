@@ -7,22 +7,26 @@ namespace CaelumCoreLibrary.Decks
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Configs;
 
     /// <summary>
     /// Base implementation of IDeck.
     /// </summary>
     public class Deck : IDeck
     {
+        private readonly ICaelumConfig caelumConfig;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Deck"/> class.
         /// </summary>
-        public Deck()
+        public Deck(ICaelumConfig caelumConfig = null)
         {
-
+            this.caelumConfig = caelumConfig;
         }
 
         /// <inheritdoc/>
@@ -51,21 +55,20 @@ namespace CaelumCoreLibrary.Decks
         /// <inheritdoc/>
         public void DeleteCard(InstallableCardModel card)
         {
+            // Could not remove card from deck.
             if (!this.Cards.Remove(card))
             {
-                // Could not remove card from deck.
                 throw new ArgumentException($"Could not remove card from deck! Card ID: {card.CardId}", nameof(card));
             }
+
+            // Delete card installation folder.
+            Directory.Delete(card.InstallDirectory, true);
         }
 
         /// <inheritdoc/>
         public void HideCard(InstallableCardModel card)
         {
-            if (!this.Cards.Remove(card))
-            {
-                // Could not remove card from deck.
-                throw new ArgumentException($"Could not remove card from deck! Card ID: {card.CardId}", nameof(card));
-            }
+            card.IsHidden = true;
         }
     }
 }
