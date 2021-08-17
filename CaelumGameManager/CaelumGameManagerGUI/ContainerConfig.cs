@@ -25,7 +25,9 @@ namespace CaelumGameManagerGUI
             var builder = new ContainerBuilder();
 
             builder.RegisterAssemblyTypes(Assembly.Load(nameof(CaelumCoreLibrary)))
-                .Where(t => t.Namespace.Contains("Configs") || t.Namespace.Contains("Games"))
+                .Where(t => t.Namespace.Contains("Configs") ||
+                            t.Namespace.Contains("Games") ||
+                            t.Namespace.Contains("Decks"))
                 .As(t => t.GetInterfaces().FirstOrDefault(i => i.Name == "I" + t.Name));
 
             builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
