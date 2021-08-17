@@ -8,16 +8,21 @@ namespace CaelumCoreLibrary.Cards
     /// <summary>
     /// Interface for cards that are installable (has an installation folder somewhere).
     /// </summary>
-    public interface IInstallableCard : ICard
+    public class InstallableCardModel : CardModel
     {
         /// <summary>
         /// Gets or sets a value indicating whether the card is enabled.
         /// </summary>
-        bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the card is hidden.
+        /// </summary>
+        public string IsHidden { get; set; }
 
         /// <summary>
         /// Gets or sets the install path of the card.
         /// </summary>
-        string InstallDirectory { get; set; }
+        public string InstallDirectory { get; set; }
     }
 }

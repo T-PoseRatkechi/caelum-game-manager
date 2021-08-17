@@ -11,43 +11,43 @@ namespace CaelumCoreLibrary.Cards
     /// <summary>
     /// Base interface for all cards.
     /// </summary>
-    public interface ICard
+    public class CardModel
     {
         /// <summary>
         /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
         /// Should typically be: {author_name}-{card_name}
         /// Update Cards must have the same id as the card they are updating.
         /// </summary>
-        string CardId { get; set; }
+        public string CardId { get; set; }
 
         /// <summary>
         /// Gets or sets name of card.
         /// </summary>
-        string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets games card is for.
         /// </summary>
-        string[] Games { get; set; }
+        public string[] Games { get; set; }
 
         /// <summary>
         /// Gets or sets authors of the card.
         /// </summary>
-        List<Author> Authors { get; set; }
+        public List<Author> Authors { get; set; }
 
         /// <summary>
         /// Gets or sets description of card.
         /// </summary>
-        string Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets version of card.
         /// </summary>
-        string Version { get; set; }
+        public string Version { get; set; }
 
         /// <summary>
         /// Gets or sets card type.
         /// </summary>
-        CardType Type { get; set; }
+        public CardType Type { get; set; }
     }
 }
