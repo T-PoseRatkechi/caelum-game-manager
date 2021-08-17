@@ -28,7 +28,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game's deck of cards.
         /// </summary>
-        List<IInstallableCard> Deck { get; }
+        List<InstallableCardModel> Deck { get; }
 
         /// <summary>
         /// Save config to file.
@@ -49,6 +49,6 @@ namespace CaelumCoreLibrary.Games
         /// Creates a new card.
         /// </summary>
         /// <param name="newCard">New card to create.</param>
-        void CreateCard(ICard newCard);
+        void CreateCard(CardModel newCard);
     }
 }

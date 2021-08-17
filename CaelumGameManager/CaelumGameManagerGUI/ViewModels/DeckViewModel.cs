@@ -24,7 +24,7 @@ namespace CaelumGameManagerGUI.ViewModels
     {
         private readonly IWindowManager windowManager = new WindowManager();
         private IGameInstance game;
-        private BindableCollection<ICard> deck;
+        private BindableCollection<CardModel> deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
@@ -34,7 +34,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGameInstance game, BindableCollection<ICard> deck)
+        public DeckViewModel(IGameInstance game, BindableCollection<CardModel> deck)
         {
             this.game = game;
             this.deck = deck;
@@ -124,7 +124,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 if (selectedItem != null)
                 {
-                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this.deck, selectedItem as ICard));
+                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this.deck, selectedItem as CardModel));
                     return;
                 }
 
@@ -140,7 +140,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <returns>Whether card passes filter.</returns>
         private static bool FilterCardsByType(object item, CardType type)
         {
-            ICard cardModel = item as ICard;
+            CardModel cardModel = item as CardModel;
             if (cardModel != null)
             {
                 if (cardModel.Type == type)

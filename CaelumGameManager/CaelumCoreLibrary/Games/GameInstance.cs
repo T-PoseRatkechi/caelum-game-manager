@@ -52,7 +52,7 @@ namespace CaelumCoreLibrary.Games
         public IGameConfig GameConfig { get; private set; }
 
         /// <inheritdoc/>
-        public List<IInstallableCard> Deck { get; } = new();
+        public List<InstallableCardModel> Deck { get; } = new();
 
         private IDeckBuilder DeckBuilder { get; set; }
 
@@ -83,7 +83,7 @@ namespace CaelumCoreLibrary.Games
         }
 
         /// <inheritdoc/>
-        public void CreateCard(ICard newCard)
+        public void CreateCard(CardModel newCard)
         {
             string newCardDir;
             switch (newCard.Type)
@@ -133,7 +133,7 @@ namespace CaelumCoreLibrary.Games
             foreach (var gameCardDir in gameCardsList)
             {
                 var gameCardFile = Path.Join(gameCardDir, "card.json");
-                var gameCard = this.writer.ParseFile<InstallableCard>(gameCardFile);
+                var gameCard = this.writer.ParseFile<InstallableCardModel>(gameCardFile);
                 gameCard.InstallDirectory = gameCardDir;
 
                 // Load authors.
@@ -151,7 +151,7 @@ namespace CaelumCoreLibrary.Games
             foreach (var toolCardDir in toolCardsList)
             {
                 var toolCardFile = Path.Join(toolCardDir, "card.json");
-                var toolCard = this.writer.ParseFile<InstallableCard>(toolCardFile);
+                var toolCard = this.writer.ParseFile<InstallableCardModel>(toolCardFile);
                 toolCard.InstallDirectory = toolCardDir;
 
                 // Load authors.

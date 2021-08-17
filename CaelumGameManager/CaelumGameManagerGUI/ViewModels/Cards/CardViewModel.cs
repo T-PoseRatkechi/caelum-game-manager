@@ -19,8 +19,8 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// <summary>
         /// Initializes a new instance of the <see cref="CardViewModel"/> class.
         /// </summary>
-        /// <param name="card"><seealso cref="ICard"/> instance to dispaly.</param>
-        public CardViewModel(ICard card = null)
+        /// <param name="card"><seealso cref="CardModel"/> instance to dispaly.</param>
+        public CardViewModel(CardModel card = null)
         {
             Card = card;
         }
@@ -28,7 +28,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// <summary>
         /// Gets or sets card to display;
         /// </summary>
-        public ICard Card { get; set; }
+        public CardModel Card { get; set; }
 
         /// <summary>
         /// Gets the card image source, if available. Else returns default missing-preview image.
@@ -42,7 +42,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                     return null;
                 }
 
-                if (this.Card is IInstallableCard installedCard)
+                if (this.Card is InstallableCardModel installedCard)
                 {
                     string cardImagePath = Path.Join(installedCard.InstallDirectory, "card.png");
                     if (File.Exists(cardImagePath))

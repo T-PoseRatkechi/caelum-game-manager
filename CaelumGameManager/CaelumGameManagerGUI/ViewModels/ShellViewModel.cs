@@ -24,7 +24,7 @@ namespace CaelumGameManagerGUI.ViewModels
     {
         private IGameInstance _currentGame;
 
-        private BindableCollection<ICard> gameDeck;
+        private BindableCollection<CardModel> gameDeck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
@@ -40,7 +40,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     );
             }
 
-            this.gameDeck = new BindableCollection<ICard>(this.CurrentGame.Deck);
+            this.gameDeck = new BindableCollection<CardModel>(this.CurrentGame.Deck);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
             this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this.gameDeck));

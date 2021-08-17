@@ -14,7 +14,7 @@ namespace CaelumCoreLibrary.Builders
     public class DeckBuilderSimple : IDeckBuilder
     {
         /// <inheritdoc/>
-        public void Build(IInstallableCard[] deck, string outputDir)
+        public void Build(InstallableCardModel[] deck, string outputDir)
         {
             Log.Information("Building with simple deck builder");
         }

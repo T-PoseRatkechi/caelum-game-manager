@@ -27,8 +27,8 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         private WindowManager windowManager = new WindowManager();
 
         private string selectedType = CardType.Mod.ToString();
-        private BindableCollection<ICard> cards;
-        private ICard card;
+        private BindableCollection<CardModel> cards;
+        private CardModel card;
         private IGameInstance game;
 
         private string _cardId;
@@ -41,7 +41,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public CreateCardViewModel(IGameInstance game, BindableCollection<ICard> deckCards, ICard card = null)
+        public CreateCardViewModel(IGameInstance game, BindableCollection<CardModel> deckCards, CardModel card = null)
         {
             this.cards = deckCards;
             this.game = game;
@@ -215,7 +215,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
 
                     string cardVersion = string.IsNullOrEmpty(this.CardVersion) ? "1.0.0" : this.CardVersion;
 
-                    InstallableCard newCard = new();
+                    InstallableCardModel newCard = new();
                     newCard.CardId = this.CardId;
                     newCard.Name = this.CardName;
                     newCard.Description = this.CardDescription;

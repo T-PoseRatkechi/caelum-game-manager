@@ -23,7 +23,7 @@ namespace CaelumCoreLibrary.Utilities
         /// Returns whether <paramref name="s"/> is valid as an ID. Only A-z and - characters.
         /// </summary>
         /// <param name="s">String to test.</param>
-        /// <returns>If <paramref name="s"/> is a valid <seealso cref="Cards.ICard"/> ID.</returns>
+        /// <returns>If <paramref name="s"/> is a valid <seealso cref="Cards.CardModel"/> ID.</returns>
         public static bool IsValidId(string s)
         {
             Regex reg = new(InvalidIdCharacters);
@@ -50,11 +50,11 @@ namespace CaelumCoreLibrary.Utilities
         /// Parses the card at <paramref name="cardFilePath"/> and returns it.
         /// </summary>
         /// <param name="cardFilePath">Path to card.</param>
-        /// <returns><paramref name="cardFilePath"/> parsed as a new <seealso cref="ICard"/>.</returns>
-        public static ICard ParseCard<T>(string cardFilePath)
+        /// <returns><paramref name="cardFilePath"/> parsed as a new <seealso cref="CardModel"/>.</returns>
+        public static CardModel ParseCard<T>(string cardFilePath)
         {
             var cardText = File.ReadAllText(cardFilePath);
-            ICard card = (ICard)JsonSerializer.Deserialize<T>(cardText);
+            CardModel card = JsonSerializer.Deserialize<CardModel>(cardText);
 
             // Set card path.
             // card.Path = Path.GetDirectoryName(cardFilePath);
