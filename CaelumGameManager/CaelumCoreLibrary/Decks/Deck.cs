@@ -17,6 +17,9 @@ namespace CaelumCoreLibrary.Decks
     /// </summary>
     public class Deck : IDeck
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Deck"/> class.
+        /// </summary>
         public Deck()
         {
 

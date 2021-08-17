@@ -9,6 +9,7 @@ namespace CaelumGameManagerGUI
     using System.Reflection;
     using Autofac;
     using CaelumCoreLibrary.Builders;
+    using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Writers;
 
     /// <summary>
@@ -32,6 +33,7 @@ namespace CaelumGameManagerGUI
 
             builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<DeckBuilderFactory>().As<IDeckBuilderFactory>().SingleInstance();
+            builder.RegisterType<CaelumConfig>().As<ICaelumConfig>().SingleInstance();
 
             return builder.Build();
         }

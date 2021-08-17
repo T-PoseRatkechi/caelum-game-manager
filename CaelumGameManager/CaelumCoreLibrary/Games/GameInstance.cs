@@ -22,7 +22,9 @@ namespace CaelumCoreLibrary.Games
     public class GameInstance : IGameInstance
     {
         private ILogger log = Log.Logger.WithCallerSyntax();
-        private IWriter writer;
+        private readonly IWriter writer;
+        private readonly ICaelumConfig caelumConfig;
+
         private string configFilePath;
 
         /// <summary>
@@ -32,9 +34,11 @@ namespace CaelumCoreLibrary.Games
         /// <param name="writer">Writer to use.</param>
         /// <param name="gameInstallFactory">Game install factory.</param>
         /// <param name="deckBuilderFactory">Deck builder factory.</param>
-        public GameInstance(string gameName, IWriter writer, IGameInstallFactory gameInstallFactory, IDeckBuilderFactory deckBuilderFactory)
+        /// <param name="caelumConfig">Caelum config to use for directories.</param>
+        public GameInstance(string gameName, IWriter writer, IGameInstallFactory gameInstallFactory, IDeckBuilderFactory deckBuilderFactory, ICaelumConfig caelumConfig)
         {
             this.writer = writer;
+            this.caelumConfig = caelumConfig;
             this.GameInstall = gameInstallFactory.GetGameInstall(gameName);
 
             this.configFilePath = Path.Join(this.GameInstall.BaseDirectory, "game-config.json");

@@ -10,7 +10,7 @@ namespace CaelumCoreLibrary.Utilities
     /// <summary>
     /// Utility functions related to File IO.
     /// </summary>
-    public class CaelumFileIO
+    public static class CaelumFileIO
     {
         /// <summary>
         /// Creates the directory given by <paramref name="dirPath"/> if it doesn't exist and returns the original
