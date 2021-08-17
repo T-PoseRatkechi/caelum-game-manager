@@ -24,6 +24,7 @@ namespace CaelumCoreLibrary.Decks
         /// <summary>
         /// Initializes a new instance of the <see cref="Deck"/> class.
         /// </summary>
+        /// <param name="caelumConfig">Caelum config to ues for directories.</param>
         public Deck(ICaelumConfig caelumConfig = null)
         {
             this.caelumConfig = caelumConfig;
@@ -68,6 +69,12 @@ namespace CaelumCoreLibrary.Decks
         /// <inheritdoc/>
         public void HideCard(InstallableCardModel card)
         {
+            // Don't allow hiding cards that are already hidden.
+            if (card.IsHidden)
+            {
+                throw new ArgumentException($"Could not set card to hidden because card is already hidden! Card ID: {card.CardId}", nameof(card));
+            }
+
             card.IsHidden = true;
         }
     }

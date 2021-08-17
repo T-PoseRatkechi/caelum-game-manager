@@ -75,5 +75,20 @@ namespace CaelumCoreLibrary.Tests.Decks
             Assert.Contains(newCard, deck.Cards);
             Assert.True(deck.Cards.Find(x => x == newCard).IsHidden);
         }
+
+        [Fact]
+        public void HideCard_HidingAlreadyHiddenCards_ShouldFail()
+        {
+            // Arrange
+            var deck = new Deck(); // TODO: Mock.
+            var newCard = new InstallableCardModel();
+
+            // Act
+            deck.AddCard(newCard);
+            deck.HideCard(newCard);
+
+            // Assert
+            Assert.Throws<ArgumentException>(() => deck.HideCard(newCard));
+        }
     }
 }
