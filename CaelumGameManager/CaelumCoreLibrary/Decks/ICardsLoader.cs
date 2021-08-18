@@ -17,6 +17,7 @@ namespace CaelumCoreLibrary.Decks
         /// Loads cards into a deck.
         /// </summary>
         /// <param name="cardsList">List to add loaded cards into.</param>
-        void LoadCards(List<CardModel> cardsList);
+        /// <returns>List of installed cards.</returns>
+        List<CardModel> GetInstalledCards();
     }
 }

@@ -9,9 +9,14 @@
     public interface IDeck
     {
         /// <summary>
-        /// Gets or sets cards in deck.
+        /// Gets cards in deck.
         /// </summary>
-        List<CardModel> Cards { get; set; }
+        List<CardModel> Cards { get; }
+
+        /// <summary>
+        /// Loads deck cards.
+        /// </summary>
+        void LoadDeck();
 
         /// <summary>
         /// Adds <paramref name="cardToAdd"/> to deck.

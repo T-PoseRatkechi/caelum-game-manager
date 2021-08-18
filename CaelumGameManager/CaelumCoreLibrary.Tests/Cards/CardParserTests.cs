@@ -10,7 +10,7 @@ namespace CaelumCoreLibrary.Tests.Cards
         [InlineData("")]
         [InlineData(null)]
         [InlineData("     ")]
-        public void ParseCardFile_InvalidParams_ShouldFail(string filePath)
+        public void ParseCardFile_InvalidParam_ShouldFail(string filePath)
         {
             // Arrange
             var cardParser = new CardParser();

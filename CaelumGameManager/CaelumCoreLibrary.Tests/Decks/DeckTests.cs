@@ -2,6 +2,7 @@
 using CaelumCoreLibrary.Cards;
 using CaelumCoreLibrary.Decks;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace CaelumCoreLibrary.Tests.Decks
@@ -11,23 +12,28 @@ namespace CaelumCoreLibrary.Tests.Decks
         [Fact]
         public void AddCard_AddingCard_ShouldAddToDeck()
         {
-            // Arrange
-            var deck = new Deck(); // TODO: Mock.
-            var newCard = new CardModel();
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
 
-            // Act
-            deck.AddCard(newCard);
+                // Arrange
+                var deck = mock.Create<Deck>();
+                var newCard = new CardModel();
 
-            // Assert
-            Assert.True(deck.Cards.Count == 1);
-            Assert.Contains(newCard, deck.Cards);
+                // Act
+                deck.AddCard(newCard);
+
+                // Assert
+                Assert.True(deck.Cards.Count == 1);
+                Assert.Contains(newCard, deck.Cards);
+            }
         }
 
         [Fact]
         public void AddCard_AddingDuplicateCardByInstance_ShouldFail()
         {
             // Arrange
-            var deck = new Deck(); // TODO: Mock.
+            var deck = new Deck(null, null); // TODO: Mock.
             var newCard = new CardModel();
 
             // Act
@@ -41,7 +47,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void AddCard_AddingDuplicateCardByCardId_ShouldFail()
         {
             // Arrange
-            var deck = new Deck(); // TODO: Mock.
+            var deck = new Deck(null, null); // TODO: Mock.
 
             var firstCard = new CardModel()
             {
@@ -64,7 +70,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void HideCard_HidingCard_ShouldSetHidePropTrueInDeck()
         {
             // Arrange
-            var deck = new Deck(); // TODO: Mock.
+            var deck = new Deck(null, null); // TODO: Mock.
             var newCard = new CardModel();
 
             // Act
@@ -80,7 +86,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void HideCard_HidingAlreadyHiddenCards_ShouldFail()
         {
             // Arrange
-            var deck = new Deck(); // TODO: Mock.
+            var deck = new Deck(null, null); // TODO: Mock.
             var newCard = new CardModel();
 
             // Act

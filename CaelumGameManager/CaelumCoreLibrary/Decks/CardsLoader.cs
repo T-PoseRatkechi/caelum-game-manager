@@ -17,42 +17,32 @@ namespace CaelumCoreLibrary.Decks
     /// </summary>
     public class CardsLoader : ICardsLoader
     {
+        private readonly ICardParser cardParser;
         private readonly string toolsDir;
-        private readonly string gameCardDir;
+        private readonly string gameCardsDir;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CardsLoader"/> class.
         /// </summary>
         /// <param name="caelumConfig">Caelum config to use for directories.</param>
         /// <param name="gameInstall">Game install instance.</param>
-        public CardsLoader(ICaelumConfig caelumConfig, IGameInstall gameInstall)
+        /// <param name="cardParser">Card parser to use.</param>
+        public CardsLoader(ICaelumConfig caelumConfig, IGameInstall gameInstall, ICardParser cardParser)
         {
             this.toolsDir = caelumConfig.ToolsDirectory;
-            this.gameCardDir = gameInstall.CardsDirectory;
+            this.gameCardsDir = gameInstall.CardsDirectory;
+            this.cardParser = cardParser;
         }
 
         /// <inheritdoc/>
-        public void LoadCards(List<CardModel> cardsList)
+        public List<CardModel> GetInstalledCards()
         {
-            string[] allToolCardDirs = Directory.GetDirectories(this.toolsDir);
-            foreach (string toolCardDir in allToolCardDirs)
-            {
-                // Parse card.
+            List<CardModel> installedCards = new();
 
-                // Validate card.
+            this.AddCardsFromFolder(this.toolsDir, installedCards);
+            this.AddCardsFromFolder(this.gameCardsDir, installedCards);
 
-                // Add card to list.
-            }
-
-            string[] allGameCardDirs = Directory.GetDirectories(this.gameCardDir);
-            foreach (string gameCardDir in allGameCardDirs)
-            {
-                // Parse card.
-
-                // Validate card.
-
-                // Add card to list.
-            }
+            return installedCards;
         }
 
         /// <summary>
@@ -64,10 +54,17 @@ namespace CaelumCoreLibrary.Decks
             foreach (string file in Directory.GetDirectories(folder))
             {
                 // Parse card.
+                var card = this.cardParser.ParseCardFile(file);
 
                 // Validate card.
+                // Don't allow duplicate cards to be added.
+                if (cardsList.FindIndex(x => x.CardId == card.CardId) > -1)
+                {
+                    throw new InvalidOperationException($@"Cannot add card because a card already exists with the id ""{card.CardId}""! File: {file}");
+                }
 
                 // Add card to list.
+                cardsList.Add(card);
             }
         }
     }
