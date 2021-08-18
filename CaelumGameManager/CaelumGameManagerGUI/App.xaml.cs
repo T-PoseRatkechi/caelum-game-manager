@@ -28,7 +28,7 @@ namespace CaelumGameManagerGUI
         /// <summary>
         /// Path to app log file.
         /// </summary>
-        public static readonly string LogFilePath = $@"{Path.GetDirectoryName(AppPath)}\caelum.log";
+        public static readonly string LogFilePath = Path.Join(Path.GetDirectoryName(AppPath), "Logs", $"{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.json");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
