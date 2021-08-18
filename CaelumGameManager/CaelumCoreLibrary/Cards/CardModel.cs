@@ -3,13 +3,13 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+using CaelumCoreLibrary.Common;
+using System.Collections.Generic;
+
 namespace CaelumCoreLibrary.Cards
 {
-    using System.Collections.Generic;
-    using CaelumCoreLibrary.Common;
-
     /// <summary>
-    /// Base interface for all cards.
+    /// Interface for cards that are installable (has an installation folder somewhere).
     /// </summary>
     public class CardModel
     {
@@ -19,6 +19,16 @@ namespace CaelumCoreLibrary.Cards
         /// Update Cards must have the same id as the card they are updating.
         /// </summary>
         public string CardId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the card is enabled.
+        /// </summary>
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the card is hidden in the deck.
+        /// </summary>
+        public bool IsHidden { get; set; }
 
         /// <summary>
         /// Gets or sets name of card.
@@ -49,5 +59,10 @@ namespace CaelumCoreLibrary.Cards
         /// Gets or sets card type.
         /// </summary>
         public CardType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the install path of the card.
+        /// </summary>
+        public string InstallDirectory { get; set; }
     }
 }

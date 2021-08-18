@@ -28,7 +28,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game's deck of cards.
         /// </summary>
-        List<InstallableCardModel> Deck { get; }
+        List<CardModel> Deck { get; }
 
         /// <summary>
         /// Save config to file.

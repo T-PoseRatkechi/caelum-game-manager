@@ -31,10 +31,10 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public List<InstallableCardModel> Cards { get; set; } = new();
+        public List<CardModel> Cards { get; set; } = new();
 
         /// <inheritdoc/>
-        public void AddCard(InstallableCardModel card)
+        public void AddCard(CardModel card)
         {
             // Don't add duplicate card instances.
             if (this.Cards.Contains(card))
@@ -54,7 +54,7 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public void DeleteCard(InstallableCardModel card)
+        public void DeleteCard(CardModel card)
         {
             // Could not remove card from deck.
             if (!this.Cards.Remove(card))
@@ -67,7 +67,7 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public void HideCard(InstallableCardModel card)
+        public void HideCard(CardModel card)
         {
             // Don't allow hiding cards that are already hidden.
             if (card.IsHidden)

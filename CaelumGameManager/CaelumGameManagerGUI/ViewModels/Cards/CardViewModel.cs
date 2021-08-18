@@ -42,7 +42,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                     return null;
                 }
 
-                if (this.Card is InstallableCardModel installedCard)
+                if (this.Card is CardModel installedCard)
                 {
                     string cardImagePath = Path.Join(installedCard.InstallDirectory, "card.png");
                     if (File.Exists(cardImagePath))

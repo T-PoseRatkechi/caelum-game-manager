@@ -13,7 +13,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         {
             // Arrange
             var deck = new Deck(); // TODO: Mock.
-            var newCard = new InstallableCardModel();
+            var newCard = new CardModel();
 
             // Act
             deck.AddCard(newCard);
@@ -28,7 +28,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         {
             // Arrange
             var deck = new Deck(); // TODO: Mock.
-            var newCard = new InstallableCardModel();
+            var newCard = new CardModel();
 
             // Act
             deck.AddCard(newCard);
@@ -43,12 +43,12 @@ namespace CaelumCoreLibrary.Tests.Decks
             // Arrange
             var deck = new Deck(); // TODO: Mock.
 
-            var firstCard = new InstallableCardModel()
+            var firstCard = new CardModel()
             {
                 CardId = "tposeratkechi_caelummusicmanager"
             };
 
-            var secondCard = new InstallableCardModel()
+            var secondCard = new CardModel()
             {
                 CardId = "tposeratkechi_caelummusicmanager"
             };
@@ -65,7 +65,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         {
             // Arrange
             var deck = new Deck(); // TODO: Mock.
-            var newCard = new InstallableCardModel();
+            var newCard = new CardModel();
 
             // Act
             deck.AddCard(newCard);
@@ -81,7 +81,7 @@ namespace CaelumCoreLibrary.Tests.Decks
         {
             // Arrange
             var deck = new Deck(); // TODO: Mock.
-            var newCard = new InstallableCardModel();
+            var newCard = new CardModel();
 
             // Act
             deck.AddCard(newCard);

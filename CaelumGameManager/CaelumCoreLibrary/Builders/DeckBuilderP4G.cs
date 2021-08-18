@@ -14,7 +14,7 @@ namespace CaelumCoreLibrary.Builders
     public class DeckBuilderP4G : IDeckBuilder
     {
         /// <inheritdoc/>
-        public void Build(InstallableCardModel[] deck, string outputDir)
+        public void Build(CardModel[] deck, string outputDir)
         {
             Log.Information($"Building deck for P4G. Total Cards: {deck.Length} - Output: {outputDir}");
         }

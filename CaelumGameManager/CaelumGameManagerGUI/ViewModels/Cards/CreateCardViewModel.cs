@@ -215,7 +215,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
 
                     string cardVersion = string.IsNullOrEmpty(this.CardVersion) ? "1.0.0" : this.CardVersion;
 
-                    InstallableCardModel newCard = new();
+                    CardModel newCard = new();
                     newCard.CardId = this.CardId;
                     newCard.Name = this.CardName;
                     newCard.Description = this.CardDescription;
