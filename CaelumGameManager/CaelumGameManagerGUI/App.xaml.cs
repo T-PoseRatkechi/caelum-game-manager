@@ -12,6 +12,8 @@ namespace CaelumGameManagerGUI
     using System.Threading;
     using System.Windows;
     using System.Windows.Threading;
+    using CaelumCoreLibrary.Common;
+    using CaelumGameManagerGUI.Logging;
     using Serilog;
     using WPFLocalizeExtension.Engine;
 
@@ -52,50 +54,50 @@ namespace CaelumGameManagerGUI
                 .WriteTo.Sink(AppLogSink)
                 .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
                 .Enrich.WithThreadId()
-                .CreateLogger();
+                .CreateLogger().WithCallerContext();
 
-            Log.Information("Caelum Game Manager starting");
+            // Log.Information("Caelum Game Manager starting");
 
             // Temp performance testing for GUI console log display.
-            var dispatchTimer = new DispatcherTimer();
-            int count = 0;
-            dispatchTimer.Tick += (object sender, EventArgs args) =>
-            {
-                if (count < 5000)
-                {
-                    if (count > 40 && count < 44)
-                    {
-                        Log.Warning("Test warning {count}", count);
-                    }
-                    else if (count > 42 && count < 48)
-                    {
-                        Log.Error("Test error {count}", count);
-                    }
-                    else
-                    {
-                        Log.Information("Hello {count}", count);
-                    }
+            //var dispatchTimer = new DispatcherTimer();
+            //int count = 0;
+            //dispatchTimer.Tick += (object sender, EventArgs args) =>
+            //{
+            //    if (count < 5000)
+            //    {
+            //        if (count > 40 && count < 44)
+            //        {
+            //            Log.Warning("Test warning {count}", count);
+            //        }
+            //        else if (count > 42 && count < 48)
+            //        {
+            //            Log.Error("Test error {count}", count);
+            //        }
+            //        else
+            //        {
+            //            Log.Information("Hello {count}", count);
+            //        }
 
-                    try
-                    {
-                        if (count == 50)
-                        {
-                            int z = 0;
-                            int test = 20 / z;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Exception caught");
-                        dispatchTimer.Stop();
-                    }
+            //        try
+            //        {
+            //            if (count == 50)
+            //            {
+            //                int z = 0;
+            //                int test = 20 / z;
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Log.Error(ex, "Exception caught");
+            //            dispatchTimer.Stop();
+            //        }
 
-                    count++;
-                }
-            };
+            //        count++;
+            //    }
+            //};
 
-            dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            dispatchTimer.Start();
+            //dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            //dispatchTimer.Start();
         }
 
         /// <summary>

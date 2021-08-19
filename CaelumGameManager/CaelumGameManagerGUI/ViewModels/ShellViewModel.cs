@@ -16,12 +16,14 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
     using Caliburn.Micro;
+    using Serilog;
 
     /// <summary>
     /// Shell VM.
     /// </summary>
     public class ShellViewModel : Conductor<Screen>
     {
+        private ILogger logger = Serilog.Log.Logger;
         private IGameInstance _currentGame;
 
         private BindableCollection<CardModel> gameDeck;
@@ -31,6 +33,8 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
+            this.logger.Information("Caelum Game Manager starting");
+
             var container = ContainerConfig.Configure();
 
             using (var scope = container.BeginLifetimeScope())
@@ -56,9 +60,14 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        protected override void OnViewReady(object view)
+        {
+            base.OnViewReady(view);
+            this.logger.Information("Caelum Game Manager ready");
+        }
+
         private void OnDeckChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
         }
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)

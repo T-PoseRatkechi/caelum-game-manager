@@ -3,11 +3,10 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Common
+namespace CaelumGameManagerGUI.Logging
 {
     using System.IO;
     using System.Runtime.CompilerServices;
-    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// https://stackoverflow.com/a/57615023
@@ -16,7 +15,6 @@ namespace CaelumCoreLibrary.Common
     /// </summary>
     public static class LogContext
     {
-        /*
         /// <summary>
         /// Adds caller syntax to logger.
         /// </summary>
@@ -25,8 +23,8 @@ namespace CaelumCoreLibrary.Common
         /// <param name="filePath">File path.</param>
         /// <param name="lineNumber">Line number.</param>
         /// <returns>Logger with caller syntax.</returns>
-        public static ILogger WithCallerSyntax(
-        this ILogger logger,
+        public static Serilog.ILogger WithCallerContext(
+        this Serilog.ILogger logger,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
@@ -36,6 +34,5 @@ namespace CaelumCoreLibrary.Common
                 .ForContext("FileName", Path.GetFileNameWithoutExtension(filePath))
                 .ForContext("LineNumber", lineNumber);
         }
-        */
     }
 }
