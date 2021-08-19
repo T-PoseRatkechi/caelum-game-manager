@@ -10,18 +10,22 @@ namespace CaelumCoreLibrary.Games
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Base class for game instances.
     /// </summary>
     public class GameInstance : IGameInstance
     {
+        private readonly ILogger log;
         private readonly IDeckBuilder deckBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameInstance"/> class.
         /// </summary>
-        public GameInstance(IDeckBuilder deckBuilder)
+        /// <param name="log">Logger.</param>
+        /// <param name="deckBuilder">Deck builder to use for building output.</param>
+        public GameInstance(ILogger log, IDeckBuilder deckBuilder)
         {
             this.deckBuilder = deckBuilder;
         }
@@ -38,13 +42,14 @@ namespace CaelumCoreLibrary.Games
         /// <inheritdoc/>
         public void BuildDeck()
         {
+            this.log.LogInformation("Building deck");
             this.deckBuilder.Build(this.Deck.Cards.ToArray(), this.GameInstall.BuildDirectory);
         }
 
         /// <inheritdoc/>
         public void CreateCard(CardModel newCard)
         {
-            throw new NotImplementedException();
+            this.log.LogDebug("Creating card");
         }
     }
 }
