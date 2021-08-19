@@ -157,9 +157,10 @@ namespace CaelumGameManagerGUI.ViewModels
                 // Remove cards from group drop.
                 foreach (CardModel card in groupedCards)
                 {
-                    if (!this.game.Deck.Cards.Remove(card))
+                    if (this.game.Deck.Cards.Remove(card))
                     {
-                        Log.Error("Failed to remove a card in group drop event! Unexpected behaviour likely to occur, restart if possible!");
+                        Log.Fatal("Failed to remove a card in group drop event! Unexpected behaviour likely to occur!");
+                        Log.Fatal(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
                     }
                 }
             }
@@ -168,7 +169,8 @@ namespace CaelumGameManagerGUI.ViewModels
                 // Remove card from solo drop.
                 if (!this.game.Deck.Cards.Remove((CardModel)dropInfo.Data))
                 {
-                    Log.Error("Failed to remove a card in drop event! Unexpect behaviour likely to occure, restart if possible!");
+                    Log.Fatal("Failed to remove a card in drop event! Unexpect behaviour likely to occur!");
+                    Log.Fatal(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
                 }
             }
 

@@ -184,4 +184,7 @@
   <data name="WindowSelectAvatarTitle" xml:space="preserve">
     <value>Select Profile Image...</value>
   </data>
+  <data name="ErrorRecommendRestartMessage" xml:space="preserve">
+    <value>Encountered unexpected error! Restart recommended!</value>
+  </data>
 </root>

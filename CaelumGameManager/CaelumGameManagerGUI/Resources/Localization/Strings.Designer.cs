@@ -223,6 +223,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encountered unexpected error! Restart recommended!.
+        /// </summary>
+        public static string ErrorRecommendRestartMessage {
+            get {
+                return ResourceManager.GetString("ErrorRecommendRestartMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folders.
         /// </summary>
         public static string FoldersText {
