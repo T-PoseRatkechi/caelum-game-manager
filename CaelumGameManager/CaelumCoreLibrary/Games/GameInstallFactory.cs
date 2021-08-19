@@ -6,26 +6,31 @@
 namespace CaelumCoreLibrary.Games
 {
     using CaelumCoreLibrary.Configs;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Base implementation of <seealso cref="IGameInstallFactory"/>.
     /// </summary>
     public class GameInstallFactory : IGameInstallFactory
     {
+        private readonly ILogger log;
         private readonly ICaelumConfig caelumConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameInstallFactory"/> class.
         /// </summary>
+        /// <param name="log">Logger.</param>
         /// <param name="caelumConfig">Caelum config.</param>
-        public GameInstallFactory(ICaelumConfig caelumConfig)
+        public GameInstallFactory(ILogger log, ICaelumConfig caelumConfig)
         {
+            this.log = log;
             this.caelumConfig = caelumConfig;
         }
 
         /// <inheritdoc/>
         public IGameInstall CreateGameInstall(string name)
         {
+            this.log.LogDebug("Creating game install with name {GameName}", name);
             return new GameInstall(name, this.caelumConfig.GamesDirectory);
         }
     }

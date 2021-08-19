@@ -47,7 +47,7 @@ namespace CaelumCoreLibrary.Games
         /// <inheritdoc/>
         public IGameInstance CreateGameInstance(string gameName, IDeckBuilder deckBuilder)
         {
-            this.log.LogDebug("Building game instance with name {GameName}", gameName);
+            this.log.LogDebug("Creating game instance with name {GameName}", gameName);
 
             var gameInstall = this.gameInstallFactory.CreateGameInstall(gameName);
             var cardsLoader = this.cardsLoaderFactory.CreateCardsLoader(gameInstall);

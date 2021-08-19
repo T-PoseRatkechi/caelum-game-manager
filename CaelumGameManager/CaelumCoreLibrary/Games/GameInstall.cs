@@ -10,6 +10,7 @@ namespace CaelumCoreLibrary.Games
     using System.IO;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Utilities;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Base implementation of <seealso cref="IGameInstall"/>.
