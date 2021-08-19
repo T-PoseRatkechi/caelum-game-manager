@@ -24,6 +24,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.2.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="2.4.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.7" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />

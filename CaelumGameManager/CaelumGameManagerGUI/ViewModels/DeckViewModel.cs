@@ -6,6 +6,7 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System.Collections.Generic;
+    using System.Collections;
     using System.ComponentModel;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -14,12 +15,13 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
+    using GongSolutions.Wpf.DragDrop;
     using Serilog;
 
     /// <summary>
     /// Deck VM.
     /// </summary>
-    public class DeckViewModel : Screen
+    public class DeckViewModel : Screen, IDropTarget
     {
         private IGameInstance game;
         private ICardFactory _cardFactory;
@@ -132,6 +134,46 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck));
             }
+        }
+
+        /// <inheritdoc/>
+        public void DragOver(IDropInfo dropInfo)
+        {
+            // Call default DragOver method, cause most stuff should work by default.
+            DragDrop.DefaultDropHandler.DragOver(dropInfo);
+        }
+
+        /// <inheritdoc/>
+        public void Drop(IDropInfo dropInfo)
+        {
+            // DragDrop drop event removes all selected cards at start from BindableCollection.
+            // The following will also remove the selected cards from GameInstance's deck.
+            // They will then be added back through the BindableCollection's InsertItem method.
+
+            // Kinda iffy solution. DropInfo.Data should be a typed enumerable
+            // but I don't think it is or I'm misunderstanding something...
+            if (dropInfo.Data is IEnumerable groupedCards)
+            {
+                // Remove cards from group drop.
+                foreach (CardModel card in groupedCards)
+                {
+                    if (!this.game.Deck.Cards.Remove(card))
+                    {
+                        Log.Error("Failed to remove a card in group drop event! Unexpected behaviour likely to occur, restart if possible!");
+                    }
+                }
+            }
+            else
+            {
+                // Remove card from solo drop.
+                if (!this.game.Deck.Cards.Remove((CardModel)dropInfo.Data))
+                {
+                    Log.Error("Failed to remove a card in drop event! Unexpect behaviour likely to occure, restart if possible!");
+                }
+            }
+
+            // Default drop event.
+            DragDrop.DefaultDropHandler.Drop(dropInfo);
         }
 
         /// <summary>

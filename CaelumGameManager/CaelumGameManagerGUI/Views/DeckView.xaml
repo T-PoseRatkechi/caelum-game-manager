@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:dd="urn:gong-wpf-dragdrop"
         lex:LocalizeDictionary.DesignCulture="es"
         lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
@@ -43,7 +44,10 @@
 
          <DataGrid x:Name="FilteredDeck" Grid.Column="0" Grid.Row="1" CanUserAddRows="False"
                   AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
-                  CanUserResizeRows="False" MouseLeftButtonDown="FilteredDeck_MouseDown">
+                  CanUserResizeRows="False" MouseLeftButtonDown="FilteredDeck_MouseDown"
+                   dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                   dd:DragDrop.SelectDroppedItems="True" dd:DragDrop.DragDirectlySelectedOnly="False"
+                   dd:DragDrop.DropHandler="{Binding}">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="{lex:Loc EnabledText}" Binding="{Binding Path=IsEnabled}"
                                                 IsReadOnly="False" />
