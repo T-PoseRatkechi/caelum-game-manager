@@ -1,8 +1,11 @@
-﻿using Autofac.Extras.Moq;
+﻿using Autofac;
+using Autofac.Extras.Moq;
 using CaelumCoreLibrary.Builders;
 using CaelumCoreLibrary.Cards;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
 using Xunit;
 
 namespace CaelumCoreLibrary.Tests.Builders
@@ -42,6 +45,24 @@ namespace CaelumCoreLibrary.Tests.Builders
 
             // Assert
             Assert.Throws<ArgumentException>(() => deckBuilderBasic.PrepareOutputFolder(outputDir));
+        }
+
+        [Fact]
+        public void PrepareOutputDirectory_MaxFileDeleteLimitReached_ShouldFail()
+        {
+            // Arrange
+            using var mock = AutoMock.GetLoose();
+            var testDir = @"C:\Users\Example User\Example Folder";
+            var tooManyFiles = DeckBuilderUtilities.MaxFilesAllowedForDeleting + 1;
+
+            mock.Mock<IFileSystem>().Setup(x => x.Directory.GetFiles(testDir)).Returns(new string[tooManyFiles + 1]);
+
+            var deckBuilderBasic = mock.Create<DeckBuilderBasic>();
+
+            // Act
+
+            // Assert
+            Assert.Throws<ArgumentException>(() => deckBuilderBasic.PrepareOutputFolder(testDir));
         }
     }
 }

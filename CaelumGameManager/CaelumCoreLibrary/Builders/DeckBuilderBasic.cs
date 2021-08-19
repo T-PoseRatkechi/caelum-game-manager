@@ -7,6 +7,7 @@ namespace CaelumCoreLibrary.Builders
 {
     using System;
     using System.IO;
+    using System.IO.Abstractions;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Utilities;
     using Microsoft.Extensions.Logging;
@@ -16,15 +17,19 @@ namespace CaelumCoreLibrary.Builders
     /// </summary>
     public class DeckBuilderBasic : IDeckBuilder
     {
-        private ILogger log;
+        private readonly ILogger log;
+        private readonly IFileSystem fileSystem;
+        private readonly int maxFilesDeleted = DeckBuilderUtilities.MaxFilesAllowedForDeleting;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
-        public DeckBuilderBasic(ILogger log)
+        /// <param name="log">File system.</param>
+        public DeckBuilderBasic(ILogger log, IFileSystem fileSystem)
         {
             this.log = log;
+            this.fileSystem = fileSystem;
         }
 
         /// <inheritdoc/>
@@ -48,7 +53,8 @@ namespace CaelumCoreLibrary.Builders
         /// Prepares output folder for building.
         /// </summary>
         /// <param name="outputDir">Output folder.</param>
-        public void PrepareOutputFolder(string outputDir, bool ignoreFileCountWarning = false)
+        /// <param name="ignoreMaxFilesWarning">Flag indicating whether to ignore the maximum allowed files for deleting.</param>
+        public void PrepareOutputFolder(string outputDir, bool ignoreMaxFilesWarning = false)
         {
             if (string.IsNullOrWhiteSpace(outputDir))
             {
@@ -60,8 +66,28 @@ namespace CaelumCoreLibrary.Builders
             // Disallow potentially unwanted output folders.
             if (!DeckBuilderUtilities.IsValidOutputDirectory(outputDir))
             {
-                throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
+                throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! FIX ASAP!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
             }
+
+            string[] outputDirFiles = this.fileSystem.Directory.GetFiles(outputDir);
+
+            // Check number files that will be deleted exceeds max limit.
+            // This check can be skipped by setting ignoreMaxFilesWarning to true.
+            if (outputDirFiles.Length > this.maxFilesDeleted && !ignoreMaxFilesWarning)
+            {
+                throw new ArgumentException($"!!!OUTPUT DIRECTORY CONTAINS MORE FILES THAN ALLOWED TO DELETE {this.maxFilesDeleted}!!! DELETE MANUALLY OR CHANGE THIS SETTING!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
+            }
+
+            this.log.LogInformation("Preparing output folder");
+
+            this.log.LogDebug("Deleting {NumFiles} files", outputDirFiles.Length);
+            foreach (var file in outputDirFiles)
+            {
+                File.Delete(file);
+                this.log.LogDebug("Deleted file: {FilePath}", file);
+            }
+
+            this.log.LogInformation("Output folder prepared");
         }
     }
 }

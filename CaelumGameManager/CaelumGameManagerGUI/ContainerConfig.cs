@@ -5,6 +5,7 @@
 
 namespace CaelumGameManagerGUI
 {
+    using System.IO.Abstractions;
     using System.Linq;
     using System.Reflection;
     using Autofac;
@@ -61,6 +62,9 @@ namespace CaelumGameManagerGUI
             var loggerFactory = new LoggerFactory().AddSerilog(Log.Logger);
             var logger = loggerFactory.CreateLogger("Logger");
             builder.RegisterInstance(logger).As<Microsoft.Extensions.Logging.ILogger>();
+
+            // Filesystem
+            builder.RegisterType<FileSystem>().As<IFileSystem>().SingleInstance();
 
             return builder.Build();
         }

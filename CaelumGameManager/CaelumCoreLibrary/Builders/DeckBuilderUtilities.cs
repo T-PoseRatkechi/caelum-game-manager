@@ -15,6 +15,11 @@ namespace CaelumCoreLibrary.Builders
     public static class DeckBuilderUtilities
     {
         /// <summary>
+        /// Maximum allowed amount of files to exist in an output directory prior to deleting.
+        /// </summary>
+        public const int MaxFilesAllowedForDeleting = 256;
+
+        /// <summary>
         /// List of known invalid output directories.
         /// </summary>
         private static readonly string[] InvalidOutputDirectories = new string[]
