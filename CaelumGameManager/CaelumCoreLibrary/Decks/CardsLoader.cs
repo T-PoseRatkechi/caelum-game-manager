@@ -39,8 +39,8 @@ namespace CaelumCoreLibrary.Decks
         {
             List<CardModel> installedCards = new();
 
-            this.AddCardsFromFolder(this.toolsDir, installedCards);
-            this.AddCardsFromFolder(this.gameCardsDir, installedCards);
+            this.AddCardsFromFolder(installedCards, this.toolsDir);
+            this.AddCardsFromFolder(installedCards, this.gameCardsDir);
 
             return installedCards;
         }
@@ -48,8 +48,9 @@ namespace CaelumCoreLibrary.Decks
         /// <summary>
         /// Adds every card found in <paramref name="folder"/> to <paramref name="cardsList"/>.
         /// </summary>
+        /// <param name="cardsList">List to add new cards to.</param>
         /// <param name="folder">Folder to seach for cards in.</param>
-        private void AddCardsFromFolder(string folder, List<CardModel> cardsList)
+        private void AddCardsFromFolder(List<CardModel> cardsList, string folder)
         {
             foreach (string file in Directory.GetDirectories(folder))
             {

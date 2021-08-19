@@ -12,28 +12,31 @@ namespace CaelumCoreLibrary.Tests.Decks
         [Fact]
         public void AddCard_AddingCard_ShouldAddToDeck()
         {
-            using (var mock = AutoMock.GetLoose())
-            {
-                mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+            using var mock = AutoMock.GetLoose();
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
 
-                // Arrange
-                var deck = mock.Create<Deck>();
-                var newCard = new CardModel();
+            // Arrange
+            var deck = mock.Create<Deck>();
 
-                // Act
-                deck.AddCard(newCard);
+            var newCard = new CardModel();
 
-                // Assert
-                Assert.True(deck.Cards.Count == 1);
-                Assert.Contains(newCard, deck.Cards);
-            }
+            // Act
+            deck.AddCard(newCard);
+
+            // Assert
+            Assert.True(deck.Cards.Count == 1);
+            Assert.Contains(newCard, deck.Cards);
         }
 
         [Fact]
         public void AddCard_AddingDuplicateCardByInstance_ShouldFail()
         {
+            using var mock = AutoMock.GetLoose();
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+
             // Arrange
-            var deck = new Deck(null, null); // TODO: Mock.
+            var deck = mock.Create<Deck>();
+
             var newCard = new CardModel();
 
             // Act
@@ -46,8 +49,11 @@ namespace CaelumCoreLibrary.Tests.Decks
         [Fact]
         public void AddCard_AddingDuplicateCardByCardId_ShouldFail()
         {
+            using var mock = AutoMock.GetLoose();
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+
             // Arrange
-            var deck = new Deck(null, null); // TODO: Mock.
+            var deck = mock.Create<Deck>();
 
             var firstCard = new CardModel()
             {
@@ -69,8 +75,12 @@ namespace CaelumCoreLibrary.Tests.Decks
         [Fact]
         public void HideCard_HidingCard_ShouldSetHidePropTrueInDeck()
         {
+            using var mock = AutoMock.GetLoose();
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+
             // Arrange
-            var deck = new Deck(null, null); // TODO: Mock.
+            var deck = mock.Create<Deck>();
+
             var newCard = new CardModel();
 
             // Act
@@ -85,8 +95,12 @@ namespace CaelumCoreLibrary.Tests.Decks
         [Fact]
         public void HideCard_HidingAlreadyHiddenCards_ShouldFail()
         {
+            using var mock = AutoMock.GetLoose();
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+
             // Arrange
-            var deck = new Deck(null, null); // TODO: Mock.
+            var deck = mock.Create<Deck>();
+
             var newCard = new CardModel();
 
             // Act

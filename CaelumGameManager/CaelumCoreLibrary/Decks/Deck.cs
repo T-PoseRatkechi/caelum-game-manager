@@ -28,6 +28,9 @@ namespace CaelumCoreLibrary.Decks
         public Deck(ICardsLoader cardsLoader)
         {
             this.cardsLoader = cardsLoader;
+
+            // Load initial cards.
+            this.Cards = cardsLoader.GetInstalledCards();
         }
 
         /// <inheritdoc/>
