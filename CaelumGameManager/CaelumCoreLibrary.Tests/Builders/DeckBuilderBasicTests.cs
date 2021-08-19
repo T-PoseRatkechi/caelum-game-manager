@@ -19,7 +19,7 @@ namespace CaelumCoreLibrary.Tests.Builders
             using var mock = AutoMock.GetLoose();
             var testDir = @"C:\Users\Example User\Example Folder";
 
-            mock.Mock<IFileSystem>().Setup(x => x.Directory.GetFiles(testDir)).Returns(new string[] { });
+            mock.Mock<IFileSystem>().Setup(x => x.Directory.GetFiles(testDir)).Returns(Array.Empty<string>());
 
             var deckBuilderBasic = mock.Create<DeckBuilderBasic>();
 
