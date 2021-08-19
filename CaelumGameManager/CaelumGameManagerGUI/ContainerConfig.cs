@@ -53,7 +53,9 @@ namespace CaelumGameManagerGUI
             // Writer.
             builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<CaelumConfig>().As<ICaelumConfig>().SingleInstance();
+
             builder.RegisterType<CardParser>().As<ICardParser>().SingleInstance();
+            builder.RegisterType<CardFactory>().As<ICardFactory>().SingleInstance();
 
             // Deck builders.
             builder.RegisterType<DeckBuilderBasic>().As<IDeckBuilder>().SingleInstance();

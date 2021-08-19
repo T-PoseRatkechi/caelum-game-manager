@@ -15,6 +15,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
+    using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
     using Serilog;
 
@@ -25,6 +26,7 @@ namespace CaelumGameManagerGUI.ViewModels
     {
         private ILogger logger = Serilog.Log.Logger;
         private IGameInstance _currentGame;
+        private ICardFactory _cardFactory;
 
         private BindableCollection<CardModel> gameDeck;
 
@@ -43,12 +45,12 @@ namespace CaelumGameManagerGUI.ViewModels
                 var deckBuilderBasic = scope.Resolve<IDeckBuilder>();
 
                 this._currentGame = gameInstanceFactory.CreateGameInstance("Persona 4 Golden", deckBuilderBasic);
+                this._cardFactory = scope.Resolve<ICardFactory>();
             }
 
-            this.gameDeck = new BindableCollection<CardModel>(this.CurrentGame.Deck.Cards);
-            this.gameDeck.CollectionChanged += this.OnDeckChange;
+            this.gameDeck = new BindableDeckModel(this.CurrentGame.Deck);
 
-            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this.gameDeck));
+            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this._cardFactory, this.gameDeck));
 
             try
             {
@@ -64,10 +66,6 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             base.OnViewReady(view);
             this.logger.Information("Caelum Game Manager ready");
-        }
-
-        private void OnDeckChange(object sender, NotifyCollectionChangedEventArgs e)
-        {
         }
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)

@@ -11,7 +11,6 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
-    using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
@@ -22,9 +21,11 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class DeckViewModel : Screen
     {
-        private readonly IWindowManager windowManager = new WindowManager();
         private IGameInstance game;
-        private BindableCollection<CardModel> deck;
+        private ICardFactory _cardFactory;
+
+        private readonly IWindowManager windowManager = new WindowManager();
+        private BindableCollection<CardModel> _deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
@@ -34,12 +35,13 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGameInstance game, BindableCollection<CardModel> deck)
+        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, BindableCollection<CardModel> deck)
         {
             this.game = game;
-            this.deck = deck;
+            this._deck = deck;
+            this._cardFactory = cardFactory;
 
-            this.FilteredDeck = CollectionViewSource.GetDefaultView(this.deck);
+            this.FilteredDeck = CollectionViewSource.GetDefaultView(this._deck);
         }
 
         /// <summary>
@@ -124,11 +126,11 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 if (selectedItem != null)
                 {
-                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this.deck, selectedItem as CardModel));
+                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck, selectedItem as CardModel));
                     return;
                 }
 
-                this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this.deck));
+                this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck));
             }
         }
 

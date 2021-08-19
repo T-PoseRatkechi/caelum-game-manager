@@ -30,6 +30,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         private BindableCollection<CardModel> cards;
         private CardModel card;
         private IGameInstance game;
+        private ICardFactory cardFactory;
 
         private string _cardId;
         private string _cardName;
@@ -41,9 +42,10 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public CreateCardViewModel(IGameInstance game, BindableCollection<CardModel> deckCards, CardModel card = null)
+        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableCollection<CardModel> deckCards, CardModel card = null)
         {
             this.cards = deckCards;
+            this.cardFactory = cardFactory;
             this.game = game;
             this.card = card;
 
@@ -223,13 +225,12 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                     newCard.Version = cardVersion;
                     newCard.Type = cardType;
 
-                    this.game.CreateCard(newCard);
+                    this.cardFactory.CreateCard(this.game.GameInstall, newCard);
+                    this.cards.Add(newCard);
 
                     this.CardDisplay = new CardViewModel(newCard);
 
                     this.NotifyOfPropertyChange(() => this.CardDisplay);
-
-                    this.cards.Add(newCard);
                 }
                 catch (Exception e)
                 {
