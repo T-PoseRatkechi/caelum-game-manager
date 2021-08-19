@@ -9,6 +9,7 @@ namespace CaelumCoreLibrary.Games
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
+    using CaelumCoreLibrary.Decks;
 
     /// <summary>
     /// Game instance interface.
@@ -23,22 +24,12 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Gets game config.
         /// </summary>
-        IGameConfig GameConfig { get; }
+        IGameConfigManager GameConfig { get; }
 
         /// <summary>
         /// Gets game's deck of cards.
         /// </summary>
-        List<CardModel> Deck { get; }
-
-        /// <summary>
-        /// Save config to file.
-        /// </summary>
-        void SaveGameConfig();
-
-        /// <summary>
-        /// Load config from file.
-        /// </summary>
-        void LoadGameConfig();
+        IDeck Deck { get; }
 
         /// <summary>
         /// Builds current card in deck to output.

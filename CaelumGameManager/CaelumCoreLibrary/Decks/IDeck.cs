@@ -16,7 +16,7 @@
         /// <summary>
         /// Loads deck cards.
         /// </summary>
-        void LoadDeck();
+        void LoadDeckCards();
 
         /// <summary>
         /// Adds <paramref name="cardToAdd"/> to deck.

@@ -6,33 +6,23 @@
 namespace CaelumCoreLibrary.Configs
 {
     /// <summary>
-    /// Interface for game configs.
+    /// GameConfigManager interface.
     /// </summary>
-    public interface IGameConfig
+    public interface IGameConfigManager
     {
         /// <summary>
-        /// Gets or sets the game install path.
+        /// Gets game config model.
         /// </summary>
-        string GameInstallPath { get; set; }
+        GameConfigModel Settings { get; }
 
         /// <summary>
-        /// Gets or sets the game launcher.
+        /// Load config from file.
         /// </summary>
-        string GameLauncher { get; set; }
+        void LoadGameConfig();
 
         /// <summary>
-        /// Gets or sets the game's theme.
+        /// Save config to file.
         /// </summary>
-        string GameTheme { get; set; }
-
-        /// <summary>
-        /// Gets or sets the game's output directory.
-        /// </summary>
-        string OutputDirectory { get; set; }
-
-        /// <summary>
-        /// Gets or sets the game's deck builder by name.
-        /// </summary>
-        string DeckBuilderName { get; set; }
+        void SaveGameConfig();
     }
 }

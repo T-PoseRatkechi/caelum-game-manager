@@ -13,6 +13,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using Autofac;
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Games;
     using Caliburn.Micro;
     using Serilog;
@@ -35,12 +36,13 @@ namespace CaelumGameManagerGUI.ViewModels
 
             using (var scope = container.BeginLifetimeScope())
             {
-                this._currentGame = scope.Resolve<IGameInstance>(
-                    new NamedParameter("gameName", "Persona 4 Golden")
-                    );
+                var gameInstanceFactory = scope.Resolve<IGameInstanceFactory>();
+
+                this._currentGame = gameInstanceFactory.CreateGameInstance("Kingdom Hearts 3");
             }
 
-            this.gameDeck = new BindableCollection<CardModel>(this.CurrentGame.Deck);
+            this._currentGame.Deck.LoadDeckCards();
+            this.gameDeck = new BindableCollection<CardModel>(this.CurrentGame.Deck.Cards);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
             this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this.gameDeck));

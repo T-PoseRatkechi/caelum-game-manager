@@ -19,17 +19,14 @@ namespace CaelumCoreLibrary.Decks
     /// </summary>
     public class Deck : IDeck
     {
-        private readonly ICaelumConfig caelumConfig;
         private readonly ICardsLoader cardsLoader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Deck"/> class.
         /// </summary>
-        /// <param name="caelumConfig">Caelum config to ues for directories.</param>
         /// <param name="cardsLoader">Cards loader to use.</param>
-        public Deck(ICaelumConfig caelumConfig, ICardsLoader cardsLoader)
+        public Deck(ICardsLoader cardsLoader)
         {
-            this.caelumConfig = caelumConfig;
             this.cardsLoader = cardsLoader;
         }
 
@@ -37,7 +34,7 @@ namespace CaelumCoreLibrary.Decks
         public List<CardModel> Cards { get; private set; }
 
         /// <inheritdoc/>
-        public void LoadDeck()
+        public void LoadDeckCards()
         {
             // Load installed cards.
             this.Cards = this.cardsLoader.GetInstalledCards();

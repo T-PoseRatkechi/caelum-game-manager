@@ -3,18 +3,18 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-namespace CaelumCoreLibrary.Builders
+namespace CaelumCoreLibrary.Games
 {
     /// <summary>
-    /// Interface for DeckBuilderFactory.
+    /// GameInstanceFactory interface.
     /// </summary>
-    public interface IDeckBuilderFactory
+    public interface IGameInstanceFactory
     {
         /// <summary>
-        /// Gets deck builder by builder name.
+        /// Creates a new game instance.
         /// </summary>
-        /// <param name="builderName">Builder name.</param>
-        /// <returns>Deck builder.</returns>
-        public IDeckBuilder CreateDeckBuilderByName(string builderName);
+        /// <param name="gameName">Name of game.</param>
+        /// <returns>New <seealso cref="IGameInstance"/>.</returns>
+        IGameInstance CreateGameInstance(string gameName);
     }
 }

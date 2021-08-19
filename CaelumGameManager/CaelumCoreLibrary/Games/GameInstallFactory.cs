@@ -5,15 +5,28 @@
 
 namespace CaelumCoreLibrary.Games
 {
+    using CaelumCoreLibrary.Configs;
+
     /// <summary>
     /// Base implementation of <seealso cref="IGameInstallFactory"/>.
     /// </summary>
     public class GameInstallFactory : IGameInstallFactory
     {
-        /// <inheritdoc/>
-        public IGameInstall GetGameInstall(string name, string gamesDirectory)
+        private readonly ICaelumConfig caelumConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameInstallFactory"/> class.
+        /// </summary>
+        /// <param name="caelumConfig">Caelum config.</param>
+        public GameInstallFactory(ICaelumConfig caelumConfig)
         {
-            return new GameInstall(name, gamesDirectory);
+            this.caelumConfig = caelumConfig;
+        }
+
+        /// <inheritdoc/>
+        public IGameInstall CreateGameInstall(string name)
+        {
+            return new GameInstall(name, this.caelumConfig.GamesDirectory);
         }
     }
 }

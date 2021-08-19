@@ -23,7 +23,7 @@ namespace CaelumCoreLibrary.Builders
         private ILogger log = Log.Logger.WithCallerSyntax();
 
         /// <inheritdoc/>
-        public IDeckBuilder GetDeckBuilderByName(string builderName)
+        public IDeckBuilder CreateDeckBuilderByName(string builderName)
         {
             if (string.IsNullOrEmpty(builderName))
             {

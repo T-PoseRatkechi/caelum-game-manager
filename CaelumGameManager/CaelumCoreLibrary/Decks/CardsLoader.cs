@@ -27,7 +27,7 @@ namespace CaelumCoreLibrary.Decks
         /// <param name="caelumConfig">Caelum config to use for directories.</param>
         /// <param name="gameInstall">Game install instance.</param>
         /// <param name="cardParser">Card parser to use.</param>
-        public CardsLoader(ICaelumConfig caelumConfig, IGameInstall gameInstall, ICardParser cardParser)
+        public CardsLoader(ICaelumConfig caelumConfig, ICardParser cardParser, IGameInstall gameInstall)
         {
             this.toolsDir = caelumConfig.ToolsDirectory;
             this.gameCardsDir = gameInstall.CardsDirectory;

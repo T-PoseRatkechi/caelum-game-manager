@@ -14,8 +14,7 @@ namespace CaelumCoreLibrary.Games
         /// Creates a new <seealso cref="IGameInstall"/> instance.
         /// </summary>
         /// <param name="name">Game name.</param>
-        /// <param name="gamesDirectory">Game directory to create game install in.</param>
         /// <returns>New <seealso cref="IGameInstall"/> instance.</returns>
-        IGameInstall GetGameInstall(string name, string gamesDirectory);
+        IGameInstall CreateGameInstall(string name);
     }
 }

@@ -9,7 +9,10 @@ namespace CaelumGameManagerGUI
     using System.Reflection;
     using Autofac;
     using CaelumCoreLibrary.Builders;
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
+    using CaelumCoreLibrary.Decks;
+    using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Writers;
 
     /// <summary>
@@ -25,15 +28,29 @@ namespace CaelumGameManagerGUI
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterAssemblyTypes(Assembly.Load(nameof(CaelumCoreLibrary)))
+            var caelumLibrary = Assembly.Load(nameof(CaelumCoreLibrary));
+
+            /*
+            builder.RegisterAssemblyTypes(caelumLibrary)
                 .Where(t => t.Namespace.Contains("Configs") ||
                             t.Namespace.Contains("Games") ||
                             t.Namespace.Contains("Decks"))
-                .As(t => t.GetInterfaces().FirstOrDefault(i => i.Name == "I" + t.Name));
+                .AsImplementedInterfaces();
+            */
 
+            // Factories as single instance.
+            builder.RegisterAssemblyTypes(caelumLibrary)
+                .Where(t => t.Namespace.Contains("Configs") ||
+                            t.Namespace.Contains("Games") ||
+                            t.Namespace.Contains("Decks"))
+                .Where(t => t.Name.Contains("Factory"))
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            // Writer.
             builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
-            builder.RegisterType<DeckBuilderFactory>().As<IDeckBuilderFactory>().SingleInstance();
             builder.RegisterType<CaelumConfig>().As<ICaelumConfig>().SingleInstance();
+            builder.RegisterType<CardParser>().As<ICardParser>().SingleInstance();
 
             return builder.Build();
         }
