@@ -6,17 +6,28 @@
 namespace CaelumCoreLibrary.Builders
 {
     using CaelumCoreLibrary.Cards;
-    using Serilog;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Simple deck builder: copy and paste, file overwriting, patching, etc.
     /// </summary>
-    public class DeckBuilderSimple : IDeckBuilder
+    public class DeckBuilderBasic : IDeckBuilder
     {
+        private ILogger log;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
+        /// </summary>
+        /// <param name="log">Logger.</param>
+        public DeckBuilderBasic(ILogger log)
+        {
+            this.log = log;
+        }
+
         /// <inheritdoc/>
         public void Build(CardModel[] deck, string outputDir)
         {
-            Log.Information("Building with simple deck builder");
+            this.log.LogInformation("Using basic deck builder");
         }
     }
 }

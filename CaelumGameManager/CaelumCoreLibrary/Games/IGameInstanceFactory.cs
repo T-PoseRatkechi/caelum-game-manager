@@ -5,6 +5,8 @@
 
 namespace CaelumCoreLibrary.Games
 {
+    using CaelumCoreLibrary.Builders;
+
     /// <summary>
     /// GameInstanceFactory interface.
     /// </summary>
@@ -14,7 +16,8 @@ namespace CaelumCoreLibrary.Games
         /// Creates a new game instance.
         /// </summary>
         /// <param name="gameName">Name of game.</param>
+        /// <param name="deckBuilder">Deck builder to use for building output.</param>
         /// <returns>New <seealso cref="IGameInstance"/>.</returns>
-        IGameInstance CreateGameInstance(string gameName);
+        IGameInstance CreateGameInstance(string gameName, IDeckBuilder deckBuilder);
     }
 }

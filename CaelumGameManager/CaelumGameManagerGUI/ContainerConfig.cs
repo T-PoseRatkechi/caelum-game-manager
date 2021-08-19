@@ -14,6 +14,8 @@ namespace CaelumGameManagerGUI
     using CaelumCoreLibrary.Decks;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Writers;
+    using Microsoft.Extensions.Logging;
+    using Serilog;
 
     /// <summary>
     /// AutoFac container.
@@ -51,6 +53,14 @@ namespace CaelumGameManagerGUI
             builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<CaelumConfig>().As<ICaelumConfig>().SingleInstance();
             builder.RegisterType<CardParser>().As<ICardParser>().SingleInstance();
+
+            // Deck builders.
+            builder.RegisterType<DeckBuilderBasic>().As<IDeckBuilder>().SingleInstance();
+
+            // Logging.
+            var loggerFactory = new LoggerFactory().AddSerilog(Log.Logger);
+            var logger = loggerFactory.CreateLogger("Logger");
+            builder.RegisterInstance(logger).As<Microsoft.Extensions.Logging.ILogger>();
 
             return builder.Build();
         }

@@ -7,7 +7,7 @@ namespace CaelumCoreLibrary.Common
 {
     using System.IO;
     using System.Runtime.CompilerServices;
-    using Serilog;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// https://stackoverflow.com/a/57615023
@@ -16,6 +16,7 @@ namespace CaelumCoreLibrary.Common
     /// </summary>
     public static class LogContext
     {
+        /*
         /// <summary>
         /// Adds caller syntax to logger.
         /// </summary>
@@ -35,5 +36,6 @@ namespace CaelumCoreLibrary.Common
                 .ForContext("FileName", Path.GetFileNameWithoutExtension(filePath))
                 .ForContext("LineNumber", lineNumber);
         }
+        */
     }
 }

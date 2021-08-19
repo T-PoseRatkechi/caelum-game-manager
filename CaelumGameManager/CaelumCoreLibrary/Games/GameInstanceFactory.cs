@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Games
 {
     using System.IO;
+    using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
 
@@ -39,12 +40,12 @@ namespace CaelumCoreLibrary.Games
         }
 
         /// <inheritdoc/>
-        public IGameInstance CreateGameInstance(string gameName)
+        public IGameInstance CreateGameInstance(string gameName, IDeckBuilder deckBuilder)
         {
             var gameInstall = this.gameInstallFactory.CreateGameInstall(gameName);
             var cardsLoader = this.cardsLoaderFactory.CreateCardsLoader(gameInstall);
 
-            IGameInstance gameInstance = new GameInstance()
+            IGameInstance gameInstance = new GameInstance(deckBuilder)
             {
                 GameInstall = gameInstall,
                 GameConfig = this.gameConfigManagerFactory.CreateGameConfigManager(Path.Join(gameInstall.BaseDirectory, "game-config.json")),

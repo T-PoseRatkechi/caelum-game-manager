@@ -16,11 +16,14 @@ namespace CaelumCoreLibrary.Games
     /// </summary>
     public class GameInstance : IGameInstance
     {
+        private readonly IDeckBuilder deckBuilder;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GameInstance"/> class.
         /// </summary>
-        public GameInstance()
+        public GameInstance(IDeckBuilder deckBuilder)
         {
+            this.deckBuilder = deckBuilder;
         }
 
         /// <inheritdoc/>
@@ -32,12 +35,10 @@ namespace CaelumCoreLibrary.Games
         /// <inheritdoc/>
         public IDeck Deck { get; init; }
 
-        private IDeckBuilder DeckBuilder { get; set; }
-
         /// <inheritdoc/>
         public void BuildDeck()
         {
-            throw new NotImplementedException();
+            this.deckBuilder.Build(this.Deck.Cards.ToArray(), this.GameInstall.BuildDirectory);
         }
 
         /// <inheritdoc/>

@@ -6,17 +6,28 @@
 namespace CaelumCoreLibrary.Builders
 {
     using CaelumCoreLibrary.Cards;
-    using Serilog;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Deck builder for Persona 4 Golden.
     /// </summary>
     public class DeckBuilderP4G : IDeckBuilder
     {
+        private readonly ILogger log;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeckBuilderP4G"/> class.
+        /// </summary>
+        /// <param name="log">Logger.</param>
+        public DeckBuilderP4G(ILogger log)
+        {
+            this.log = log;
+        }
+
         /// <inheritdoc/>
         public void Build(CardModel[] deck, string outputDir)
         {
-            Log.Information($"Building deck for P4G. Total Cards: {deck.Length} - Output: {outputDir}");
+            this.log.LogInformation($"Building deck for P4G. Total Cards: {deck.Length} - Output: {outputDir}");
         }
     }
 }

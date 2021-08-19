@@ -3,20 +3,19 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+#pragma warning disable SA1309 // Field names should not begin with underscore
+
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Threading;
     using System.Threading.Tasks;
     using Autofac;
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
-    using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Games;
     using Caliburn.Micro;
-    using Serilog;
 
     /// <summary>
     /// Shell VM.
@@ -37,11 +36,11 @@ namespace CaelumGameManagerGUI.ViewModels
             using (var scope = container.BeginLifetimeScope())
             {
                 var gameInstanceFactory = scope.Resolve<IGameInstanceFactory>();
+                var deckBuilderBasic = scope.Resolve<IDeckBuilder>();
 
-                this._currentGame = gameInstanceFactory.CreateGameInstance("Kingdom Hearts 3");
+                this._currentGame = gameInstanceFactory.CreateGameInstance("Persona 4 Golden", deckBuilderBasic);
             }
 
-            this._currentGame.Deck.LoadDeckCards();
             this.gameDeck = new BindableCollection<CardModel>(this.CurrentGame.Deck.Cards);
             this.gameDeck.CollectionChanged += this.OnDeckChange;
 
