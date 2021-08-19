@@ -5,7 +5,10 @@
 
 namespace CaelumCoreLibrary.Builders
 {
+    using System;
+    using System.IO;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Utilities;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -27,7 +30,38 @@ namespace CaelumCoreLibrary.Builders
         /// <inheritdoc/>
         public void Build(CardModel[] deck, string outputDir)
         {
-            this.log.LogInformation("Using basic deck builder");
+            this.log.LogDebug("Using basic deck builder");
+
+            foreach (var card in deck)
+            {
+                string cardDataDir = Path.Join(card.InstallDirectory, "Data");
+
+                foreach (var dataFile in Directory.GetFiles(cardDataDir, "*.*", SearchOption.AllDirectories))
+                {
+                    var outputFilePath = dataFile.Replace(cardDataDir, outputDir);
+                    File.Copy(dataFile, outputFilePath);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prepares output folder for building.
+        /// </summary>
+        /// <param name="outputDir">Output folder.</param>
+        public void PrepareOutputFolder(string outputDir, bool ignoreFileCountWarning = false)
+        {
+            if (string.IsNullOrWhiteSpace(outputDir))
+            {
+                throw new ArgumentException($"'{nameof(outputDir)}' cannot be null or whitespace.", nameof(outputDir));
+            }
+
+            // TODO: Adjust for optimized building.
+
+            // Disallow potentially unwanted output folders.
+            if (!DeckBuilderUtilities.IsValidOutputDirectory(outputDir))
+            {
+                throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
+            }
         }
     }
 }

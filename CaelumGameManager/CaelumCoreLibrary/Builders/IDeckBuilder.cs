@@ -13,7 +13,7 @@ namespace CaelumCoreLibrary.Builders
     public interface IDeckBuilder
     {
         /// <summary>
-        /// Builds card in deck.
+        /// Builds output from cards in deck.
         /// </summary>
         /// <param name="deck">Deck of cards to build.</param>
         /// <param name="outputDir">Directory to build card at.</param>
