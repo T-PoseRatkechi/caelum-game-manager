@@ -5,20 +5,17 @@
 
 namespace CaelumCoreLibrary.Decks
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Games;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Default implementation of <seealso cref="ICardsLoaderFactory"/>.
     /// </summary>
     public class CardsLoaderFactory : ICardsLoaderFactory
     {
+        private readonly ILogger log;
         private readonly ICaelumConfig caelumConfig;
         private readonly ICardParser cardParser;
 
@@ -27,8 +24,9 @@ namespace CaelumCoreLibrary.Decks
         /// </summary>
         /// <param name="caelumConfig">Caelum config.</param>
         /// <param name="cardParser">Card parser.</param>
-        public CardsLoaderFactory(ICaelumConfig caelumConfig, ICardParser cardParser)
+        public CardsLoaderFactory(ILogger log, ICaelumConfig caelumConfig, ICardParser cardParser)
         {
+            this.log = log;
             this.caelumConfig = caelumConfig;
             this.cardParser = cardParser;
         }
@@ -36,7 +34,7 @@ namespace CaelumCoreLibrary.Decks
         /// <inheritdoc/>
         public ICardsLoader CreateCardsLoader(IGameInstall gameInstall)
         {
-            return new CardsLoader(this.caelumConfig, this.cardParser, gameInstall);
+            return new CardsLoader(this.log, this.caelumConfig, this.cardParser, gameInstall);
         }
     }
 }

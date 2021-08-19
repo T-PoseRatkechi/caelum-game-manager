@@ -11,12 +11,14 @@ namespace CaelumCoreLibrary.Decks
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Games;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Loads cards from tools and game install folder.
     /// </summary>
     public class CardsLoader : ICardsLoader
     {
+        private readonly ILogger log;
         private readonly ICardParser cardParser;
         private readonly string toolsDir;
         private readonly string gameCardsDir;
@@ -27,8 +29,9 @@ namespace CaelumCoreLibrary.Decks
         /// <param name="caelumConfig">Caelum config to use for directories.</param>
         /// <param name="gameInstall">Game install instance.</param>
         /// <param name="cardParser">Card parser to use.</param>
-        public CardsLoader(ICaelumConfig caelumConfig, ICardParser cardParser, IGameInstall gameInstall)
+        public CardsLoader(ILogger log, ICaelumConfig caelumConfig, ICardParser cardParser, IGameInstall gameInstall)
         {
+            this.log = log;
             this.toolsDir = caelumConfig.ToolsDirectory;
             this.gameCardsDir = gameInstall.CardsDirectory;
             this.cardParser = cardParser;
@@ -37,10 +40,14 @@ namespace CaelumCoreLibrary.Decks
         /// <inheritdoc/>
         public List<CardModel> GetInstalledCards()
         {
+            this.log.LogDebug("Loading installed cards");
+
             List<CardModel> installedCards = new();
 
             this.AddCardsFromFolder(installedCards, this.toolsDir);
             this.AddCardsFromFolder(installedCards, this.gameCardsDir);
+
+            this.log.LogInformation("Loaded {InstalledCardsTotal} total cards", installedCards.Count);
 
             return installedCards;
         }
@@ -52,6 +59,8 @@ namespace CaelumCoreLibrary.Decks
         /// <param name="folder">Folder to seach for cards in.</param>
         private void AddCardsFromFolder(List<CardModel> cardsList, string folder)
         {
+            this.log.LogDebug("Loading cards in folder {Folder}", folder);
+
             foreach (string file in Directory.GetDirectories(folder))
             {
                 // Parse card.
@@ -66,6 +75,7 @@ namespace CaelumCoreLibrary.Decks
 
                 // Add card to list.
                 cardsList.Add(card);
+                this.log.LogDebug("Loaded card {CardName} with Card ID {CardId}", card.Name, card.CardId);
             }
         }
     }
