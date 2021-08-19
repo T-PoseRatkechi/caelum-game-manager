@@ -5,6 +5,7 @@
 
 namespace CaelumCoreLibrary.Builders
 {
+    using System.Collections.Generic;
     using CaelumCoreLibrary.Cards;
 
     /// <summary>
@@ -17,6 +18,6 @@ namespace CaelumCoreLibrary.Builders
         /// </summary>
         /// <param name="deck">Deck of cards to build.</param>
         /// <param name="outputDir">Directory to build card at.</param>
-        void Build(CardModel[] deck, string outputDir);
+        void Build(List<CardModel> deck, string outputDir);
     }
 }

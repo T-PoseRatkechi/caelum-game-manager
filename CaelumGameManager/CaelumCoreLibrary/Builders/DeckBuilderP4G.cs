@@ -5,6 +5,7 @@
 
 namespace CaelumCoreLibrary.Builders
 {
+    using System.Collections.Generic;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
 
@@ -25,9 +26,9 @@ namespace CaelumCoreLibrary.Builders
         }
 
         /// <inheritdoc/>
-        public void Build(CardModel[] deck, string outputDir)
+        public void Build(List<CardModel> deck, string outputDir)
         {
-            this.log.LogInformation($"Building deck for P4G. Total Cards: {deck.Length} - Output: {outputDir}");
+            this.log.LogInformation($"Building deck for P4G. Total Cards: {deck.Count} - Output: {outputDir}");
         }
     }
 }

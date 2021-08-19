@@ -43,7 +43,7 @@ namespace CaelumCoreLibrary.Games
         public void BuildDeck()
         {
             this.log.LogInformation("Building deck");
-            this.deckBuilder.Build(this.Deck.Cards.ToArray(), this.GameInstall.BuildDirectory);
+            this.deckBuilder.Build(this.Deck.Cards, this.GameInstall.BuildDirectory);
         }
 
         /// <inheritdoc/>

@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Builders
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Abstractions;
     using CaelumCoreLibrary.Cards;
@@ -25,7 +26,7 @@ namespace CaelumCoreLibrary.Builders
         /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
-        /// <param name="log">File system.</param>
+        /// <param name="fileSystem">File system.</param>
         public DeckBuilderBasic(ILogger log, IFileSystem fileSystem)
         {
             this.log = log;
@@ -33,9 +34,11 @@ namespace CaelumCoreLibrary.Builders
         }
 
         /// <inheritdoc/>
-        public void Build(CardModel[] deck, string outputDir)
+        public void Build(List<CardModel> deck, string outputDir)
         {
             this.log.LogDebug("Using basic deck builder");
+
+            this.PrepareOutputFolder(outputDir);
 
             foreach (var card in deck)
             {
@@ -44,7 +47,7 @@ namespace CaelumCoreLibrary.Builders
                 foreach (var dataFile in Directory.GetFiles(cardDataDir, "*.*", SearchOption.AllDirectories))
                 {
                     var outputFilePath = dataFile.Replace(cardDataDir, outputDir);
-                    File.Copy(dataFile, outputFilePath);
+                    File.Copy(dataFile, outputFilePath, true);
                 }
             }
         }

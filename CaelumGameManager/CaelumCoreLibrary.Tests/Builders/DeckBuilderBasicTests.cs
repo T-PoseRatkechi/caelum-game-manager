@@ -13,17 +13,21 @@ namespace CaelumCoreLibrary.Tests.Builders
     public class DeckBuilderBasicTests
     {
         [Fact]
-        public void Build_Simple_ShouldWork()
+        public void Build_NoCardsToBuild_ShouldWork()
         {
             // Arrange
             using var mock = AutoMock.GetLoose();
+            var testDir = @"C:\Users\Example User\Example Folder";
+
+            mock.Mock<IFileSystem>().Setup(x => x.Directory.GetFiles(testDir)).Returns(new string[] { });
+
             var deckBuilderBasic = mock.Create<DeckBuilderBasic>();
 
             // Act
-            deckBuilderBasic.Build(new CardModel[] { }, "./");
+            var exception = Record.Exception(() => deckBuilderBasic.Build(new List<CardModel>() { }, testDir));
 
             // Assert
-
+            Assert.Null(exception);
         }
 
         [Theory]
