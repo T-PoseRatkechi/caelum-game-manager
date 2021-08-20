@@ -48,7 +48,9 @@ namespace CaelumGameManagerGUI.ViewModels
                 this._cardFactory = scope.Resolve<ICardFactory>();
             }
 
-            this.gameDeck = new BindableDeckModel(this.CurrentGame.Deck);
+            App.loggingLevelSwitch.MinimumLevel = this._currentGame.GameConfig.Settings.ShowDebugMessages ? Serilog.Events.LogEventLevel.Information : Serilog.Events.LogEventLevel.Debug;
+            Log.Verbose("Test");
+            this.gameDeck = new BindableDeckModel(this.CurrentGame.Deck, this.CurrentGame.GameConfig.Settings.ShowDebugMessages);
 
             this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this._cardFactory, this.gameDeck));
 
@@ -62,27 +64,37 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current <seealso cref="IGameInstance"/>.
+        /// </summary>
+        public IGameInstance CurrentGame
+        {
+            get { return this._currentGame; }
+            set { this._currentGame = value; }
+        }
+
+        /// <summary>
+        /// Gets the current game's name.
+        /// </summary>
+        public string GameName { get => this.CurrentGame.GameInstall.GameName; }
+
+        /// <summary>
+        /// Gets the <seealso cref="LogViewModel"/>.
+        /// </summary>
+        public LogViewModel LogVM { get; } = new();
+
+
+        /// <inheritdoc/>
         protected override void OnViewReady(object view)
         {
             base.OnViewReady(view);
             this.logger.Information("Caelum Game Manager ready");
         }
 
+        /// <inheritdoc/>
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            // this.CurrentGame.Deck = new List<ICard>(this.gameDeck);
-            // this.CurrentGame.WriteConfig();
             return base.OnDeactivateAsync(close, cancellationToken);
         }
-
-        public IGameInstance CurrentGame
-        {
-            get { return _currentGame; }
-            set { _currentGame = value; }
-        }
-
-        public string GameName { get => this.CurrentGame.GameInstall.GameName; }
-
-        public LogViewModel Log { get; } = new();
     }
 }

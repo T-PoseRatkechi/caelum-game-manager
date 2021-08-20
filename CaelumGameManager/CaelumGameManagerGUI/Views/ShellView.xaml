@@ -72,7 +72,7 @@
                         Grid.Row="0" Grid.RowSpan="3"
                         x:Name="ActiveItem"/>
             <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch"/>
-            <ContentControl x:Name="Log" Grid.Row="4"/>
+            <ContentControl x:Name="LogVM" Grid.Row="4"/>
         </Grid>
     </Grid>
 </mah:MetroWindow>

@@ -3,12 +3,14 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+#pragma warning disable SA1309 // Field names should not begin with underscore
+
 namespace CaelumGameManagerGUI.Models
 {
     using System;
-    using System.Linq;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Decks;
+    using CaelumGameManagerGUI.Resources.Localization;
     using Caliburn.Micro;
     using Serilog;
 
@@ -17,16 +19,24 @@ namespace CaelumGameManagerGUI.Models
     /// </summary>
     public class BindableDeckModel : BindableCollection<CardModel>
     {
-        private readonly IDeck deck;
+        private readonly IDeck _deck;
+
+        /// <summary>
+        /// Flag indiciating whether to check if deck cards and BindableDeck list are in sync.
+        /// Only enable if app confg debug is enabled.
+        /// </summary>
+        private readonly bool _checkSyncStatus;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BindableDeckModel"/> class.
         /// </summary>
         /// <param name="deck">Deck.</param>
-        public BindableDeckModel(IDeck deck)
+        /// <param name="checkSyncStatus">Flag indicating whether to check if lists are in-sync.</param>
+        public BindableDeckModel(IDeck deck, bool checkSyncStatus)
             : base(deck.Cards)
         {
-            this.deck = deck;
+            this._deck = deck;
+            this._checkSyncStatus = checkSyncStatus;
         }
 
         /// <inheritdoc/>
@@ -35,19 +45,23 @@ namespace CaelumGameManagerGUI.Models
             try
             {
                 // Adding new card to end of list.
-                if (index == this.deck.Cards.Count)
+                if (index == this._deck.Cards.Count)
                 {
-                    this.deck.AddCard(item);
+                    this._deck.AddCard(item);
                 }
 
                 // DragDrop moving card.
                 else
                 {
-                    this.deck.Cards.Insert(index, item);
+                    this._deck.Cards.Insert(index, item);
                 }
 
                 base.InsertItemBase(index, item);
-                this.CheckListSync();
+
+                if (this._checkSyncStatus)
+                {
+                    this.CheckListSync();
+                }
             }
             catch (Exception ex)
             {
@@ -55,22 +69,29 @@ namespace CaelumGameManagerGUI.Models
             }
         }
 
+        /// <summary>
+        /// Iterates over GameInstance's deck cards and this BindableDeck's cards are in the same order.
+        /// If not, logs an error and recommends a restart.
+        /// </summary>
         private void CheckListSync()
         {
-            for (int i = 0, total = this.deck.Cards.Count; i < total; i++)
+            for (int i = 0, total = this._deck.Cards.Count; i < total; i++)
             {
                 if (total != this.Count)
                 {
                     Log.Error(
-                        "Game deck mismatches bindable deck card count! Game Deck: {GameDeckTotalCards} Bindable Deck: {BindableDeckTotalCards} Restart recommended!",
-                        this.deck.Cards.Count,
+                        "Game deck mismatches bindable deck card count! Game Deck: {GameDeckTotalCards} Bindable Deck: {BindableDeckTotalCards}",
+                        this._deck.Cards.Count,
                         this.Count);
+                    Log.Error(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
                     break;
                 }
 
-                if (this.deck.Cards[i].CardId != this[i].CardId)
+                if (this._deck.Cards[i].CardId != this[i].CardId)
                 {
-                    Log.Error("Game deck and bindable deck are out of sync! Restart recommended!");
+                    Log.Error("Game deck and bindable deck are out of sync!");
+                    Log.Error(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
+                    break;
                 }
             }
         }

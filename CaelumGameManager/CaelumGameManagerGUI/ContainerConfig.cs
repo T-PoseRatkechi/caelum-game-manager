@@ -12,8 +12,6 @@ namespace CaelumGameManagerGUI
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
-    using CaelumCoreLibrary.Decks;
-    using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Writers;
     using Microsoft.Extensions.Logging;
     using Serilog;

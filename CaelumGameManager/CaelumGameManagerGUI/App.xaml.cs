@@ -15,6 +15,7 @@ namespace CaelumGameManagerGUI
     using CaelumCoreLibrary.Common;
     using CaelumGameManagerGUI.Logging;
     using Serilog;
+    using Serilog.Core;
     using WPFLocalizeExtension.Engine;
 
     /// <summary>
@@ -31,6 +32,8 @@ namespace CaelumGameManagerGUI
         /// Path to app log file.
         /// </summary>
         public static readonly string LogFilePath = Path.Join(Path.GetDirectoryName(AppPath), "Logs", $"{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.json");
+
+        public static LoggingLevelSwitch loggingLevelSwitch = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
@@ -50,54 +53,11 @@ namespace CaelumGameManagerGUI
 
             // Configure logger.
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.ControlledBy(loggingLevelSwitch)
                 .WriteTo.Sink(AppLogSink)
                 .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
                 .Enrich.WithThreadId()
                 .CreateLogger().WithCallerContext();
-
-            // Log.Information("Caelum Game Manager starting");
-
-            // Temp performance testing for GUI console log display.
-            //var dispatchTimer = new DispatcherTimer();
-            //int count = 0;
-            //dispatchTimer.Tick += (object sender, EventArgs args) =>
-            //{
-            //    if (count < 5000)
-            //    {
-            //        if (count > 40 && count < 44)
-            //        {
-            //            Log.Warning("Test warning {count}", count);
-            //        }
-            //        else if (count > 42 && count < 48)
-            //        {
-            //            Log.Error("Test error {count}", count);
-            //        }
-            //        else
-            //        {
-            //            Log.Information("Hello {count}", count);
-            //        }
-
-            //        try
-            //        {
-            //            if (count == 50)
-            //            {
-            //                int z = 0;
-            //                int test = 20 / z;
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Log.Error(ex, "Exception caught");
-            //            dispatchTimer.Stop();
-            //        }
-
-            //        count++;
-            //    }
-            //};
-
-            //dispatchTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            //dispatchTimer.Start();
         }
 
         /// <summary>

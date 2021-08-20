@@ -34,5 +34,10 @@ namespace CaelumCoreLibrary.Configs
         /// Gets or sets the game's deck builder by name.
         /// </summary>
         public string DeckBuilderName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to display debug messages.
+        /// </summary>
+        public bool ShowDebugMessages { get; set; }
     }
 }
