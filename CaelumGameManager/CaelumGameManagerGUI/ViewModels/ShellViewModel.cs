@@ -24,44 +24,20 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class ShellViewModel : Conductor<Screen>
     {
-        private ILogger logger = Serilog.Log.Logger;
-        private IGameInstance _currentGame;
-        private ICardFactory _cardFactory;
-
-        private BindableCollection<CardModel> gameDeck;
+        private IGameInstance currentGame;
+        private BindableDeckModel gameDeck;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
         /// </summary>
-        public ShellViewModel()
+        /// <param name="caelumCore">Caelum core.</param>
+        public ShellViewModel(CaelumCore caelumCore)
         {
-            this.logger.Information("Caelum Game Manager starting");
+            this.currentGame = caelumCore.GetGameInstance();
 
-            var container = ContainerConfig.Configure();
+            this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);
 
-            using (var scope = container.BeginLifetimeScope())
-            {
-                var gameInstanceFactory = scope.Resolve<IGameInstanceFactory>();
-                var deckBuilderBasic = scope.Resolve<IDeckBuilder>();
-
-                this._currentGame = gameInstanceFactory.CreateGameInstance("Persona 4 Golden", deckBuilderBasic);
-                this._cardFactory = scope.Resolve<ICardFactory>();
-            }
-
-            App.loggingLevelSwitch.MinimumLevel = this._currentGame.GameConfig.Settings.ShowDebugMessages ? Serilog.Events.LogEventLevel.Information : Serilog.Events.LogEventLevel.Debug;
-            Log.Verbose("Test");
-            this.gameDeck = new BindableDeckModel(this.CurrentGame.Deck, this.CurrentGame.GameConfig.Settings.ShowDebugMessages);
-
-            this.ActivateItemAsync(new DeckViewModel(this.CurrentGame, this._cardFactory, this.gameDeck));
-
-            try
-            {
-                this.CurrentGame.BuildDeck();
-            }
-            catch (Exception e)
-            {
-
-            }
+            this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, this.gameDeck));
         }
 
         /// <summary>
@@ -69,8 +45,8 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public IGameInstance CurrentGame
         {
-            get { return this._currentGame; }
-            set { this._currentGame = value; }
+            get { return this.currentGame; }
+            set { this.currentGame = value; }
         }
 
         /// <summary>
@@ -83,12 +59,11 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public LogViewModel LogVM { get; } = new();
 
-
         /// <inheritdoc/>
         protected override void OnViewReady(object view)
         {
             base.OnViewReady(view);
-            this.logger.Information("Caelum Game Manager ready");
+            Log.Information("Caelum Game Manager ready");
         }
 
         /// <inheritdoc/>

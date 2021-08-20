@@ -33,8 +33,6 @@ namespace CaelumGameManagerGUI
         /// </summary>
         public static readonly string LogFilePath = Path.Join(Path.GetDirectoryName(AppPath), "Logs", $"{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.json");
 
-        public static LoggingLevelSwitch loggingLevelSwitch = new();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
         /// </summary>
@@ -50,19 +48,39 @@ namespace CaelumGameManagerGUI
             {
                 Log.Warning("String key missing! Key: {key}, Culture: {culture}", evt.Key, LocalizeDictionary.Instance.Culture.Name);
             };
-
-            // Configure logger.
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.ControlledBy(loggingLevelSwitch)
-                .WriteTo.Sink(AppLogSink)
-                .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
-                .Enrich.WithThreadId()
-                .CreateLogger().WithCallerContext();
         }
+
+        /// <summary>
+        /// Gets log level controller.
+        /// </summary>
+        public static LoggingLevelSwitch LogLevelController { get; } = new();
 
         /// <summary>
         /// Gets the log sink for app GUI.
         /// </summary>
         public static CustomSink AppLogSink { get; } = new();
+
+        /// <inheritdoc/>
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            this.ConfigureLogger();
+            base.OnStartup(e);
+        }
+
+        /// <summary>
+        /// Configures global Serilog logger.
+        /// </summary>
+        private void ConfigureLogger()
+        {
+            // Configure logger.
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.ControlledBy(LogLevelController)
+                .WriteTo.Sink(AppLogSink)
+                .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
+                .Enrich.WithThreadId()
+                .CreateLogger().WithCallerContext();
+
+            Log.Debug("Logger ready");
+        }
     }
 }

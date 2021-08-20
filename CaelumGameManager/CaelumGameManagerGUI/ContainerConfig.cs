@@ -13,6 +13,9 @@ namespace CaelumGameManagerGUI
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Writers;
+    using CaelumGameManagerGUI.Models;
+    using CaelumGameManagerGUI.ViewModels;
+    using Caliburn.Micro;
     using Microsoft.Extensions.Logging;
     using Serilog;
 
@@ -63,8 +66,15 @@ namespace CaelumGameManagerGUI
             var logger = loggerFactory.CreateLogger("Logger");
             builder.RegisterInstance(logger).As<Microsoft.Extensions.Logging.ILogger>();
 
-            // Filesystem
+            // Filesystem.
             builder.RegisterType<FileSystem>().As<IFileSystem>().SingleInstance();
+
+            // Core
+            builder.RegisterType<CaelumCore>().SingleInstance();
+
+            // VVMs
+            builder.RegisterType<ShellViewModel>().SingleInstance();
+            builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
 
             return builder.Build();
         }
