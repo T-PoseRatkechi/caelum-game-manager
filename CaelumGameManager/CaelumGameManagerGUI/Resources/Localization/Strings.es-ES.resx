@@ -187,4 +187,7 @@
   <data name="ErrorRecommendRestartMessage" xml:space="preserve">
     <value>¡Error inesperado encontrado! ¡Se recomienda reiniciar!</value>
   </data>
+  <data name="BuildText" xml:space="preserve">
+    <value>Construir</value>
+  </data>
 </root>

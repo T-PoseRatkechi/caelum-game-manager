@@ -73,6 +73,9 @@ namespace CaelumCoreLibrary.Decks
                     throw new InvalidOperationException($@"Cannot add card because a card already exists with the id ""{card.CardId}""! File: {cardFolder}");
                 }
 
+                // Set card install dir.
+                card.InstallDirectory = cardFolder;
+
                 // Add card to list.
                 cardsList.Add(card);
                 this.log.LogDebug("Loaded card {CardName} with Card ID {CardId}", card.Name, card.CardId);

@@ -39,7 +39,10 @@ namespace CaelumCoreLibrary.Cards
                         throw new ArgumentException($"Could not create card because an installation folder for it already exists. Directory: {cardInstallDir}", nameof(card));
                     }
 
+                    // Create card install and data dir.
                     this.fileSystem.Directory.CreateDirectory(cardInstallDir);
+                    this.fileSystem.Directory.CreateDirectory(Path.Join(cardInstallDir, "Data"));
+
                     this.writer.WriteFile(Path.Join(cardInstallDir, "card.json"), card);
                     card.InstallDirectory = cardInstallDir;
 

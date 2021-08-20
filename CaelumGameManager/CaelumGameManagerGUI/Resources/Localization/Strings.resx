@@ -187,4 +187,7 @@
   <data name="ErrorRecommendRestartMessage" xml:space="preserve">
     <value>Encountered unexpected error! Restart recommended!</value>
   </data>
+  <data name="BuildText" xml:space="preserve">
+    <value>Build</value>
+  </data>
 </root>

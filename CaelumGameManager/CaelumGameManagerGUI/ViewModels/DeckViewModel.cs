@@ -136,6 +136,11 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
+        public void BuildDeck()
+        {
+            this.game.BuildDeck();
+        }
+
         /// <inheritdoc/>
         public void DragOver(IDropInfo dropInfo)
         {

@@ -27,6 +27,7 @@ namespace CaelumCoreLibrary.Games
         /// <param name="deckBuilder">Deck builder to use for building output.</param>
         public GameInstance(ILogger log, IDeckBuilder deckBuilder)
         {
+            this.log = log;
             this.deckBuilder = deckBuilder;
         }
 

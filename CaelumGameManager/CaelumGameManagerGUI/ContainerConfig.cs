@@ -55,6 +55,7 @@ namespace CaelumGameManagerGUI
             builder.RegisterType<JsonWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<CaelumConfig>().As<ICaelumConfig>().SingleInstance();
 
+            // Cards.
             builder.RegisterType<CardParser>().As<ICardParser>().SingleInstance();
             builder.RegisterType<CardFactory>().As<ICardFactory>().SingleInstance();
 
@@ -69,10 +70,10 @@ namespace CaelumGameManagerGUI
             // Filesystem.
             builder.RegisterType<FileSystem>().As<IFileSystem>().SingleInstance();
 
-            // Core
+            // Caelum Core.
             builder.RegisterType<CaelumCore>().SingleInstance();
 
-            // VVMs
+            // VMs.
             builder.RegisterType<ShellViewModel>().SingleInstance();
             builder.RegisterType<WindowManager>().As<IWindowManager>().SingleInstance();
 
