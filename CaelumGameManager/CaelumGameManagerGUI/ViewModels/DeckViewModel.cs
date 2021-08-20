@@ -157,10 +157,16 @@ namespace CaelumGameManagerGUI.ViewModels
                 // Remove cards from group drop.
                 foreach (CardModel card in groupedCards)
                 {
-                    if (this.game.Deck.Cards.Remove(card))
+                    var deckCardIndex = this.game.Deck.Cards.FindIndex(c => c.CardId == card.CardId);
+
+                    if (deckCardIndex < 0)
                     {
                         Log.Fatal("Failed to remove a card in group drop event! Unexpected behaviour likely to occur!");
                         Log.Fatal(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
+                    }
+                    else
+                    {
+                        this.game.Deck.Cards.RemoveAt(deckCardIndex);
                     }
                 }
             }
