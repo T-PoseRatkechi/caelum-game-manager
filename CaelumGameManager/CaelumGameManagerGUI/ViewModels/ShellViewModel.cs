@@ -36,7 +36,7 @@ namespace CaelumGameManagerGUI.ViewModels
             this.currentGame = caelumCore.GetGameInstance();
             App.LogLevelController.MinimumLevel =
                 this.currentGame.GameConfig.Settings.ShowDebugMessages ?
-                Serilog.Events.LogEventLevel.Verbose :
+                Serilog.Events.LogEventLevel.Debug :
                 Serilog.Events.LogEventLevel.Information;
 
             this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);

@@ -167,16 +167,23 @@ namespace CaelumGameManagerGUI.ViewModels
                     else
                     {
                         this.game.Deck.Cards.RemoveAt(deckCardIndex);
+                        Log.Verbose("Removed card with id {CardId}", card.CardId);
                     }
                 }
             }
             else
             {
                 // Remove card from solo drop.
-                if (!this.game.Deck.Cards.Remove((CardModel)dropInfo.Data))
+                // Strange this didn't break like the group drop...
+                var card = (CardModel)dropInfo.Data;
+                if (!this.game.Deck.Cards.Remove(card))
                 {
                     Log.Fatal("Failed to remove a card in drop event! Unexpect behaviour likely to occur!");
                     Log.Fatal(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
+                }
+                else
+                {
+                    Log.Verbose("Removed card with id {CardId}", card.CardId);
                 }
             }
 
