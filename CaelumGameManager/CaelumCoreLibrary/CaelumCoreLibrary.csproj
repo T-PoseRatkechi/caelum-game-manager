@@ -20,5 +20,15 @@
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Dependencies\" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <None Update="Dependencies\PhosLibrary\Persona 4 Golden\default-music-data.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
