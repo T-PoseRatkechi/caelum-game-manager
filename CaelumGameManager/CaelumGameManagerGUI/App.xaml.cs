@@ -9,6 +9,7 @@ namespace CaelumGameManagerGUI
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Windows;
     using System.Windows.Threading;
@@ -53,7 +54,7 @@ namespace CaelumGameManagerGUI
         /// <summary>
         /// Gets log level controller.
         /// </summary>
-        public static LoggingLevelSwitch LogLevelController { get; } = new();
+        public static LoggingLevelSwitch LogLevelController { get; private set; } = new();
 
         /// <summary>
         /// Gets the log sink for app GUI.
@@ -72,6 +73,8 @@ namespace CaelumGameManagerGUI
         /// </summary>
         private void ConfigureLogger()
         {
+            var cmdArgs = Environment.GetCommandLineArgs();
+
             // Configure logger.
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(LogLevelController)
@@ -79,6 +82,16 @@ namespace CaelumGameManagerGUI
                 .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
                 .Enrich.WithThreadId()
                 .CreateLogger();
+
+            // App launched with verbose mode.
+            if (cmdArgs.Contains("-verbose"))
+            {
+                // Set min level to verbose.
+                LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Verbose;
+
+                // Set log level controller to new instance so logger's level can no longer be changed.
+                LogLevelController = new();
+            }
 
             Log.Debug("Logger ready");
         }
