@@ -17,6 +17,8 @@ namespace CaelumGameManagerGUI.ViewModels
     using Caliburn.Micro;
     using GongSolutions.Wpf.DragDrop;
     using Serilog;
+    using System;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Deck VM.
@@ -136,9 +138,17 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-        public void BuildDeck()
+        public async void BuildGameDeck()
         {
-            this.game.BuildDeck();
+            try
+            {
+                // this.game.BuildDeck();
+                await Task.Run(() => this.game.BuildDeck());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Build failed.");
+            }
         }
 
         /// <inheritdoc/>

@@ -40,6 +40,8 @@ namespace CaelumCoreLibrary.Builders
 
             this.PrepareOutputFolder(outputDir);
 
+            this.log.LogDebug("Building");
+
             foreach (var card in deck)
             {
                 string cardDataDir = Path.Join(card.InstallDirectory, "Data");
@@ -47,9 +49,15 @@ namespace CaelumCoreLibrary.Builders
                 foreach (var dataFile in Directory.GetFiles(cardDataDir, "*.*", SearchOption.AllDirectories))
                 {
                     var outputFilePath = dataFile.Replace(cardDataDir, outputDir);
+                    if (!this.fileSystem.Directory.Exists(Path.GetDirectoryName(outputFilePath)))
+                    {
+                        this.fileSystem.Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
+                    }
                     File.Copy(dataFile, outputFilePath, true);
                 }
             }
+
+            this.log.LogDebug("Build completed");
         }
 
         /// <summary>
@@ -72,7 +80,7 @@ namespace CaelumCoreLibrary.Builders
                 throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! FIX ASAP!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
             }
 
-            string[] outputDirFiles = this.fileSystem.Directory.GetFiles(outputDir);
+            string[] outputDirFiles = this.fileSystem.Directory.GetFiles(outputDir, "*.*", SearchOption.AllDirectories);
 
             // Check number files that will be deleted exceeds max limit.
             // This check can be skipped by setting ignoreMaxFilesWarning to true.
@@ -87,7 +95,7 @@ namespace CaelumCoreLibrary.Builders
             foreach (var file in outputDirFiles)
             {
                 File.Delete(file);
-                this.log.LogDebug("Deleted file: {FilePath}", file);
+                this.log.LogTrace("Deleted file: {FilePath}", file);
             }
 
             this.log.LogInformation("Output folder prepared");

@@ -5,7 +5,7 @@
 
 namespace CaelumCoreLibrary.Games
 {
-    using System;
+    using System.Diagnostics;
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
@@ -44,7 +44,13 @@ namespace CaelumCoreLibrary.Games
         public void BuildDeck()
         {
             this.log.LogInformation("Building deck");
+            Stopwatch watch = new();
+
+            watch.Start();
             this.deckBuilder.Build(this.Deck.Cards, this.GameInstall.BuildDirectory);
+            watch.Stop();
+
+            this.log.LogInformation("Deck built successfully in {TimeElapsed}ms", watch.ElapsedMilliseconds);
         }
 
         /// <inheritdoc/>

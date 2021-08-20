@@ -43,7 +43,7 @@
                         <Setter Property="Margin" Value="0 0 5 0"/>
                     </Style>
                 </StackPanel.Resources>
-                <Button x:Name="BuildDeck" Content="{lex:Loc BuildText}"/>
+                <Button x:Name="BuildGameDeck" Content="{lex:Loc BuildText}"/>
                 <Button Content="Full Rebuild"/>
             </StackPanel>
             <TextBlock Grid.Column="2" Text="{lex:Loc CardsText}" FontSize="25"
