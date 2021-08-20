@@ -49,6 +49,8 @@ namespace CaelumGameManagerGUI
             {
                 Log.Warning("String key missing! Key: {key}, Culture: {culture}", evt.Key, LocalizeDictionary.Instance.Culture.Name);
             };
+
+            this.ConfigureLogger();
         }
 
         /// <summary>
@@ -64,7 +66,6 @@ namespace CaelumGameManagerGUI
         /// <inheritdoc/>
         protected override void OnStartup(StartupEventArgs e)
         {
-            this.ConfigureLogger();
             base.OnStartup(e);
         }
 
