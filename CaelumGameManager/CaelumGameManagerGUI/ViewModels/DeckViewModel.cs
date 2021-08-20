@@ -25,10 +25,25 @@ namespace CaelumGameManagerGUI.ViewModels
     /// </summary>
     public class DeckViewModel : Screen, IDropTarget
     {
+        /// <summary>
+        /// Gets list of available filters.
+        /// </summary>
+        private static readonly Dictionary<string, CardType> Filters = new()
+        {
+            // No filter uses the card type Update since Update cards are never displayed in deck.
+            // They're only used overwrite another card's files.
+            { LocalizedStrings.Instance["AllText"], CardType.Update },
+            { LocalizedStrings.Instance["ModsText"], CardType.Mod },
+            { LocalizedStrings.Instance["ToolsText"], CardType.Tool },
+            { LocalizedStrings.Instance["FoldersText"], CardType.Folder },
+        };
+
         private IGameInstance game;
         private ICardFactory _cardFactory;
 
         private readonly IWindowManager windowManager = new WindowManager();
+
+        private bool isBuildingEnabled = true;
         private BindableCollection<CardModel> _deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
@@ -64,19 +79,6 @@ namespace CaelumGameManagerGUI.ViewModels
                 this.NotifyOfPropertyChange(nameof(this.FilteredDeck));
             }
         }
-
-        /// <summary>
-        /// Gets list of available filters.
-        /// </summary>
-        private static Dictionary<string, CardType> Filters = new()
-        {
-            // No filter uses the card type Update since Update cards are never displayed in deck.
-            // They're only used overwrite another card's files.
-            { LocalizedStrings.Instance["AllText"], CardType.Update },
-            { LocalizedStrings.Instance["ModsText"], CardType.Mod },
-            { LocalizedStrings.Instance["ToolsText"], CardType.Tool },
-            { LocalizedStrings.Instance["FoldersText"], CardType.Folder },
-        };
 
         /// <summary>
         /// Gets a list of filters by name.
@@ -135,19 +137,6 @@ namespace CaelumGameManagerGUI.ViewModels
                 }
 
                 this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck));
-            }
-        }
-
-        public async void BuildGameDeck()
-        {
-            try
-            {
-                // this.game.BuildDeck();
-                await Task.Run(() => this.game.BuildDeck());
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Build failed.");
             }
         }
 
@@ -224,6 +213,37 @@ namespace CaelumGameManagerGUI.ViewModels
             }
 
             return false;
+        }
+
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1201 // Elements should appear in the correct order
+        public bool CanBuildGameDeck
+        {
+            get
+            {
+                return this.isBuildingEnabled;
+            }
+
+            set
+            {
+                this.isBuildingEnabled = value;
+                this.NotifyOfPropertyChange(() => this.CanBuildGameDeck);
+            }
+        }
+
+        public async void BuildGameDeck()
+        {
+            try
+            {
+                this.CanBuildGameDeck = false;
+                await Task.Run(() => this.game.BuildDeck());
+                this.CanBuildGameDeck = true;
+                throw new ArgumentException();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, LocalizedStrings.Instance["ErrorDeckBuildFailedMessage"]);
+            }
         }
     }
 }

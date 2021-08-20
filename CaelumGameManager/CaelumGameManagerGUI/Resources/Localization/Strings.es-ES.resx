@@ -190,4 +190,10 @@
   <data name="BuildText" xml:space="preserve">
     <value>Construir</value>
   </data>
+  <data name="FullRebuildText" xml:space="preserve">
+    <value>Reconstrucción Completa</value>
+  </data>
+  <data name="ErrorDeckBuildFailedMessage" xml:space="preserve">
+    <value>Construcción de baraja fallida.</value>
+  </data>
 </root>

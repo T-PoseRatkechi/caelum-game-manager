@@ -40,11 +40,12 @@
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 0 0">
                 <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button}">
-                        <Setter Property="Margin" Value="0 0 5 0"/>
+                        <Setter Property="Margin" Value="0 0 10 0"/>
                     </Style>
                 </StackPanel.Resources>
-                <Button x:Name="BuildGameDeck" Content="{lex:Loc BuildText}"/>
-                <Button Content="Full Rebuild"/>
+                <Button x:Name="BuildGameDeck" Content="{lex:Loc BuildText}">
+                </Button>
+                <Button Content="{lex:Loc FullRebuildText}" IsEnabled="{Binding CanBuildGameDeck}"/>
             </StackPanel>
             <TextBlock Grid.Column="2" Text="{lex:Loc CardsText}" FontSize="25"
                        HorizontalAlignment="Right" Padding="0 0 10 0"/>

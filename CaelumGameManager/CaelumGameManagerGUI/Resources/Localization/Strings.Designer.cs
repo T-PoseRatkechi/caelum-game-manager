@@ -232,6 +232,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deck build failed..
+        /// </summary>
+        public static string ErrorDeckBuildFailedMessage {
+            get {
+                return ResourceManager.GetString("ErrorDeckBuildFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered unexpected error! Restart recommended!.
         /// </summary>
         public static string ErrorRecommendRestartMessage {
@@ -246,6 +255,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string FoldersText {
             get {
                 return ResourceManager.GetString("FoldersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Rebuild.
+        /// </summary>
+        public static string FullRebuildText {
+            get {
+                return ResourceManager.GetString("FullRebuildText", resourceCulture);
             }
         }
         

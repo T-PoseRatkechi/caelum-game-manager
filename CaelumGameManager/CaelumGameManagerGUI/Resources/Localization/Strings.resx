@@ -190,4 +190,10 @@
   <data name="BuildText" xml:space="preserve">
     <value>Build</value>
   </data>
+  <data name="FullRebuildText" xml:space="preserve">
+    <value>Full Rebuild</value>
+  </data>
+  <data name="ErrorDeckBuildFailedMessage" xml:space="preserve">
+    <value>Deck build failed.</value>
+  </data>
 </root>
