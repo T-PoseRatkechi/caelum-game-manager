@@ -45,28 +45,18 @@ namespace CaelumCoreLibrary.Builders
 
             this.log.LogDebug("Building cards.");
 
-            // Output file list log.
-            Dictionary<string, List<string>> deckBuildLog = new();
+            DeckBuildLogger buildLogger = new();
 
-            var cardBuilder = new CreateOutputBuilder(this.log)
-                .UseAddon<PhosSupport>()
-                .UseAddon<BasicBuild>();
+            var outputBuilder = new OutputBuilder(this.log, buildLogger)
+                .AddModule<PhosSupport>()
+                .AddModule<BasicBuild>();
 
-            foreach (var card in deck)
-            {
-                cardBuilder.BuildCardOutput(card, outputDir, deckBuildLog);
-            }
+            outputBuilder.BuildOutput(deck, outputDir);
 
             this.log.LogDebug("Cards built.");
 
-            // Output build log.
-            StringBuilder sb = new();
-            foreach (var entry in deckBuildLog)
-            {
-                sb.AppendLine($"File: {entry.Key}\nCards: {string.Join(", ", entry.Value)}\n");
-            }
-
-            File.WriteAllText(Path.Join(outputDir, "buildlog.txt"), sb.ToString());
+            // Write deck build log.
+            buildLogger.WriteOutputLog(Path.Join(outputDir, "buildlog.txt"));
         }
 
         /// <summary>

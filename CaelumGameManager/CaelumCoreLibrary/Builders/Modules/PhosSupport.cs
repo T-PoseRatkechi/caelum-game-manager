@@ -13,57 +13,53 @@ namespace CaelumCoreLibrary.Builders.Modules
     /// <summary>
     /// Builds any .song presets present in cards.
     /// </summary>
-    public class PhosSupport : IBuilderAddon
+    public class PhosSupport : IBuilderModule
     {
+        /// <summary>
+        /// Gets game name.
+        /// </summary>
         public string PhosGameName { get; init; } = "Persona 4 Golden";
 
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFilesList, Dictionary<string, List<string>> deckbuildLog)
-        {
-            var defaultMusicDataPath = Path.Join(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Dependencies",
-                "PhosLibrary",
-                this.PhosGameName,
-                "default-music-data.json");
+        /// <inheritdoc/>
+        public DeckBuildLogger BuildLogger { get; init; }
 
+        /// <inheritdoc/>
+        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
+        {
             string cardDataDir = Path.Join(card.InstallDirectory, "Data");
             var songPresetFiles = Directory.GetFiles(cardDataDir, "*.songs", SearchOption.TopDirectoryOnly);
 
             if (songPresetFiles.Length > 0)
             {
-                builtFilesList.Add(songPresetFiles[0]);
+                // Add card's song pack files to built files list.
+                builtFiles.Add(songPresetFiles[0]);
                 foreach (var presetSong in Directory.GetFiles(Path.Join(cardDataDir, "songs")))
                 {
-                    // Add source card data files.
-                    builtFilesList.Add(presetSong);
+                    builtFiles.Add(presetSong);
                 }
 
-                var musicData = PhosLibrary.Common.MusicData.MusicDataParser.Parse(defaultMusicDataPath);
+                // Load song pack music data.
                 var presetMusicData = PhosLibrary.Common.MusicData.MusicDataParser.Parse(songPresetFiles[0]);
 
-                foreach (var song in presetMusicData.songs)
+                // Adjust replacement file path for song pack songs.
+                for (int i = 0, total = presetMusicData.songs.Length; i < total; i++)
                 {
-                    var index = Array.FindIndex(musicData.songs, x => x.outputFilePath == song.outputFilePath);
-                    musicData.songs[index].isEnabled = true;
-                    musicData.songs[index].replacementFilePath = Path.Join(cardDataDir, "songs", song.replacementFilePath);
-                    musicData.songs[index].loopStartSample = song.loopStartSample;
-                    musicData.songs[index].loopEndSample = song.loopEndSample;
+                    presetMusicData.songs[i].isEnabled = true;
+
+                    var adjustedReplacementFile = Path.Join(
+                        cardDataDir,
+                        "songs",
+                        presetMusicData.songs[i].replacementFilePath);
+
+                    presetMusicData.songs[i].replacementFilePath = adjustedReplacementFile;
 
                     // Add output card files.
-                    var expectedOutput = Path.Join(outputDir, musicData.songs[index].outputFilePath);
-                    if (deckbuildLog.ContainsKey(expectedOutput))
-                    {
-                        deckbuildLog[expectedOutput].Add(card.CardId);
-                    }
-                    else
-                    {
-                        deckbuildLog.Add(expectedOutput, new());
-                        deckbuildLog[expectedOutput].Add(card.CardId);
-                    }
+                    var expectedOutputFile = Path.Join(outputDir, presetMusicData.songs[i].outputFilePath);
+                    this.BuildLogger.LogOutputFile(card, expectedOutputFile);
                 }
 
                 var phos = new PhosLibrary.Games.MusicP4G();
-                phos.Build(musicData, outputDir, false);
+                phos.Build(presetMusicData, outputDir, false);
             }
         }
     }

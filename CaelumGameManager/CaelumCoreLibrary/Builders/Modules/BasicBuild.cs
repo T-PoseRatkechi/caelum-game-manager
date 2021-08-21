@@ -13,10 +13,13 @@ namespace CaelumCoreLibrary.Builders.Modules
     /// <summary>
     /// Simply copies and pastes card files to output.
     /// </summary>
-    public class BasicBuild : IBuilderAddon
+    public class BasicBuild : IBuilderModule
     {
         /// <inheritdoc/>
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles, Dictionary<string, List<string>> deckbuildLog)
+        public DeckBuildLogger BuildLogger { get; init; }
+
+        /// <inheritdoc/>
+        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
         {
             string cardDataDir = Path.Join(card.InstallDirectory, "Data");
 
@@ -34,20 +37,9 @@ namespace CaelumCoreLibrary.Builders.Modules
 
                     // Add to output lists.
                     builtFiles.Add(dataFile);
-
-                    // Added output files to list.
-                    if (deckbuildLog.ContainsKey(outputFilePath))
-                    {
-                        deckbuildLog[outputFilePath].Add(card.CardId);
-                    }
-                    else
-                    {
-                        deckbuildLog.Add(outputFilePath, new());
-                        deckbuildLog[outputFilePath].Add(card.CardId);
-                    }
+                    this.BuildLogger.LogOutputFile(card, outputFilePath);
                 }
             }
         }
-
     }
 }
