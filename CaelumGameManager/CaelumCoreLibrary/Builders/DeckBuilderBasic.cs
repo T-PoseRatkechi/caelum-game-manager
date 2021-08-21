@@ -10,7 +10,7 @@ namespace CaelumCoreLibrary.Builders
     using System.IO;
     using System.IO.Abstractions;
     using System.Text;
-    using CaelumCoreLibrary.Builders.Addons;
+    using CaelumCoreLibrary.Builders.Modules;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Utilities;
     using Microsoft.Extensions.Logging;
