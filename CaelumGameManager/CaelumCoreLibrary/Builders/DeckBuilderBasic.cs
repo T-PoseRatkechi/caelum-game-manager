@@ -9,6 +9,7 @@ namespace CaelumCoreLibrary.Builders
     using System.Collections.Generic;
     using System.IO;
     using System.IO.Abstractions;
+    using System.Text;
     using CaelumCoreLibrary.Builders.Addons;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Utilities;
@@ -19,9 +20,10 @@ namespace CaelumCoreLibrary.Builders
     /// </summary>
     public class DeckBuilderBasic : IDeckBuilder
     {
+        private const int MaxFilesDeleted = DeckBuilderUtilities.MaxFilesAllowedForDeleting;
+
         private readonly ILogger log;
         private readonly IFileSystem fileSystem;
-        private readonly int maxFilesDeleted = DeckBuilderUtilities.MaxFilesAllowedForDeleting;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
@@ -37,22 +39,34 @@ namespace CaelumCoreLibrary.Builders
         /// <inheritdoc/>
         public void Build(List<CardModel> deck, string outputDir)
         {
-            this.log.LogDebug("Using basic deck builder");
+            this.log.LogDebug("Building with Basic Deck Builder.");
 
             this.PrepareOutputFolder(outputDir);
 
-            this.log.LogDebug("Building cards");
+            this.log.LogDebug("Building cards.");
 
-            var builders = new CreateOutputBuilder(this.log)
+            // Output file list log.
+            Dictionary<string, List<string>> deckBuildLog = new();
+
+            var cardBuilder = new CreateOutputBuilder(this.log)
                 .UseAddon<PhosSupport>()
                 .UseAddon<BasicBuild>();
 
             foreach (var card in deck)
             {
-                builders.BuildCardOutput(card, outputDir);
+                cardBuilder.BuildCardOutput(card, outputDir, deckBuildLog);
             }
 
-            this.log.LogDebug("Cards built");
+            this.log.LogDebug("Cards built.");
+
+            // Output build log.
+            StringBuilder sb = new();
+            foreach (var entry in deckBuildLog)
+            {
+                sb.AppendLine($"File: {entry.Key}\nCards: {string.Join(", ", entry.Value)}\n");
+            }
+
+            File.WriteAllText(Path.Join(outputDir, "buildlog.txt"), sb.ToString());
         }
 
         /// <summary>
@@ -79,9 +93,9 @@ namespace CaelumCoreLibrary.Builders
 
             // Check number files that will be deleted exceeds max limit.
             // This check can be skipped by setting ignoreMaxFilesWarning to true.
-            if (outputDirFiles.Length > this.maxFilesDeleted && !ignoreMaxFilesWarning)
+            if (outputDirFiles.Length > MaxFilesDeleted && !ignoreMaxFilesWarning)
             {
-                throw new ArgumentException($"!!!OUTPUT DIRECTORY CONTAINS MORE FILES THAN ALLOWED TO DELETE {this.maxFilesDeleted}!!! DELETE MANUALLY OR CHANGE THIS SETTING!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
+                throw new ArgumentException($"!!!OUTPUT DIRECTORY CONTAINS MORE FILES THAN ALLOWED TO DELETE {MaxFilesDeleted}!!! DELETE MANUALLY OR CHANGE THIS SETTING!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
             }
 
             this.log.LogInformation("Preparing output folder");

@@ -8,6 +8,7 @@ namespace CaelumCoreLibrary.Builders.Addons
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -32,13 +33,13 @@ namespace CaelumCoreLibrary.Builders.Addons
             return this;
         }
 
-        public void BuildCardOutput(CardModel card, string outputDir)
+        public void BuildCardOutput(CardModel card, string outputDir, Dictionary<string, List<string>> deckbuildLog)
         {
             HashSet<string> builtFiles = new();
 
-            foreach (var builder in builders)
+            foreach (var builder in this.builders)
             {
-                builder.BuildCard(card, outputDir, builtFiles);
+                builder.BuildCard(card, outputDir, builtFiles, deckbuildLog);
             }
 
             this.log.LogDebug("Card {CardName} built with {NumFiles} files processed.", card.Name, builtFiles.Count);

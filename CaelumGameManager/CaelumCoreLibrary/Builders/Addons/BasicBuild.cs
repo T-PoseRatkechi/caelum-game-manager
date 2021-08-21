@@ -16,7 +16,7 @@ namespace CaelumCoreLibrary.Builders.Addons
     public class BasicBuild : IBuilderAddon
     {
         /// <inheritdoc/>
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
+        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles, Dictionary<string, List<string>> deckbuildLog)
         {
             string cardDataDir = Path.Join(card.InstallDirectory, "Data");
 
@@ -31,6 +31,20 @@ namespace CaelumCoreLibrary.Builders.Addons
                     }
 
                     File.Copy(dataFile, outputFilePath, true);
+
+                    // Add to output lists.
+                    builtFiles.Add(dataFile);
+
+                    // Added output files to list.
+                    if (deckbuildLog.ContainsKey(outputFilePath))
+                    {
+                        deckbuildLog[outputFilePath].Add(card.CardId);
+                    }
+                    else
+                    {
+                        deckbuildLog.Add(outputFilePath, new());
+                        deckbuildLog[outputFilePath].Add(card.CardId);
+                    }
                 }
             }
         }

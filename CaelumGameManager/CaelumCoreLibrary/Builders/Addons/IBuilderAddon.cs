@@ -16,6 +16,6 @@ namespace CaelumCoreLibrary.Builders.Addons
         /// <param name="card">Card to build.</param>
         /// <param name="outputDir">Directory to output card build at.</param>
         /// <param name="builtFiles">List of files that have been built.</param>
-        void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles);
+        void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles, Dictionary<string, List<string>> deckbuildLog);
     }
 }

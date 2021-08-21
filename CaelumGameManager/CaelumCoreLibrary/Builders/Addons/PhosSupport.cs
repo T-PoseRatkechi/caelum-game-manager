@@ -17,7 +17,7 @@ namespace CaelumCoreLibrary.Builders.Addons
     {
         public string PhosGameName { get; init; } = "Persona 4 Golden";
 
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFilesList)
+        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFilesList, Dictionary<string, List<string>> deckbuildLog)
         {
             var defaultMusicDataPath = Path.Join(
                 AppDomain.CurrentDomain.BaseDirectory,
@@ -34,6 +34,7 @@ namespace CaelumCoreLibrary.Builders.Addons
                 builtFilesList.Add(songPresetFiles[0]);
                 foreach (var presetSong in Directory.GetFiles(Path.Join(cardDataDir, "songs")))
                 {
+                    // Add source card data files.
                     builtFilesList.Add(presetSong);
                 }
 
@@ -47,6 +48,18 @@ namespace CaelumCoreLibrary.Builders.Addons
                     musicData.songs[index].replacementFilePath = Path.Join(cardDataDir, "songs", song.replacementFilePath);
                     musicData.songs[index].loopStartSample = song.loopStartSample;
                     musicData.songs[index].loopEndSample = song.loopEndSample;
+
+                    // Add output card files.
+                    var expectedOutput = Path.Join(outputDir, musicData.songs[index].outputFilePath);
+                    if (deckbuildLog.ContainsKey(expectedOutput))
+                    {
+                        deckbuildLog[expectedOutput].Add(card.CardId);
+                    }
+                    else
+                    {
+                        deckbuildLog.Add(expectedOutput, new());
+                        deckbuildLog[expectedOutput].Add(card.CardId);
+                    }
                 }
 
                 var phos = new PhosLibrary.Games.MusicP4G();
