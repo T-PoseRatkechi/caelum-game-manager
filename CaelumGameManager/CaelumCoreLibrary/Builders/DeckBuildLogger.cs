@@ -37,7 +37,7 @@ namespace CaelumCoreLibrary.Builders
             }
             else
             {
-                this.outputFilesLog.Add(outputFile, new());
+                this.outputFilesLog.Add(outputFile, new() { card.CardId });
             }
         }
 
