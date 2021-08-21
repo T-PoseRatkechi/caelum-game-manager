@@ -19,6 +19,11 @@ namespace CaelumCoreLibrary.Builders.Modules
 
         private readonly List<IBuilderModule> modules = new();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OutputBuilder"/> class.
+        /// </summary>
+        /// <param name="log">Logger.</param>
+        /// <param name="buildLogger">Build logger.</param>
         public OutputBuilder(ILogger log, DeckBuildLogger buildLogger)
         {
             this.log = log;

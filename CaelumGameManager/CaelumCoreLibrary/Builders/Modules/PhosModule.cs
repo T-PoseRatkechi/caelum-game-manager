@@ -5,7 +5,6 @@
 
 namespace CaelumCoreLibrary.Builders.Modules
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using CaelumCoreLibrary.Cards;
@@ -13,7 +12,7 @@ namespace CaelumCoreLibrary.Builders.Modules
     /// <summary>
     /// Builds any .song presets present in cards.
     /// </summary>
-    public class PhosSupport : IBuilderModule
+    public class PhosModule : IBuilderModule
     {
         /// <summary>
         /// Gets game name.

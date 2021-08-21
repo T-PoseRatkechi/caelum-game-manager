@@ -48,8 +48,8 @@ namespace CaelumCoreLibrary.Builders
             DeckBuildLogger buildLogger = new();
 
             var outputBuilder = new OutputBuilder(this.log, buildLogger)
-                .AddModule<PhosSupport>()
-                .AddModule<BasicBuild>();
+                .AddModule<PhosModule>()
+                .AddModule<StandardModule>();
 
             outputBuilder.BuildOutput(deck, outputDir);
 

@@ -13,7 +13,7 @@ namespace CaelumCoreLibrary.Builders.Modules
     /// <summary>
     /// Simply copies and pastes card files to output.
     /// </summary>
-    public class BasicBuild : IBuilderModule
+    public class StandardModule : IBuilderModule
     {
         /// <inheritdoc/>
         public DeckBuildLogger BuildLogger { get; init; }
