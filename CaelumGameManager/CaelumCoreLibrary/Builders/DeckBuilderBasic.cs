@@ -9,6 +9,7 @@ namespace CaelumCoreLibrary.Builders
     using System.Collections.Generic;
     using System.IO;
     using System.IO.Abstractions;
+    using CaelumCoreLibrary.Builders.Addons;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Utilities;
     using Microsoft.Extensions.Logging;
@@ -40,24 +41,18 @@ namespace CaelumCoreLibrary.Builders
 
             this.PrepareOutputFolder(outputDir);
 
-            this.log.LogDebug("Building");
+            this.log.LogDebug("Building cards");
+
+            var builders = new CreateOutputBuilder(this.log)
+                .UseAddon<PhosSupport>()
+                .UseAddon<BasicBuild>();
 
             foreach (var card in deck)
             {
-                string cardDataDir = Path.Join(card.InstallDirectory, "Data");
-
-                foreach (var dataFile in Directory.GetFiles(cardDataDir, "*.*", SearchOption.AllDirectories))
-                {
-                    var outputFilePath = dataFile.Replace(cardDataDir, outputDir);
-                    if (!this.fileSystem.Directory.Exists(Path.GetDirectoryName(outputFilePath)))
-                    {
-                        this.fileSystem.Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-                    }
-                    File.Copy(dataFile, outputFilePath, true);
-                }
+                builders.BuildCardOutput(card, outputDir);
             }
 
-            this.log.LogDebug("Build completed");
+            this.log.LogDebug("Cards built");
         }
 
         /// <summary>
@@ -77,7 +72,7 @@ namespace CaelumCoreLibrary.Builders
             // Disallow potentially unwanted output folders.
             if (!DeckBuilderUtilities.IsValidOutputDirectory(outputDir))
             {
-                throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! FIX ASAP!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
+                throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! CHANGE ASAP!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
             }
 
             string[] outputDirFiles = this.fileSystem.Directory.GetFiles(outputDir, "*.*", SearchOption.AllDirectories);

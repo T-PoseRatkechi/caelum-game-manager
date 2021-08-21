@@ -237,12 +237,14 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 this.CanBuildGameDeck = false;
                 await Task.Run(() => this.game.BuildDeck());
-                this.CanBuildGameDeck = true;
-                throw new ArgumentException();
             }
             catch (Exception e)
             {
                 Log.Error(e, LocalizedStrings.Instance["ErrorDeckBuildFailedMessage"]);
+            }
+            finally
+            {
+                this.CanBuildGameDeck = true;
             }
         }
     }

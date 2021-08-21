@@ -50,7 +50,7 @@ namespace CaelumCoreLibrary.Games
             this.deckBuilder.Build(this.Deck.Cards, this.GameInstall.BuildDirectory);
             watch.Stop();
 
-            this.log.LogInformation("Deck built successfully in {TimeElapsed}ms", watch.ElapsedMilliseconds);
+            this.log.LogInformation("Deck built successfully in {TimeElapsed} ms.", watch.ElapsedMilliseconds);
         }
 
         /// <inheritdoc/>
