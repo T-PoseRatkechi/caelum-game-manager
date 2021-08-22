@@ -64,7 +64,7 @@ namespace CaelumCoreLibrary.Decks
             foreach (string cardFolder in Directory.GetDirectories(folder))
             {
                 // Parse card.
-                var card = this.cardParser.ParseCardFile(Path.Join(cardFolder, "card.json"));
+                var card = this.cardParser.LoadCard(Path.Join(cardFolder, "card.json"));
 
                 // Validate card.
                 // Don't allow duplicate cards to be added.
@@ -72,9 +72,6 @@ namespace CaelumCoreLibrary.Decks
                 {
                     throw new InvalidOperationException($@"Cannot add card because a card already exists with the id ""{card.CardId}""! File: {cardFolder}");
                 }
-
-                // Set card install dir.
-                card.InstallDirectory = cardFolder;
 
                 // Add card to list.
                 cardsList.Add(card);

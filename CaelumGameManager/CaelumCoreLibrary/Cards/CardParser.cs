@@ -15,7 +15,7 @@ namespace CaelumCoreLibrary.Cards
     public class CardParser : ICardParser
     {
         /// <inheritdoc/>
-        public CardModel ParseCardFile(string cardFile)
+        public CardModel ParseCard(string cardFile)
         {
             if (string.IsNullOrWhiteSpace(cardFile))
             {
@@ -24,6 +24,18 @@ namespace CaelumCoreLibrary.Cards
 
             string cardText = File.ReadAllText(cardFile);
             var card = JsonSerializer.Deserialize<CardModel>(cardText);
+
+            card.InstallDirectory = Path.GetDirectoryName(cardFile);
+
+            // Load author files.
+            var authorsDir = Path.Join(card.InstallDirectory, "Authors");
+            if (Directory.Exists(authorsDir))
+            {
+                foreach (var file in Directory.GetFiles(authorsDir))
+                {
+                    // TODO: Load authors.
+                }
+            }
 
             return card;
         }

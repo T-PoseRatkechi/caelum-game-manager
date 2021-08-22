@@ -16,6 +16,6 @@
         /// </summary>
         /// <param name="cardFile">Card file to parse.</param>
         /// <returns><paramref name="cardFile"/> parsed as <see cref="CardModel"/>.</returns>
-        CardModel ParseCardFile(string cardFile);
+        CardModel ParseCard(string cardFile);
     }
 }
