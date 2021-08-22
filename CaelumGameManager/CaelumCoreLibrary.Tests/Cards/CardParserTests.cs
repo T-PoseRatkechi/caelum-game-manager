@@ -18,7 +18,7 @@ namespace CaelumCoreLibrary.Tests.Cards
             // Act
 
             // Assert
-            Assert.Throws<ArgumentException>(() => cardParser.ParseCardFile(filePath));
+            Assert.Throws<ArgumentException>(() => cardParser.ParseCard(filePath));
         }
     }
 }

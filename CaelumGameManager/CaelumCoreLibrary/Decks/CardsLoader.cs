@@ -64,7 +64,7 @@ namespace CaelumCoreLibrary.Decks
             foreach (string cardFolder in Directory.GetDirectories(folder))
             {
                 // Parse card.
-                var card = this.cardParser.LoadCard(Path.Join(cardFolder, "card.json"));
+                var card = this.cardParser.ParseCard(Path.Join(cardFolder, "card.json"));
 
                 // Validate card.
                 // Don't allow duplicate cards to be added.
