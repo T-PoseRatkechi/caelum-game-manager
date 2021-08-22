@@ -8,19 +8,31 @@ namespace CaelumCoreLibrary.Builders.Modules
     using System.Collections.Generic;
     using System.IO;
     using CaelumCoreLibrary.Cards;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Builds any .song presets present in cards.
     /// </summary>
     public class PhosModule : IBuilderModule
     {
+        private readonly ILogger log;
+        private readonly IBuildLogger buildLogger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PhosModule"/> class.
+        /// </summary>
+        /// <param name="log">Logger</param>
+        /// <param name="buildLogger">Build logger.</param>
+        public PhosModule(ILogger log, IBuildLogger buildLogger)
+        {
+            this.log = log;
+            this.buildLogger = buildLogger;
+        }
+
         /// <summary>
         /// Gets game name.
         /// </summary>
         public string PhosGameName { get; init; } = "Persona 4 Golden";
-
-        /// <inheritdoc/>
-        public DeckBuildLogger BuildLogger { get; init; }
 
         /// <inheritdoc/>
         public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
@@ -54,7 +66,7 @@ namespace CaelumCoreLibrary.Builders.Modules
 
                     // Add output card files.
                     var expectedOutputFile = Path.Join(outputDir, presetMusicData.songs[i].outputFilePath);
-                    this.BuildLogger.LogOutputFile(card, expectedOutputFile);
+                    this.buildLogger.LogOutputFile(card, expectedOutputFile);
                 }
 
                 var phos = new PhosLibrary.Games.MusicP4G();

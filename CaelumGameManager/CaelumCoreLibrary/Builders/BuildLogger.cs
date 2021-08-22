@@ -13,14 +13,14 @@ namespace CaelumCoreLibrary.Builders
     /// <summary>
     /// Responsible for logging a deck's output build.
     /// </summary>
-    public class DeckBuildLogger
+    public class BuildLogger : IBuildLogger
     {
         private readonly Dictionary<string, List<string>> outputFilesLog = new();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeckBuildLogger"/> class.
+        /// Initializes a new instance of the <see cref="BuildLogger"/> class.
         /// </summary>
-        public DeckBuildLogger()
+        public BuildLogger()
         {
         }
 

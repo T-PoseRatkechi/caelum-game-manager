@@ -14,11 +14,6 @@ namespace CaelumCoreLibrary.Builders.Modules
     public interface IBuilderModule
     {
         /// <summary>
-        /// Gets builder logger to use.
-        /// </summary>
-        DeckBuildLogger BuildLogger { get; init; }
-
-        /// <summary>
         /// Builds <paramref name="card"/> at <paramref name="outputDir"/>.
         /// </summary>
         /// <param name="card">Card to build.</param>

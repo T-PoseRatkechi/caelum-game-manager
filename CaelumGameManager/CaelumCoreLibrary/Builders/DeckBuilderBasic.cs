@@ -45,11 +45,11 @@ namespace CaelumCoreLibrary.Builders
 
             this.log.LogDebug("Building cards.");
 
-            DeckBuildLogger buildLogger = new();
+            IBuildLogger buildLogger = new BuildLogger();
 
             var outputBuilder = new OutputBuilder(this.log, buildLogger)
-                .AddModule<PhosModule>()
-                .AddModule<StandardModule>();
+                .AddModule(new PhosModule(this.log, buildLogger))
+                .AddModule(new StandardModule(this.log, buildLogger));
 
             outputBuilder.BuildOutput(deck, outputDir);
 

@@ -5,18 +5,29 @@
 
 namespace CaelumCoreLibrary.Builders.Modules
 {
-    using System;
+    using CaelumCoreLibrary.Cards;
+    using Microsoft.Extensions.Logging;
     using System.Collections.Generic;
     using System.IO;
-    using CaelumCoreLibrary.Cards;
 
     /// <summary>
     /// Simply copies and pastes card files to output.
     /// </summary>
     public class StandardModule : IBuilderModule
     {
-        /// <inheritdoc/>
-        public DeckBuildLogger BuildLogger { get; init; }
+        private readonly ILogger log;
+        private readonly IBuildLogger buildLogger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StandardModule"/> class.
+        /// </summary>
+        /// <param name="log">Logger.</param>
+        /// <param name="buildLogger">Build logger.</param>
+        public StandardModule(ILogger log, IBuildLogger buildLogger)
+        {
+            this.log = log;
+            this.buildLogger = buildLogger;
+        }
 
         /// <inheritdoc/>
         public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
@@ -37,7 +48,7 @@ namespace CaelumCoreLibrary.Builders.Modules
 
                     // Add to output lists.
                     builtFiles.Add(dataFile);
-                    this.BuildLogger.LogOutputFile(card, outputFilePath);
+                    this.buildLogger.LogOutputFile(card, outputFilePath);
                 }
             }
         }

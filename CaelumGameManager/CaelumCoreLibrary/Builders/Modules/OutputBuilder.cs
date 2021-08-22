@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Builders.Modules
 {
     using System.Collections.Generic;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
 
@@ -15,35 +16,35 @@ namespace CaelumCoreLibrary.Builders.Modules
     public class OutputBuilder
     {
         private readonly ILogger log;
-        private readonly DeckBuildLogger buildLogger;
+        private readonly IBuildLogger buildLogger;
 
         private readonly List<IBuilderModule> modules = new();
+        private readonly FilePatchingModule filePatchingModule;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OutputBuilder"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="buildLogger">Build logger.</param>
-        public OutputBuilder(ILogger log, DeckBuildLogger buildLogger)
+        public OutputBuilder(ILogger log, IBuildLogger buildLogger)
         {
             this.log = log;
             this.buildLogger = buildLogger;
+
+            this.filePatchingModule = new(log, buildLogger);
+
+            this.AddModule(this.filePatchingModule);
         }
 
         /// <summary>
-        /// Adds a <seealso cref="IBuilderModule"/> to <see cref="OutputBuilder"/>'s list of modules to use for building cards.
+        /// Adds <paramref name="module"/> to list of modules to build cards with.
         /// </summary>
-        /// <typeparam name="T"><seealso cref="IBuilderModule"/> to add.</typeparam>
+        /// <param name="module"><seealso cref="IBuilderModule"/> to add.</param>
         /// <returns>This <seealso cref="OutputBuilder"/> instance.</returns>
-        public OutputBuilder AddModule<T>()
-            where T : IBuilderModule, new()
+        public OutputBuilder AddModule(IBuilderModule module)
         {
-            var newModule = new T()
-            {
-                BuildLogger = this.buildLogger,
-            };
-
-            this.modules.Add(newModule);
+            this.modules.Add(module);
+            this.log.LogDebug("Added module {ModuleName} to output builder.", module.GetType().Name);
             return this;
         }
 
