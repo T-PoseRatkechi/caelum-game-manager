@@ -7,7 +7,6 @@ namespace CaelumCoreLibrary.Games
 {
     using System.Diagnostics;
     using CaelumCoreLibrary.Builders;
-    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
     using Microsoft.Extensions.Logging;
@@ -51,12 +50,6 @@ namespace CaelumCoreLibrary.Games
             watch.Stop();
 
             this.log.LogInformation("Deck built successfully in {TimeElapsed} ms.", watch.ElapsedMilliseconds);
-        }
-
-        /// <inheritdoc/>
-        public void CreateCard(CardModel newCard)
-        {
-            this.log.LogDebug("Creating card");
         }
     }
 }

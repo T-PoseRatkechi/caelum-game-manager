@@ -35,11 +35,5 @@ namespace CaelumCoreLibrary.Games
         /// Builds current card in deck to output.
         /// </summary>
         void BuildDeck();
-
-        /// <summary>
-        /// Creates a new card.
-        /// </summary>
-        /// <param name="newCard">New card to create.</param>
-        void CreateCard(CardModel newCard);
     }
 }
