@@ -25,6 +25,9 @@
     <Reference Include="Amicitia.IO">
       <HintPath>Dependencies\preappfile\external\Amicitia.IO\Amicitia.IO.dll</HintPath>
     </Reference>
+    <Reference Include="AtlusFileSystemLibrary">
+      <HintPath>Dependencies\AtlusFileSystemLibrary\AtlusFileSystemLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="PreappPartnersLib">
       <HintPath>Dependencies\preappfile\PreappPartnersLib.dll</HintPath>
     </Reference>
