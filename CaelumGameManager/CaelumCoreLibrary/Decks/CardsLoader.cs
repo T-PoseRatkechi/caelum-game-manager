@@ -47,7 +47,7 @@ namespace CaelumCoreLibrary.Decks
             this.AddCardsFromFolder(installedCards, this.toolsDir);
             this.AddCardsFromFolder(installedCards, this.gameCardsDir);
 
-            this.log.LogInformation("Loaded {InstalledCardsTotal} total cards", installedCards.Count);
+            this.log.LogDebug("Loaded {InstalledCardsTotal} total cards", installedCards.Count);
 
             return installedCards;
         }
