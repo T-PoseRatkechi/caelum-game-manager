@@ -6,6 +6,7 @@
 namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 {
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.IO;
     using System.Text.Json;
     using CaelumCoreLibrary.Cards;
@@ -20,7 +21,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
         private readonly IBuildLogger buildLogger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StandardModule"/> class.
+        /// Initializes a new instance of the <see cref="FilePatchingModule"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="buildLogger">Build logger.</param>
@@ -33,7 +34,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
         /// <summary>
         /// File patches.
         /// </summary>
-        public List<FilePatch> Patches { get; } = new();
+        public List<GamePatch> Patches { get; } = new();
 
         /// <inheritdoc/>
         public void BuildCard(CardModel card, string outputDir, HashSet<string> builtCardFiles)
@@ -47,8 +48,21 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                 {
                     builtCardFiles.Add(patchFile);
 
-                    var parsedPatch = JsonSerializer.Deserialize<FilePatch>(File.ReadAllText(patchFile));
-                    this.Patches.Add(parsedPatch);
+                    var gamePatch = JsonSerializer.Deserialize<GamePatch>(File.ReadAllText(patchFile));
+
+                    foreach (var patch in gamePatch.Patches)
+                    {
+                        if (patch is BinaryPatchFormat binaryPatch)
+                        {
+                            this.log.LogInformation($"{binaryPatch.File}\n{binaryPatch.Format}\n{binaryPatch.Offset}\n{binaryPatch.Data}");
+                        }
+                        else
+                        {
+                            this.log.LogInformation("Unknown patch");
+                        }
+                    }
+
+                    this.Patches.Add(gamePatch);
                 }
 
                 this.log.LogDebug("Loaded {NumPatches} file patch(es) from card {CardName}", patchFiles.Length, card.Name);

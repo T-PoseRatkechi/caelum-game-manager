@@ -6,13 +6,23 @@
 namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Dynamic;
+    using System.Text.Json.Serialization;
 
-    public class FilePatch
+    /// <summary>
+    /// File patch object.
+    /// </summary>
+    public class GamePatch
     {
-        public string File { get; set; }
+        /// <summary>
+        /// Gets or sets name of game patches are for.
+        /// </summary>
+        public string GameName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the patches.
+        /// </summary>
+        [JsonConverter(typeof(PatchJsonConverter))]
+        public IPatch[] Patches { get; set; }
     }
 }
