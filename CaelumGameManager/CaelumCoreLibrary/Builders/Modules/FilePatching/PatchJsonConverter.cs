@@ -89,6 +89,11 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                         // Get property info from newPatch that matches to propName.
                         var property = patchType.GetProperty(propName);
 
+                        if (property == null)
+                        {
+                            throw new JsonException($@"JSON property ""{propName}"" was not found in patch format ""{patchType.Name}"".");
+                        }
+
                         // Read the correct type for property value then set
                         // newPatches property to the value read in.
                         if (property.PropertyType == typeof(string))
@@ -121,7 +126,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                         }
                         else
                         {
-                            throw new JsonException($@"Unsupported property ""{property.Name}"" of type ""{property.PropertyType.Name}"" for patch format ""{formatValue}"".");
+                            throw new JsonException($@"Unsupported type ""{property.PropertyType.Name}"" for property ""{property.Name}"" in patch format ""{patchType.Name}"".");
                         }
                     }
 
