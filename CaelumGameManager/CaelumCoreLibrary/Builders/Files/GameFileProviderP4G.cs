@@ -12,6 +12,8 @@ namespace CaelumCoreLibrary.Builders.Files
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using AtlusFileSystemLibrary.Common.IO;
+    using AtlusFileSystemLibrary.FileSystems.PAK;
     using Microsoft.Extensions.Logging;
     using PreappPartnersLib.FileSystems;
 
@@ -20,6 +22,8 @@ namespace CaelumCoreLibrary.Builders.Files
     /// </summary>
     public class GameFileProviderP4G : IGameFileProvider
     {
+        private const char UnpackedFolderChar = '_';
+
         private readonly ILogger log;
         private readonly string unpackedDir;
         private readonly string gameInstallPath;
@@ -28,6 +32,7 @@ namespace CaelumCoreLibrary.Builders.Files
         /// Initializes a new instance of the <see cref="GameFileProviderP4G"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
+        /// <param name="gameInstallPath">Game isntall path.</param>
         /// <param name="unpackedDir">Directory path of the game's unpacked folder.</param>
         public GameFileProviderP4G(ILogger log, string gameInstallPath, string unpackedDir)
         {
@@ -45,13 +50,104 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <inheritdoc/>
         public string GetUnpackedGameFile(string relativeGameFile)
         {
+            var dataE = Path.Join(this.gameInstallPath, "data_e.cpk");
+
             // Expected path of the unpacked file.
             var expectedPath = Path.Join(this.unpackedDir, relativeGameFile);
+
+            if (File.Exists(expectedPath))
+            {
+                return expectedPath;
+            }
+
+            if (this.IsRootFile(relativeGameFile))
+            {
+                if (!File.Exists(expectedPath))
+                {
+                    this.UnpackCpk(dataE, relativeGameFile);
+                }
+
+                return expectedPath;
+            }
+
+            // Handle nested files, unpacking as needed.
+            var pathParts = relativeGameFile.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            for (int i = 0, total = pathParts.Length; i < total; i++)
+            {
+                var currentPart = pathParts[i];
+
+                // Path denotes the unpacked directory of a file.
+                if (currentPart.EndsWith('_'))
+                {
+                    var originalRelativeFile = string.Join(@"\", pathParts[0..(i + 1)]).TrimEnd('_');
+                    var unpackedRelativeFile = Path.Join(this.unpackedDir, originalRelativeFile);
+
+                    // Current file came from unpacked game file.
+                    if (this.IsRootFile(originalRelativeFile))
+                    {
+                        if (!File.Exists(unpackedRelativeFile))
+                        {
+                            this.UnpackCpk(dataE, originalRelativeFile);
+                        }
+
+                        // Unpack like PakPack
+                        if (!PAKFileSystem.TryOpen(unpackedRelativeFile, out var pak))
+                        {
+                            throw new ArgumentException($@"Invalid PAK file ""{unpackedRelativeFile}"".");
+                        }
+
+                        var unpackedFileDir = Path.Join(this.unpackedDir, $"{originalRelativeFile}_");
+                        Directory.CreateDirectory(unpackedFileDir);
+
+                        using (pak)
+                        {
+                            this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
+                            foreach (string file in pak.EnumerateFiles())
+                            {
+                                var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
+                                using (var stream = FileUtils.Create(unpackedFileDir + Path.DirectorySeparatorChar + normalizedFilePath))
+                                using (var inputStream = pak.OpenFile(file))
+                                {
+                                    // Console.WriteLine($"Extracting {file}");
+                                    this.log.LogDebug($"Extracting {file}");
+                                    inputStream.CopyTo(stream);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Unpack like PakPack
+                        if (!PAKFileSystem.TryOpen(unpackedRelativeFile, out var pak))
+                        {
+                            throw new ArgumentException($@"Invalid PAK file ""{unpackedRelativeFile}"".");
+                        }
+
+                        var unpackedFileDir = Path.Join(this.unpackedDir, $"{originalRelativeFile}_");
+
+                        using (pak)
+                        {
+                            this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
+                            foreach (string file in pak.EnumerateFiles())
+                            {
+                                var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
+                                using (var stream = FileUtils.Create(unpackedFileDir + Path.DirectorySeparatorChar + normalizedFilePath))
+                                using (var inputStream = pak.OpenFile(file))
+                                {
+                                    // Console.WriteLine($"Extracting {file}");
+                                    this.log.LogDebug($"Extracting {file}");
+                                    inputStream.CopyTo(stream);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             // Unpack file if missing.
             if (!File.Exists(expectedPath))
             {
-                var dataE = Path.Join(this.gameInstallPath, "data_e.cpk");
                 this.UnpackCpk(dataE, relativeGameFile);
             }
 
@@ -59,7 +155,13 @@ namespace CaelumCoreLibrary.Builders.Files
         }
 
         // Praise be to TGE.
-        private void UnpackCpk(string inputFile, string relativePath)
+
+        /// <summary>
+        /// Unpacks cpk. Set <paramref name="relativePath"/> to unpack a specific file.
+        /// </summary>
+        /// <param name="inputFile">Input file.</param>
+        /// <param name="relativePath">Specific file to unpack.</param>
+        private void UnpackCpk(string inputFile, string relativePath = null)
         {
             var fileName = Path.GetFileNameWithoutExtension(inputFile);
             var dir = Path.GetDirectoryName(inputFile);
@@ -127,6 +229,26 @@ namespace CaelumCoreLibrary.Builders.Files
         private string FormatPacName(string baseName, int index)
         {
             return $"{baseName}{index:D5}.pac";
+        }
+
+        /// <summary>
+        /// Indicates whether <paramref name="file"/> is a root file (unpacked directly from game file).
+        /// </summary>
+        /// <param name="file">File to check.</param>
+        /// <returns>Whether <paramref name="file"/> is root file.</returns>
+        private bool IsRootFile(string file)
+        {
+            var fileParts = file.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            foreach (var part in fileParts)
+            {
+                if (part.EndsWith(UnpackedFolderChar))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
