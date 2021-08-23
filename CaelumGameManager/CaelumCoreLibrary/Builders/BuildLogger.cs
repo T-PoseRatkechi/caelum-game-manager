@@ -15,7 +15,7 @@ namespace CaelumCoreLibrary.Builders
     /// </summary>
     public class BuildLogger : IBuildLogger
     {
-        private readonly Dictionary<string, List<string>> outputFilesLog = new();
+        private readonly Dictionary<string, HashSet<string>> outputFilesLog = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildLogger"/> class.

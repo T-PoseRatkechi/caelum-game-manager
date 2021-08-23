@@ -3,15 +3,17 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+// preappfile and PreappPartnersLib by TGEnigma.
+// https://github.com/TGEnigma/preappfile
+// Literally solo-carring Persona modding.
 namespace CaelumCoreLibrary.Builders.Files
 {
-    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using Microsoft.Extensions.Logging;
+    using PreappPartnersLib.FileSystems;
 
     public class GameFileP4G : IGameFile
     {
@@ -31,14 +33,97 @@ namespace CaelumCoreLibrary.Builders.Files
             this.gameInstallPath = gameInstallPath;
         }
 
+        /// <inheritdoc/>
         public string GetInstallGameFile(string relativeGameFile)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public string GetUnpackedGameFile(string relativeGameFile)
         {
-            return Path.Join(this.unpackedDir, relativeGameFile);
+            // Expected path of the unpacked file.
+            var expectedPath = Path.Join(this.unpackedDir, relativeGameFile);
+
+            // Unpack file if missing.
+            if (!File.Exists(expectedPath))
+            {
+                var dataE = Path.Join(this.gameInstallPath, "data_e.cpk");
+                this.UnpackCpk(dataE, relativeGameFile);
+            }
+
+            return expectedPath;
+        }
+
+        // Praise be to TGE.
+        private void UnpackCpk(string inputFile, string relativePath)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(inputFile);
+            var dir = Path.GetDirectoryName(inputFile);
+
+            // Try to detect pac base name
+            var pacBaseName = this.GetPacBaseNameFromCpkBaseName(dir, fileName);
+            var cpk = new CpkFile(inputFile);
+
+            // Load needed pacs
+            var packs = new List<DwPackFile>();
+            foreach (var pacIdx in cpk.Entries.Select(x => x.PacIndex).Distinct().OrderBy(x => x))
+            {
+                var pacName = $"{pacBaseName}{pacIdx:D5}.pac";
+                var pacPath = Path.Combine(dir, pacName);
+
+                if (!File.Exists(pacPath))
+                {
+                    throw new FileNotFoundException("Failed to unpack {InputFile} because {PacName} is missing.", pacPath);
+                }
+
+                var pac = new DwPackFile(pacPath);
+                var refFileCount = cpk.Entries.Where(x => x.PacIndex == pacIdx)
+                    .Select(x => x.FileIndex)
+                    .Max() + 1;
+
+                if (refFileCount > pac.Entries.Count)
+                {
+                    throw new ArgumentException($"Failed to unpack: CPK references {refFileCount} in {pacName} but only {pac.Entries.Count} exist.");
+                }
+
+                packs.Add(pac);
+            }
+
+            cpk.Unpack(packs, this.unpackedDir, e =>
+            {
+                // Wow, only getting the file needed is so fast!
+                if (e.Path == relativePath)
+                {
+                    // if (!ShouldUnpack(e.Path)) return false;
+                    // this.log.LogDebug($"Extracting {e.Path} (pac: {e.PacIndex}, file: {e.FileIndex})"); // Will crash GUI.
+                    this.log.LogDebug($"Extracting {e.Path} (pac: {e.PacIndex}, file: {e.FileIndex})");
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
+        private string GetPacBaseNameFromCpkBaseName(string dir, string baseName)
+        {
+            var pacBaseName = baseName;
+            if (!File.Exists(Path.Combine(dir, this.FormatPacName(pacBaseName, 0))))
+            {
+                // Trim language suffix: _e, _c, _k
+                var start = pacBaseName.IndexOf('_');
+                if (start != -1)
+                {
+                    pacBaseName = pacBaseName.Substring(0, start);
+                }
+            }
+
+            return pacBaseName;
+        }
+
+        private string FormatPacName(string baseName, int index)
+        {
+            return $"{baseName}{index:D5}.pac";
         }
     }
 }

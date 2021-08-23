@@ -25,6 +25,11 @@ namespace CaelumCoreLibrary.Builders.Files
             this.gameInstallPath = gameInstallPath;
         }
 
+        public string GetGameFile(string gameFilePath)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public string GetInstallGameFile(string relativeGameFile)
         {

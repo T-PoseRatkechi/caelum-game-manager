@@ -11,6 +11,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
     using System.Globalization;
     using System.IO;
     using System.Text.Json;
+    using System.Text.RegularExpressions;
     using CaelumCoreLibrary.Builders.Files;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
@@ -20,6 +21,9 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
     /// </summary>
     public class FilePatchingModule : IBuilderModule
     {
+        private const string UnpackedGameFilesString = "${UnpackedGameFiles}";
+        private const string GameInstallString = "${GameInstall}";
+
         private readonly ILogger log;
         private readonly IBuildLogger buildLogger;
         private readonly IGameFile unpacker;
@@ -48,19 +52,54 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                 var patchFiles = Directory.GetFiles(cardPatchesFolder, "*.json", SearchOption.AllDirectories);
                 foreach (var patchFile in patchFiles)
                 {
+                    // Add patch file to built files.
                     builtCardFiles.Add(patchFile);
 
+                    // Parse patch file.
                     var gamePatch = JsonSerializer.Deserialize<GamePatch>(File.ReadAllText(patchFile));
 
+                    // Apply patches.
                     foreach (var patch in gamePatch.Patches)
                     {
+                        // The relative file path, sans variable
+                        string relativeGameFile = null;
+
+                        // The expected path to its output equivalent.
+                        string expectedOutputFile = null;
+
+                        // The path to the actual local file.
+                        string actualGameFile = null;
+
+                        // Set the relative and actual paths to file.
+                        if (patch.File.StartsWith(UnpackedGameFilesString))
+                        {
+                            relativeGameFile = patch.File.Replace(UnpackedGameFilesString, string.Empty);
+                            actualGameFile = this.unpacker.GetUnpackedGameFile(relativeGameFile);
+                        }
+                        else if (patch.File.StartsWith(GameInstallString))
+                        {
+                            relativeGameFile = patch.File.Replace(GameInstallString, string.Empty);
+                            actualGameFile = this.unpacker.GetInstallGameFile(relativeGameFile);
+                        }
+                        else
+                        {
+                            // Require that the path include one of the variables.
+                            throw new ArgumentException($@"Unrecognized file path ""{patch.File}"" in patch file ""{patchFile}"".");
+                        }
+
+                        // Set the expected output path.
+                        expectedOutputFile = Path.Join(outputDir, relativeGameFile);
+
+                        // Copy actual file to output if missing.
+                        if (!File.Exists(expectedOutputFile))
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(expectedOutputFile));
+                            File.Copy(actualGameFile, expectedOutputFile);
+                        }
+
                         if (patch is BinaryPatchFormat binaryPatch)
                         {
-                            this.log.LogInformation($"{binaryPatch.File}\n{binaryPatch.Format}\n{binaryPatch.Offset}\n{binaryPatch.Data}");
-
-                            var unpackedFile = this.unpacker.GetUnpackedGameFile(patch.File.Replace("{UnpackedGameFiles}", string.Empty));
-
-                            using (BinaryWriter writer = new(File.Open(unpackedFile, FileMode.Open)))
+                            using (BinaryWriter writer = new(File.Open(expectedOutputFile, FileMode.Open)))
                             {
                                 writer.BaseStream.Seek(binaryPatch.Offset, SeekOrigin.Begin);
 
@@ -68,6 +107,10 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 
                                 writer.Write(patchBytes);
                             }
+
+                            this.buildLogger.LogOutputFile(card, expectedOutputFile);
+
+                            this.log.LogDebug("Patch applied.\nFormat: {PatchType}\nFile: {File}\nComment: {PatchComment}", patch.Format, patch.File, patch.Comment);
                         }
                         else
                         {
