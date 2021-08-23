@@ -24,14 +24,14 @@ namespace CaelumCoreLibrary.Builders
         private const int MaxFilesDeleted = DeckBuilderUtilities.MaxFilesAllowedForDeleting;
 
         private readonly ILogger log;
-        private readonly IGameFile unpacker;
+        private readonly IGameFileProvider unpacker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="fileSystem">File system.</param>
-        public DeckBuilderBasic(ILogger log, IGameFile unpacker)
+        public DeckBuilderBasic(ILogger log, IGameFileProvider unpacker)
         {
             this.log = log;
             this.unpacker = unpacker;

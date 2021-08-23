@@ -6,9 +6,9 @@
 namespace CaelumCoreLibrary.Builders.Files
 {
     /// <summary>
-    /// Unpacker interface.
+    /// GameFileProvider interface.
     /// </summary>
-    public interface IGameFile
+    public interface IGameFileProvider
     {
         /// <summary>
         /// Returns the local unpacked file path of <paramref name="relativeGameFile"/>, unpacking from source game files if missing.

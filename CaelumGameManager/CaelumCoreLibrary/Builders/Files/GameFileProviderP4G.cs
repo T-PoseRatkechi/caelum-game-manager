@@ -15,18 +15,21 @@ namespace CaelumCoreLibrary.Builders.Files
     using Microsoft.Extensions.Logging;
     using PreappPartnersLib.FileSystems;
 
-    public class GameFileP4G : IGameFile
+    /// <summary>
+    /// GameFileProvider for Persona 4 Golden.
+    /// </summary>
+    public class GameFileProviderP4G : IGameFileProvider
     {
         private readonly ILogger log;
         private readonly string unpackedDir;
         private readonly string gameInstallPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameFileP4G"/> class.
+        /// Initializes a new instance of the <see cref="GameFileProviderP4G"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="unpackedDir">Directory path of the game's unpacked folder.</param>
-        public GameFileP4G(ILogger log, string gameInstallPath, string unpackedDir)
+        public GameFileProviderP4G(ILogger log, string gameInstallPath, string unpackedDir)
         {
             this.log = log;
             this.unpackedDir = unpackedDir;

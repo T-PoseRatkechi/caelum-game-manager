@@ -26,18 +26,18 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 
         private readonly ILogger log;
         private readonly IBuildLogger buildLogger;
-        private readonly IGameFile unpacker;
+        private readonly IGameFileProvider gameFile;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FilePatchingModule"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="buildLogger">Build logger.</param>
-        public FilePatchingModule(ILogger log, IBuildLogger buildLogger, IGameFile unpacker)
+        public FilePatchingModule(ILogger log, IBuildLogger buildLogger, IGameFileProvider gameFile)
         {
             this.log = log;
             this.buildLogger = buildLogger;
-            this.unpacker = unpacker;
+            this.gameFile = gameFile;
         }
 
         /// <inheritdoc/>
@@ -74,12 +74,12 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                         if (patch.File.StartsWith(UnpackedGameFilesString))
                         {
                             relativeGameFile = patch.File.Replace(UnpackedGameFilesString, string.Empty);
-                            actualGameFile = this.unpacker.GetUnpackedGameFile(relativeGameFile);
+                            actualGameFile = this.gameFile.GetUnpackedGameFile(relativeGameFile);
                         }
                         else if (patch.File.StartsWith(GameInstallString))
                         {
                             relativeGameFile = patch.File.Replace(GameInstallString, string.Empty);
-                            actualGameFile = this.unpacker.GetInstallGameFile(relativeGameFile);
+                            actualGameFile = this.gameFile.GetInstallGameFile(relativeGameFile);
                         }
                         else
                         {

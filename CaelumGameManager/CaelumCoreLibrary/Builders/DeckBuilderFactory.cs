@@ -32,9 +32,9 @@ namespace CaelumCoreLibrary.Builders
             switch (gameInstall.GameName)
             {
                 case "Persona 4 Golden":
-                    return new DeckBuilderBasic(this.log, new GameFileP4G(this.log, gameConfig.GameInstallPath, gameInstall.UnpackedDirectory));
+                    return new DeckBuilderBasic(this.log, new GameFileProviderP4G(this.log, gameConfig.GameInstallPath, gameInstall.UnpackedDirectory));
                 default:
-                    return new DeckBuilderBasic(this.log, new GameFileDefault(this.log, gameConfig.GameInstallPath));
+                    return new DeckBuilderBasic(this.log, new GameFileProviderDefault(this.log, gameConfig.GameInstallPath));
             }
         }
     }

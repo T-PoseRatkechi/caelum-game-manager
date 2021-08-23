@@ -9,17 +9,17 @@ namespace CaelumCoreLibrary.Builders.Files
     using System.IO;
     using Microsoft.Extensions.Logging;
 
-    public class GameFileDefault : IGameFile
+    public class GameFileProviderDefault : IGameFileProvider
     {
         private readonly ILogger log;
         private readonly string gameInstallPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameFileDefault"/> class.
+        /// Initializes a new instance of the <see cref="GameFileProviderDefault"/> class.
         /// </summary>
         /// <param name="log">Logger</param>
         /// <param name="gameInstallPath">Game install path.</param>
-        public GameFileDefault(ILogger log, string gameInstallPath)
+        public GameFileProviderDefault(ILogger log, string gameInstallPath)
         {
             this.log = log;
             this.gameInstallPath = gameInstallPath;

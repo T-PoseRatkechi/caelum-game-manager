@@ -27,7 +27,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="buildLogger">Build logger.</param>
-        public OutputBuilder(ILogger log, IBuildLogger buildLogger, IGameFile unpacker)
+        public OutputBuilder(ILogger log, IBuildLogger buildLogger, IGameFileProvider unpacker)
         {
             this.log = log;
             this.buildLogger = buildLogger;
