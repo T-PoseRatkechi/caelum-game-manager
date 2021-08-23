@@ -8,12 +8,8 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
-    using System.Collections.Specialized;
     using System.Threading;
     using System.Threading.Tasks;
-    using Autofac;
-    using CaelumCoreLibrary.Builders;
-    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
@@ -35,10 +31,14 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             this.currentGame = caelumCore.GetGameInstance();
 
-            App.LogLevelController.MinimumLevel =
-                this.currentGame.GameConfig.Settings.ShowDebugMessages ?
-                Serilog.Events.LogEventLevel.Debug :
-                Serilog.Events.LogEventLevel.Information;
+            if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
+            {
+                // Clear any earlier debug messages from log window.
+                this.LogVM.Log.Clear();
+
+                // Set min level to info.
+                App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
+            }
 
             this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);
 
@@ -68,7 +68,16 @@ namespace CaelumGameManagerGUI.ViewModels
         protected override void OnViewReady(object view)
         {
             base.OnViewReady(view);
-            Log.Information("Caelum Game Manager ready");
+            var rand = new Random();
+
+            if (rand.Next(0, 3) == 0)
+            {
+                Log.Information("Shuba shuba shuba!");
+            }
+            else
+            {
+                Log.Information("Caelum Game Manager is ready.");
+            }
         }
 
         /// <inheritdoc/>
