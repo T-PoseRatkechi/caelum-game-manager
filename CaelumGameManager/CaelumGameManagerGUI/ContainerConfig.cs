@@ -60,7 +60,9 @@ namespace CaelumGameManagerGUI
             builder.RegisterType<CardFactory>().As<ICardFactory>().SingleInstance();
 
             // Deck builders.
-            builder.RegisterType<DeckBuilderBasic>().As<IDeckBuilder>().SingleInstance();
+            builder.RegisterType<DeckBuilderFactory>().As<IDeckBuilderFactory>().SingleInstance();
+
+            // builder.RegisterType<DeckBuilderBasic>().As<IDeckBuilder>().SingleInstance();
 
             // Logging.
             var loggerFactory = new LoggerFactory().AddSerilog(Log.Logger);

@@ -14,7 +14,6 @@ namespace CaelumGameManagerGUI
     /// </summary>
     public class CaelumCore
     {
-        private readonly IDeckBuilder deckBuilder;
         private readonly IGameInstanceFactory gameInstanceFactory;
         private readonly ICardFactory cardFactory;
 
@@ -24,10 +23,9 @@ namespace CaelumGameManagerGUI
         /// <param name="gameInstanceFactory">Game instance factory.</param>
         /// <param name="deckBuilder">Deck builder.</param>
         /// <param name="cardFactory">Card factory.</param>
-        public CaelumCore(IGameInstanceFactory gameInstanceFactory, IDeckBuilder deckBuilder, ICardFactory cardFactory)
+        public CaelumCore(IGameInstanceFactory gameInstanceFactory, ICardFactory cardFactory)
         {
             this.cardFactory = cardFactory;
-            this.deckBuilder = deckBuilder;
             this.gameInstanceFactory = gameInstanceFactory;
         }
 
@@ -42,7 +40,7 @@ namespace CaelumGameManagerGUI
         /// <returns>Game instance.</returns>
         public IGameInstance GetGameInstance()
         {
-            return this.gameInstanceFactory.CreateGameInstance("Persona 4 Golden", this.deckBuilder);
+            return this.gameInstanceFactory.CreateGameInstance("Persona 4 Golden");
         }
     }
 }

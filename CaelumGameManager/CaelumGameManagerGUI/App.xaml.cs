@@ -74,8 +74,6 @@ namespace CaelumGameManagerGUI
         /// </summary>
         private void ConfigureLogger()
         {
-            var cmdArgs = Environment.GetCommandLineArgs();
-
             // Configure logger.
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(LogLevelController)
@@ -83,6 +81,10 @@ namespace CaelumGameManagerGUI
                 .WriteTo.File(LogFilePath, outputTemplate: "<ID:{ThreadId}> ({Timestamp:HH:mm:ss}) [{Level:u3}] {Exception}{Message:j}{NewLine}{Properties}{NewLine}")
                 .Enrich.WithThreadId()
                 .CreateLogger();
+
+            LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Debug;
+
+            var cmdArgs = Environment.GetCommandLineArgs();
 
             // App launched with verbose mode.
             if (cmdArgs.Contains("-verbose"))

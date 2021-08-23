@@ -11,6 +11,7 @@ namespace CaelumCoreLibrary.Builders
     using System.IO.Abstractions;
     using System.Text;
     using CaelumCoreLibrary.Builders.Modules;
+    using CaelumCoreLibrary.Builders.Files;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Utilities;
     using Microsoft.Extensions.Logging;
@@ -23,17 +24,17 @@ namespace CaelumCoreLibrary.Builders
         private const int MaxFilesDeleted = DeckBuilderUtilities.MaxFilesAllowedForDeleting;
 
         private readonly ILogger log;
-        private readonly IFileSystem fileSystem;
+        private readonly IGameFile unpacker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="fileSystem">File system.</param>
-        public DeckBuilderBasic(ILogger log, IFileSystem fileSystem)
+        public DeckBuilderBasic(ILogger log, IGameFile unpacker)
         {
             this.log = log;
-            this.fileSystem = fileSystem;
+            this.unpacker = unpacker;
         }
 
         /// <inheritdoc/>
@@ -47,7 +48,7 @@ namespace CaelumCoreLibrary.Builders
 
             IBuildLogger buildLogger = new BuildLogger();
 
-            var outputBuilder = new OutputBuilder(this.log, buildLogger)
+            var outputBuilder = new OutputBuilder(this.log, buildLogger, this.unpacker)
                 .AddModule(new PhosModule(this.log, buildLogger))
                 .AddModule(new StandardModule(this.log, buildLogger));
 
@@ -79,7 +80,7 @@ namespace CaelumCoreLibrary.Builders
                 throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! CHANGE ASAP!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
             }
 
-            string[] outputDirFiles = this.fileSystem.Directory.GetFiles(outputDir, "*.*", SearchOption.AllDirectories);
+            string[] outputDirFiles = Directory.GetFiles(outputDir, "*.*", SearchOption.AllDirectories);
 
             // Check number files that will be deleted exceeds max limit.
             // This check can be skipped by setting ignoreMaxFilesWarning to true.
@@ -88,16 +89,16 @@ namespace CaelumCoreLibrary.Builders
                 throw new ArgumentException($"!!!OUTPUT DIRECTORY CONTAINS MORE FILES THAN ALLOWED TO DELETE {MaxFilesDeleted}!!! DELETE MANUALLY OR CHANGE THIS SETTING!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
             }
 
-            this.log.LogInformation("Preparing output folder");
+            this.log.LogInformation("Preparing output folder.");
 
             this.log.LogDebug("Deleting {NumFiles} files", outputDirFiles.Length);
             foreach (var file in outputDirFiles)
             {
                 File.Delete(file);
-                this.log.LogTrace("Deleted file: {FilePath}", file);
+                this.log.LogTrace("Deleted file: {FilePath}.", file);
             }
 
-            this.log.LogInformation("Output folder prepared");
+            this.log.LogInformation("Output folder prepared.");
         }
     }
 }

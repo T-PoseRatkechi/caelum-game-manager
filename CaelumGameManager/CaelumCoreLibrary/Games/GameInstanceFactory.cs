@@ -21,6 +21,7 @@ namespace CaelumCoreLibrary.Games
         private readonly IGameConfigManagerFactory gameConfigManagerFactory;
         private readonly ICardsLoaderFactory cardsLoaderFactory;
         private readonly IDeckFactory deckFactory;
+        private readonly IDeckBuilderFactory deckBuilderFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameInstanceFactory"/> class.
@@ -30,32 +31,37 @@ namespace CaelumCoreLibrary.Games
         /// <param name="gameConfigManagerFactory">Game config manager factory.</param>
         /// <param name="cardsLoaderFactory">Cards loader factory.</param>
         /// <param name="deckFactory">Deck factory.</param>
+        /// <param name="deckBuilderFactory">Deck builder factory.</param>
         public GameInstanceFactory(
             ILogger log,
             IGameInstallFactory gameInstallFactory,
             IGameConfigManagerFactory gameConfigManagerFactory,
             ICardsLoaderFactory cardsLoaderFactory,
-            IDeckFactory deckFactory)
+            IDeckFactory deckFactory,
+            IDeckBuilderFactory deckBuilderFactory)
         {
             this.log = log;
             this.cardsLoaderFactory = cardsLoaderFactory;
             this.gameInstallFactory = gameInstallFactory;
             this.gameConfigManagerFactory = gameConfigManagerFactory;
             this.deckFactory = deckFactory;
+            this.deckBuilderFactory = deckBuilderFactory;
         }
 
         /// <inheritdoc/>
-        public IGameInstance CreateGameInstance(string gameName, IDeckBuilder deckBuilder)
+        public IGameInstance CreateGameInstance(string gameName)
         {
             this.log.LogDebug("Creating game instance with name {GameName}", gameName);
 
             var gameInstall = this.gameInstallFactory.CreateGameInstall(gameName);
+            var gameConfigManager = this.gameConfigManagerFactory.CreateGameConfigManager(Path.Join(gameInstall.BaseDirectory, "game-config.json"));
             var cardsLoader = this.cardsLoaderFactory.CreateCardsLoader(gameInstall);
+            var deckBuilder = this.deckBuilderFactory.GetGameDeckBuilder(gameInstall, gameConfigManager.Settings);
 
             IGameInstance gameInstance = new GameInstance(this.log, deckBuilder)
             {
                 GameInstall = gameInstall,
-                GameConfig = this.gameConfigManagerFactory.CreateGameConfigManager(Path.Join(gameInstall.BaseDirectory, "game-config.json")),
+                GameConfig = gameConfigManager,
                 Deck = this.deckFactory.CreateDeck(cardsLoader),
             };
 
