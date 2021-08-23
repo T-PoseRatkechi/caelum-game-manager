@@ -22,7 +22,12 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <Folder Include="Dependencies\" />
+    <Reference Include="Amicitia.IO">
+      <HintPath>Dependencies\preappfile\external\Amicitia.IO\Amicitia.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="PreappPartnersLib">
+      <HintPath>Dependencies\preappfile\PreappPartnersLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 	
   <ItemGroup>
