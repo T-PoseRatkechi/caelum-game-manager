@@ -58,7 +58,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                         }
                         else
                         {
-                            this.log.LogInformation("Unknown patch");
+                            this.log.LogInformation("Unknown patch.");
                         }
                     }
 
