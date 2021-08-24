@@ -13,6 +13,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
     using System.Text.Json;
     using System.Text.RegularExpressions;
     using CaelumCoreLibrary.Builders.Files;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
 
@@ -97,48 +98,17 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                             File.Copy(actualGameFile, expectedOutputFile);
                         }
 
-                        if (patch is BinaryPatchFormat binaryPatch)
-                        {
-                            using (BinaryWriter writer = new(File.Open(expectedOutputFile, FileMode.Open)))
-                            {
-                                writer.BaseStream.Seek(binaryPatch.Offset, SeekOrigin.Begin);
+                        // TODO: Possibly improve performance by grouping patches per file
+                        // and opening and closing streams once per file/card instead per each patch.
+                        patch.ApplyPatch(expectedOutputFile);
 
-                                var patchBytes = ConvertHexStringToByteArray(binaryPatch.Data);
-
-                                writer.Write(patchBytes);
-                            }
-
-                            this.buildLogger.LogOutputFile(card, expectedOutputFile);
-
-                            this.log.LogDebug("Patch applied.\nFormat: {PatchType}\nFile: {File}\nComment: {PatchComment}", patch.Format, patch.File, patch.Comment);
-                        }
-                        else
-                        {
-                            this.log.LogInformation("Unknown patch.");
-                        }
+                        this.buildLogger.LogOutputFile(card, expectedOutputFile);
+                        // this.log.LogDebug("Patch applied.\nFormat: {PatchType}\nFile: {File}\nComment: {PatchComment}", patch.Format, patch.File, patch.Comment);
                     }
                 }
 
                 this.log.LogDebug("Loaded {NumPatches} file patch(es) from card {CardName}", patchFiles.Length, card.Name);
             }
-        }
-
-        public static byte[] ConvertHexStringToByteArray(string hexString)
-        {
-            var fixedString = hexString.Replace(" ", string.Empty);
-            if (fixedString.Length % 2 != 0)
-            {
-                throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "The binary key cannot have an odd number of digits: {0}", fixedString));
-            }
-
-            byte[] data = new byte[fixedString.Length / 2];
-            for (int index = 0; index < data.Length; index++)
-            {
-                string byteValue = fixedString.Substring(index * 2, 2);
-                data[index] = byte.Parse(byteValue, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-            }
-
-            return data;
         }
     }
 }

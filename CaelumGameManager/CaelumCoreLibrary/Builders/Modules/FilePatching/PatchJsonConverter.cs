@@ -5,6 +5,7 @@
 
 namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 {
+    using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
     using System;
     using System.Collections.Generic;
     using System.Text.Json;
@@ -15,6 +16,14 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
     /// </summary>
     public class PatchJsonConverter : JsonConverter<IPatch[]>
     {
+        /*
+        private static Dictionary<string, Type> PatchFormats = new()
+        {
+            { "binary", typeof(BinaryPatchFormat) },
+            { "tblpatch", typeof(TblPatchFormat) },
+        };
+        */
+
         /// <inheritdoc/>
         public override IPatch[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -63,20 +72,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                     reader.Read();
 
                     // New patch container.
-                    IPatch newPatch;
-
-                    // Set patch instance.
-                    switch (formatValue)
-                    {
-                        case "binary":
-                            newPatch = new BinaryPatchFormat();
-                            break;
-                        default:
-                            throw new JsonException($@"Unknown file patch format ""{formatValue}"".");
-                    }
-
-                    newPatch.Format = formatValue;
-
+                    IPatch newPatch = this.GetPatchInstance(formatValue);
                     var patchType = newPatch.GetType();
 
                     // Set patch object props.
@@ -133,6 +129,19 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                     // Add new patch to patches list.
                     patches.Add(newPatch);
                 }
+            }
+        }
+
+        private IPatch GetPatchInstance(string format)
+        {
+            switch (format)
+            {
+                case "binary":
+                    return new BinaryPatchFormat();
+                case "tblpatch":
+                    return new TblPatchFormat();
+                default:
+                    throw new JsonException($@"Unknown file patch format ""{format}"".");
             }
         }
     }
