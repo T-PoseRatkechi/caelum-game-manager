@@ -6,6 +6,8 @@
 namespace CaelumCoreLibrary.Games
 {
     using System.Diagnostics;
+    using System.Linq;
+    using System.Timers;
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
@@ -18,6 +20,9 @@ namespace CaelumCoreLibrary.Games
     {
         private readonly ILogger log;
         private readonly IDeckBuilder deckBuilder;
+
+        // Save timer for saving config.
+        private readonly Timer saveTimer = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameInstance"/> class.
@@ -50,6 +55,36 @@ namespace CaelumCoreLibrary.Games
             watch.Stop();
 
             this.log.LogInformation("Deck built successfully in {TimeElapsed} ms.", watch.ElapsedMilliseconds);
+        }
+
+        /// <inheritdoc/>
+        public void InitGame()
+        {
+            // Sort a list from another list IDs
+            // https://stackoverflow.com/a/55650341
+            // CC BY-SA 4.0
+            // Kladzey
+
+            // Set inital order of cards based on config.
+            this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).ToList();
+
+            this.saveTimer.AutoReset = false;
+            this.saveTimer.Enabled = false;
+            this.saveTimer.Interval = 1000;
+
+            this.saveTimer.Elapsed += (sender, e) =>
+            {
+                var cardOrder = this.Deck.Cards.Select(x => x.CardId).ToArray();
+                this.GameConfig.Settings.Cards = cardOrder;
+                this.GameConfig.SaveGameConfig();
+            };
+
+            this.Deck.OnDeckChanged += (sender, e) =>
+            {
+                this.saveTimer.Enabled = true;
+                this.saveTimer.Stop();
+                this.saveTimer.Start();
+            };
         }
     }
 }

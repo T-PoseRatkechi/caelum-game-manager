@@ -44,17 +44,8 @@ namespace CaelumGameManagerGUI.Models
         {
             try
             {
-                // Adding new card to end of list.
-                if (index == this._deck.Cards.Count)
-                {
-                    this._deck.AddCard(item);
-                }
-
-                // DragDrop moving card.
-                else
-                {
-                    this._deck.Cards.Insert(index, item);
-                }
+                this._deck.Cards.Insert(index, item);
+                this._deck.NotifyDeckChanged();
 
                 base.InsertItemBase(index, item);
 

@@ -9,6 +9,7 @@ namespace CaelumCoreLibrary.Decks
     using System.Collections.Generic;
     using System.IO;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Configs;
 
     /// <summary>
     /// Base implementation of IDeck.
@@ -21,6 +22,7 @@ namespace CaelumCoreLibrary.Decks
         /// Initializes a new instance of the <see cref="Deck"/> class.
         /// </summary>
         /// <param name="cardsLoader">Cards loader to use.</param>
+        /// <param name="gameConfigManager">Game config manager.</param>
         public Deck(ICardsLoader cardsLoader)
         {
             this.cardsLoader = cardsLoader;
@@ -30,13 +32,17 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public List<CardModel> Cards { get; private set; }
+        public event EventHandler OnDeckChanged;
+
+        /// <inheritdoc/>
+        public List<CardModel> Cards { get; set; }
 
         /// <inheritdoc/>
         public void LoadDeckCards()
         {
             // Load installed cards.
             this.Cards = this.cardsLoader.GetInstalledCards();
+            this.NotifyDeckChanged();
         }
 
         /// <inheritdoc/>
@@ -45,18 +51,20 @@ namespace CaelumCoreLibrary.Decks
             // Don't add duplicate card instances.
             if (this.Cards.Contains(card))
             {
-                throw new ArgumentException("Cannot add duplicate card instance to deck!", nameof(card));
+                throw new ArgumentException("Cannot add duplicate card instance to deck.", nameof(card));
             }
 
             // Don't add cards if one already exists with the same card id.
             else if (this.Cards.FindIndex(cardInDeck => cardInDeck.CardId == card.CardId) > -1)
             {
-                throw new ArgumentException($"Cannot add card because a card already exists with the same id! Card ID: {card.CardId}", nameof(card));
+                throw new ArgumentException($"Cannot add card because a card already exists with the same id {card.CardId}.", nameof(card));
             }
             else
             {
                 this.Cards.Add(card);
             }
+
+            this.NotifyDeckChanged();
         }
 
         /// <inheritdoc/>
@@ -65,11 +73,13 @@ namespace CaelumCoreLibrary.Decks
             // Could not remove card from deck.
             if (!this.Cards.Remove(card))
             {
-                throw new ArgumentException($"Could not remove card from deck! Card ID: {card.CardId}", nameof(card));
+                throw new ArgumentException($"Could not remove card {card.CardId} from deck.", nameof(card));
             }
 
             // Delete card installation folder.
             Directory.Delete(card.InstallDirectory, true);
+
+            this.NotifyDeckChanged();
         }
 
         /// <inheritdoc/>
@@ -78,10 +88,18 @@ namespace CaelumCoreLibrary.Decks
             // Don't allow hiding cards that are already hidden.
             if (card.IsHidden)
             {
-                throw new ArgumentException($"Could not set card to hidden because card is already hidden! Card ID: {card.CardId}", nameof(card));
+                throw new ArgumentException($"Could not set card {card.CardId} to hidden because card is already hidden!", nameof(card));
             }
 
             card.IsHidden = true;
+
+            this.NotifyDeckChanged();
+        }
+
+        /// <inheritdoc/>
+        public void NotifyDeckChanged()
+        {
+            this.OnDeckChanged?.Invoke(this, null);
         }
     }
 }

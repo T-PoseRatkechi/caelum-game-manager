@@ -30,6 +30,7 @@ namespace CaelumGameManagerGUI.ViewModels
         public ShellViewModel(CaelumCore caelumCore)
         {
             this.currentGame = caelumCore.GetGameInstance();
+            this.currentGame.InitGame();
 
             if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
             {

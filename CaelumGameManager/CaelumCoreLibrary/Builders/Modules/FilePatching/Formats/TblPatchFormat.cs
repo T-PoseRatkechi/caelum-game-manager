@@ -5,13 +5,9 @@
 
 namespace CaelumCoreLibrary.Builders.Modules.FilePatching.Formats
 {
-    using CaelumCoreLibrary.Builders.Modules.FilePatching.Utilities;
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching.Utilities;
 
     /// <summary>
     /// TBL patch format.

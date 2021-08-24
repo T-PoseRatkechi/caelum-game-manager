@@ -1,5 +1,6 @@
 ﻿namespace CaelumCoreLibrary.Decks
 {
+    using System;
     using System.Collections.Generic;
     using CaelumCoreLibrary.Cards;
 
@@ -9,9 +10,14 @@
     public interface IDeck
     {
         /// <summary>
-        /// Gets cards in deck.
+        /// Deck changed handler.
         /// </summary>
-        List<CardModel> Cards { get; }
+        public event EventHandler OnDeckChanged;
+
+        /// <summary>
+        /// Gets or sets cards in deck.
+        /// </summary>
+        List<CardModel> Cards { get; set; }
 
         /// <summary>
         /// Loads deck cards.
@@ -37,5 +43,10 @@
         /// </summary>
         /// <param name="card">Card to delete.</param>
         void DeleteCard(CardModel card);
+
+        /// <summary>
+        /// Notify that deck changed.
+        /// </summary>
+        void NotifyDeckChanged();
     }
 }
