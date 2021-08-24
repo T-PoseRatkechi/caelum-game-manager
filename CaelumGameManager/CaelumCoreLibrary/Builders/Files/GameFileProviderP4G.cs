@@ -22,7 +22,10 @@ namespace CaelumCoreLibrary.Builders.Files
     /// </summary>
     public class GameFileProviderP4G : IGameFileProvider
     {
-        private const char UnpackedFolderChar = '_';
+        /// <summary>
+        /// Character denoting the unpacked contents of a file.
+        /// </summary>
+        public const char UnpackedFolderChar = '_';
 
         private readonly ILogger log;
         private readonly string unpackedDir;
@@ -163,6 +166,12 @@ namespace CaelumCoreLibrary.Builders.Files
                         }
                     }
                 }
+            }
+
+            // Verify that expected file exists.
+            if (!File.Exists(expectedPath))
+            {
+                throw new FileNotFoundException($@"Failed to find unpacked game file ""{relativeGameFile}"".", expectedPath);
             }
 
             return expectedPath;

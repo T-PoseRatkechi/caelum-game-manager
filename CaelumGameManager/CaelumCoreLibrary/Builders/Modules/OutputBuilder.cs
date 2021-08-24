@@ -10,6 +10,7 @@ namespace CaelumCoreLibrary.Builders.Modules
     using CaelumCoreLibrary.Builders.Files;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
+    using CaelumCoreLibrary.Builders.Modules.PostBuild;
 
     /// <summary>
     /// Builder for card output.
@@ -21,6 +22,8 @@ namespace CaelumCoreLibrary.Builders.Modules
 
         private readonly List<IBuilderModule> modules = new();
         private readonly FilePatchingModule filePatchingModule;
+
+        private IPostBuild postBuild;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OutputBuilder"/> class.
@@ -50,6 +53,17 @@ namespace CaelumCoreLibrary.Builders.Modules
         }
 
         /// <summary>
+        /// Adds a post builder.
+        /// </summary>
+        /// <param name="postBuild">Post builder.</param>
+        /// <returns>This <seealso cref="OutputBuilder"/> instance.</returns>
+        public OutputBuilder PostBuild(IPostBuild postBuild)
+        {
+            this.postBuild = postBuild;
+            return this;
+        }
+
+        /// <summary>
         /// Builds output with the given modules.
         /// </summary>
         /// <param name="cards">Cards to build.</param>
@@ -59,6 +73,11 @@ namespace CaelumCoreLibrary.Builders.Modules
             foreach (var card in cards)
             {
                 this.BuildCardOutput(card, outputDir);
+            }
+
+            if (this.postBuild != null)
+            {
+                this.postBuild.FinalizeBuild(outputDir);
             }
         }
 

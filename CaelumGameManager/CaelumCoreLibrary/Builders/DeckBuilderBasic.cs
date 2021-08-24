@@ -15,6 +15,7 @@ namespace CaelumCoreLibrary.Builders
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Utilities;
     using Microsoft.Extensions.Logging;
+    using CaelumCoreLibrary.Builders.Modules.PostBuild;
 
     /// <summary>
     /// Simple deck builder: copy and paste, file overwriting, patching, etc.
@@ -50,7 +51,8 @@ namespace CaelumCoreLibrary.Builders
 
             var outputBuilder = new OutputBuilder(this.log, buildLogger, this.unpacker)
                 .AddModule(new PhosModule(this.log, buildLogger))
-                .AddModule(new StandardModule(this.log, buildLogger));
+                .AddModule(new StandardModule(this.log, buildLogger))
+                .PostBuild(new PostBuildP4G(this.log, buildLogger, this.unpacker));
 
             outputBuilder.BuildOutput(deck, outputDir);
 
