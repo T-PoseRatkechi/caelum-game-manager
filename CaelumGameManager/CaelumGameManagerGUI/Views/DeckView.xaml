@@ -56,12 +56,12 @@
         <DataGrid x:Name="FilteredDeck" Grid.Column="0" Grid.Row="1" CanUserAddRows="False"
                   AutoGenerateColumns="False" ColumnWidth="SizeToHeader" HorizontalScrollBarVisibility="Disabled"
                   CanUserResizeRows="False" MouseLeftButtonDown="FilteredDeck_MouseDown"
-                   dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                   dd:DragDrop.SelectDroppedItems="True" SelectionMode="Extended"
-                   dd:DragDrop.DropHandler="{Binding}">
+                  dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                  dd:DragDrop.SelectDroppedItems="True" SelectionMode="Extended"
+                  dd:DragDrop.DropHandler="{Binding}" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="{lex:Loc EnabledText}" Binding="{Binding Path=IsEnabled}"
-                                                IsReadOnly="False" />
+                                                IsReadOnly="False"/>
                 <DataGridTextColumn Header="{lex:Loc TypeText}" Binding="{Binding Path=Type}"
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="{lex:Loc NameText}" Binding="{Binding Path=Name}"

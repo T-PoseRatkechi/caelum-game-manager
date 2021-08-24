@@ -3,11 +3,11 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-using CaelumCoreLibrary.Common;
-using System.Collections.Generic;
-
 namespace CaelumCoreLibrary.Cards
 {
+    using System.Collections.Generic;
+    using CaelumCoreLibrary.Common;
+
     /// <summary>
     /// Interface for cards that are installable (has an installation folder somewhere).
     /// </summary>
@@ -15,7 +15,7 @@ namespace CaelumCoreLibrary.Cards
     {
         /// <summary>
         /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
-        /// Should typically be: {author_name}-{card_name}
+        /// Should typically be: {author_name}_{card_name}
         /// Update Cards must have the same id as the card they are updating.
         /// </summary>
         public string CardId { get; set; }

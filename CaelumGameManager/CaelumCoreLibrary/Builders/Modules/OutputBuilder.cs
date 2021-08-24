@@ -70,9 +70,20 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// <param name="outputDir">Output directory.</param>
         public void BuildOutput(List<CardModel> cards, string outputDir)
         {
+            /* Working, but builds cards in the order
+             * where earliest card has the lowest priority (gets files overwritten).
+             * Contradictory to what you'd assume from the GUI
+             * and generally; (Index) 1 should be more important than (Index) 2
             foreach (var card in cards)
             {
                 this.BuildCardOutput(card, outputDir);
+            }
+            */
+
+            // Build cards in reverse order.
+            for (int i = cards.Count - 1; i >= 0; i--)
+            {
+                this.BuildCardOutput(cards[i], outputDir);
             }
 
             if (this.postBuild != null)
