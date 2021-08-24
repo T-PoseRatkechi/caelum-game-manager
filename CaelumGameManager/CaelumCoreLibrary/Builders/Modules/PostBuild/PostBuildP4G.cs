@@ -21,12 +21,21 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
     /// </summary>
     public class PostBuildP4G : IPostBuild
     {
+        /// <summary>
+        /// The character representing a folder is the unpacked contants of a file.
+        /// </summary>
+        private const char UnpackedFolderChar = GameFileProviderP4G.UnpackedFolderChar;
+
         private readonly ILogger log;
         private readonly IBuildLogger buildLogger;
         private readonly IGameFileProvider gameFileProvider;
 
-        private const char UnpackedFolderChar = GameFileProviderP4G.UnpackedFolderChar;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostBuildP4G"/> class.
+        /// </summary>
+        /// <param name="log">Logger.</param>
+        /// <param name="buildLogger">Build logger.</param>
+        /// <param name="gameFileProvider">Game file provider.</param>
         public PostBuildP4G(ILogger log, IBuildLogger buildLogger, IGameFileProvider gameFileProvider)
         {
             this.log = log;
@@ -78,6 +87,12 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
             }
         }
 
+        /// <summary>
+        /// Recursively merges files in unpacked folders into their source file.
+        /// Might stack overflow if nested too much; hope it doesn't though...
+        /// </summary>
+        /// <param name="folder">Current folder in merge.</param>
+        /// <param name="buildDir">Final build directory.</param>
         private void RecursiveFileMerge(string folder, string buildDir)
         {
             // Gets if any folders or sub-folders are unpacked contents of files that will need merging.
@@ -86,9 +101,9 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
             if (unpackedFolders.Length > 0)
             {
                 // Run recursively BUT only in the top directories to keep from duplicate folder merges.
-                foreach (var folder2 in Directory.GetDirectories(folder, "*", SearchOption.TopDirectoryOnly))
+                foreach (var subfolder in Directory.GetDirectories(folder, "*", SearchOption.TopDirectoryOnly))
                 {
-                    this.RecursiveFileMerge(folder2, buildDir);
+                    this.RecursiveFileMerge(subfolder, buildDir);
                 }
             }
 
@@ -96,6 +111,7 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
             if (folder.EndsWith(UnpackedFolderChar))
             {
                 // The source file for this folder is folder sans the last character.
+                // Example: Folder "./Build Directory/init.bin_" has a source file of "./Build Directory/init.bin"
                 var sourceFile = folder.TrimEnd(UnpackedFolderChar);
 
                 // Path to save edited file.
