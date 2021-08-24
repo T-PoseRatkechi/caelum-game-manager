@@ -121,6 +121,9 @@ namespace CaelumCoreLibrary.Builders.Files
                         using (pak)
                         {
                             this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
+
+                            // TODO: Look into the SearchOption.AllDirectories, possibly able to replace
+                            // nested files directly.
                             foreach (string file in pak.EnumerateFiles())
                             {
                                 var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
@@ -138,7 +141,7 @@ namespace CaelumCoreLibrary.Builders.Files
                     // Current file was unpacked from a file unpacked from a game file.
                     else
                     {
-                        // Unpack like PakPack
+                        // Unpack like PakPack.
                         if (!PAKFileSystem.TryOpen(unpackedRelativeFile, out var pak))
                         {
                             throw new ArgumentException($@"Invalid PAK file ""{unpackedRelativeFile}"".");
@@ -218,6 +221,8 @@ namespace CaelumCoreLibrary.Builders.Files
                 packs.Add(pac);
             }
 
+            bool fileFound = false;
+
             cpk.Unpack(packs, this.unpackedDir, e =>
             {
                 // Wow, only getting the file needed is so fast!
@@ -226,11 +231,17 @@ namespace CaelumCoreLibrary.Builders.Files
                     // if (!ShouldUnpack(e.Path)) return false;
                     // this.log.LogDebug($"Extracting {e.Path} (pac: {e.PacIndex}, file: {e.FileIndex})"); // Will crash GUI.
                     this.log.LogDebug($"Extracting {e.Path} (pac: {e.PacIndex}, file: {e.FileIndex})");
+                    fileFound = true;
                     return true;
                 }
 
                 return false;
             });
+
+            if (!fileFound)
+            {
+                throw new ArgumentException($@"Root game file ""{relativePath}"" could not be found.");
+            }
         }
 
         private string GetPacBaseNameFromCpkBaseName(string dir, string baseName)

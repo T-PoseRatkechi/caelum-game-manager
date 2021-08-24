@@ -86,6 +86,7 @@ namespace CaelumCoreLibrary.Builders.Modules
                 this.BuildCardOutput(cards[i], outputDir);
             }
 
+            // Use post build if one was set.
             if (this.postBuild != null)
             {
                 this.postBuild.FinalizeBuild(outputDir);

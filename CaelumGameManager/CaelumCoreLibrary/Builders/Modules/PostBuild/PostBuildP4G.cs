@@ -62,7 +62,7 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
             foreach (var unpackedDir in unpackedDirs)
             {
                 var buildFilePath = unpackedDir.TrimEnd(UnpackedFolderChar);
-                var relativeFilePath = buildFilePath.Replace(buildDir, string.Empty);
+                var relativeFilePath = buildFilePath.Replace(buildDir, string.Empty).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                 var unpackedFile = this.gameFileProvider.GetUnpackedGameFile(relativeFilePath);
 
                 // Copy file from unpacked files to build dir if a copy doesn't already exists in build dir.
