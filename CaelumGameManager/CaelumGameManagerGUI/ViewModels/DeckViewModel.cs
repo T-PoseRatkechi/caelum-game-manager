@@ -19,6 +19,9 @@ namespace CaelumGameManagerGUI.ViewModels
     using Serilog;
     using System;
     using System.Threading.Tasks;
+    using CaelumCoreLibrary.Cards.Converters.Aemulus;
+    using Microsoft.Win32;
+    using System.IO;
 
     /// <summary>
     /// Deck VM.
@@ -137,6 +140,25 @@ namespace CaelumGameManagerGUI.ViewModels
                 }
 
                 this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck));
+            }
+        }
+
+        public void ConvertAemulus(object sender)
+        {
+            if (sender != null)
+            {
+                var converter = new AemulusPackageConverter(null, this.game.GameInstall);
+                string aemulusDir = null;
+
+                OpenFileDialog openFileDialog = new();
+                openFileDialog.Filter = $"AemulusPackageManager.exe| *.exe";
+                openFileDialog.Title = "Select Aemulus exe...";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    aemulusDir = Path.GetDirectoryName(openFileDialog.FileName);
+                }
+
+                converter.ConvertAemulusPackages(aemulusDir);
             }
         }
 

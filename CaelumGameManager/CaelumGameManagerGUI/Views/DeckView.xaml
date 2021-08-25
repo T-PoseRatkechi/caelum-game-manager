@@ -75,6 +75,8 @@
                 <ContextMenu>
                     <MenuItem x:Name="OpenEditCard"
                               cal:Message.Attach="OpenEditCard($source)"/>
+                    <MenuItem x:Name="ConvertAemulus" Header="Import Aemulus Packages"
+                              cal:Message.Attach="ConvertAemulus($source)"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
