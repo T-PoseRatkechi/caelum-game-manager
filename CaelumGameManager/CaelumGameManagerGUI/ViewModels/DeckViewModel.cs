@@ -22,6 +22,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using Microsoft.Win32;
     using System.IO;
+    using CaelumCoreLibrary.Cards.Converters;
 
     /// <summary>
     /// Deck VM.
@@ -43,6 +44,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
         private IGameInstance game;
         private ICardFactory _cardFactory;
+        private CardConverter _cardConverter;
 
         private readonly IWindowManager windowManager = new WindowManager();
 
@@ -57,11 +59,12 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, BindableCollection<CardModel> deck)
+        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableCollection<CardModel> deck)
         {
             this.game = game;
             this._deck = deck;
             this._cardFactory = cardFactory;
+            this._cardConverter = cardConverter;
 
             this.FilteredDeck = CollectionViewSource.GetDefaultView(this._deck);
         }
@@ -147,7 +150,6 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             if (sender != null)
             {
-                var converter = new AemulusPackageConverter(null, this.game.GameInstall);
                 string aemulusDir = null;
 
                 OpenFileDialog openFileDialog = new();
@@ -158,7 +160,14 @@ namespace CaelumGameManagerGUI.ViewModels
                     aemulusDir = Path.GetDirectoryName(openFileDialog.FileName);
                 }
 
-                converter.ConvertAemulusPackages(aemulusDir);
+                try
+                {
+                    this._cardConverter.AemulusConverter.Import(aemulusDir, this.game.GameInstall.CardsDirectory);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Problem encountered while importing Aemulus packages.");
+                }
             }
         }
 

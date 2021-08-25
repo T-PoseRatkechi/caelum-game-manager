@@ -5,20 +5,22 @@
 
 namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 {
-    using AtlusFileSystemLibrary.Common.IO;
-    using AtlusFileSystemLibrary.FileSystems.PAK;
-    using CaelumCoreLibrary.Builders.Files;
-    using CaelumCoreLibrary.Games;
-    using Microsoft.Extensions.Logging;
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using AtlusFileSystemLibrary.Common.IO;
+    using AtlusFileSystemLibrary.FileSystems.PAK;
+    using CaelumCoreLibrary.Games;
+    using Microsoft.Extensions.Logging;
 
+    /// <summary>
+    /// Converts Aemulus packages to Caelum Cards.
+    /// </summary>
     public class AemulusPackageConverter
     {
+        /// <summary>
+        /// Possible archive types.
+        /// </summary>
         private static readonly string[] ArchiveExts = new string[]
         {
             ".bin",
@@ -29,23 +31,48 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
         };
 
         private readonly ILogger log;
-        private readonly IGameInstall gameInstall;
 
-        public AemulusPackageConverter(ILogger log, IGameInstall gameInstall)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AemulusPackageConverter"/> class.
+        /// </summary>
+        /// <param name="log">Logger.</param>
+        /// <param name="gameInstall">Game installation.</param>
+        public AemulusPackageConverter(ILogger log)
         {
             this.log = log;
-            this.gameInstall = gameInstall;
         }
 
-        public void ConvertAemulusPackages(string aemulusDir)
+        /// <summary>
+        /// Converts the package at <paramref name="packageDir"/> to an Caelum card at <paramref name="outputDir"/>
+        /// </summary>
+        /// <param name="aemulusDir">Aemulus install directory.</param>
+        /// <param name="packageDir">Package directory to convert.</param>
+        /// <param name="outputDir">Output directory for new card.</param>
+        public void Convert(string aemulusDir, string packageDir, string outputDir)
         {
-            var originalFilesFolder = Path.Join(aemulusDir, "Original", "Persona 4 Golden", "data_e");
-            var allOriginalFiles = Directory.GetFiles(originalFilesFolder, "*", SearchOption.AllDirectories);
 
+        }
+
+        /// <summary>
+        /// Converts and imports all Aemulus packages as Caelum cards.
+        /// </summary>
+        /// <param name="aemulusDir">Aemulus install directory.</param>
+        /// <param name="outputDir">Output directory to import the converted packages to.</param>
+        public void Import(string aemulusDir, string outputDir)
+        {
+            // Path to P4G packages folder.
             var packagesFolder = Path.Join(aemulusDir, "Packages", "Persona 4 Golden");
 
-            // Iterate over packages.
-            foreach (var packageDir in Directory.GetDirectories(packagesFolder, "*", SearchOption.TopDirectoryOnly))
+            // Copy all packages to temp folder in output.
+            var tempFolder = Path.Join(outputDir, "temp");
+            Directory.CreateDirectory(tempFolder);
+            Microsoft.VisualBasic.FileIO.FileSystem.CopyDirectory(packagesFolder, tempFolder, true);
+
+            // Aemulus P4G original files.
+            var originalFilesFolder = Path.Join(aemulusDir, "Original", "Persona 4 Golden", "data_e");
+
+            // Fixed folder paths of packages in temp folder.
+            foreach (var packageDir in Directory.GetDirectories(tempFolder, "*", SearchOption.TopDirectoryOnly))
             {
                 string dataDir = null;
                 if (Directory.Exists(Path.Join(packageDir, "data_e")))
@@ -59,47 +86,19 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 
                 if (dataDir == null)
                 {
-                    // throw new ArgumentException($@"Failed to find a data directory for Aemulus package ""{Path.GetDirectoryName(packageDir)}"".");
                     continue;
                 }
 
                 var dataDirFolders = Directory.GetDirectories(dataDir, "*", SearchOption.TopDirectoryOnly);
 
+                // Adjusts paths to match the "{originalFile}.bin_\" pattern for nested files.
                 foreach (var dirFolder in dataDirFolders)
                 {
                     this.RecursiveFixFolders(dirFolder, originalFilesFolder, dataDir);
-
-                    //StringBuilder fixedPathBuilder = new();
-
-                    //var relativePath = dirFolder.Replace(dataDir, string.Empty).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                    //var pathParts = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-
-                    //for (int i = 0, total = pathParts.Length; i < total; i++)
-                    //{
-                    //    var currentPart = pathParts[i];
-                    //    var pathToTest = string.Join(Path.DirectorySeparatorChar, pathParts[0..(i + 1)]);
-
-                    //    var allPossibleArchives = ArchiveExts.Select(x => Path.Join(originalFilesFolder, $"{pathToTest}{x}")).ToArray();
-
-                    //    var arcMatchFound = false;
-                    //    foreach (var possibleArc in allPossibleArchives)
-                    //    {
-                    //        if (File.Exists(possibleArc))
-                    //        {
-                    //            fixedPathBuilder.Append($"{Path.GetFileName(possibleArc)}_{Path.DirectorySeparatorChar}");
-                    //            arcMatchFound = true;
-                    //            break;
-                    //        }
-                    //    }
-
-                    //    if (!arcMatchFound)
-                    //    {
-                    //        fixedPathBuilder.Append(currentPart);
-                    //    }
-                    //}
-
-                    //var fixedPath = Path.Join(dataDir, fixedPathBuilder.ToString());
                 }
+
+                // Move contents of package data folder to root package folder.
+                this.MoveFolderContents(dataDir, packageDir);
             }
         }
 
@@ -133,8 +132,6 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                         // this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
                         var outputDir = Path.Join(originalFilesFolder, adjustedFolderPath.Replace(dataFolder, string.Empty));
 
-                        // TODO: Look into the SearchOption.AllDirectories, possibly able to replace
-                        // nested files directly.
                         foreach (string file in pak.EnumerateFiles())
                         {
                             var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
@@ -148,12 +145,6 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                         }
                     }
 
-                    if (finalFolder.EndsWith("\\data_e\\init\\event"))
-                    {
-                        var x = 10;
-                    }
-
-
                     break;
                 }
             }
@@ -162,6 +153,16 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             foreach (var dir in directories)
             {
                 this.RecursiveFixFolders(dir, originalFilesFolder, dataFolder);
+            }
+        }
+
+        private void MoveFolderContents(string sourceFolder, string destFolder)
+        {
+            foreach (var file in Directory.GetFiles(sourceFolder, "*", SearchOption.AllDirectories))
+            {
+                var outputFile = Path.Join(destFolder, file.Replace(sourceFolder, string.Empty));
+                Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
+                File.Copy(file, outputFile, true);
             }
         }
     }

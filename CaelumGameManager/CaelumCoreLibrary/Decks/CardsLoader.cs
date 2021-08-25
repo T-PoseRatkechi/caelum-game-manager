@@ -64,7 +64,14 @@ namespace CaelumCoreLibrary.Decks
             foreach (string cardFolder in Directory.GetDirectories(folder))
             {
                 // Parse card.
-                var card = this.cardParser.ParseCard(Path.Join(cardFolder, "card.json"));
+                var cardPath = Path.Join(cardFolder, "card.json");
+                if (!File.Exists(cardPath))
+                {
+                    this.log.LogWarning("No card file found for card folder {CardFolderName}", cardFolder);
+                    continue;
+                }
+
+                var card = this.cardParser.ParseCard(cardPath);
 
                 // Validate card.
                 // Don't allow duplicate cards to be added.

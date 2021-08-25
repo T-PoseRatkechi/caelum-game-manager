@@ -18,7 +18,6 @@ namespace CaelumGameManagerGUI.Views
     /// </summary>
     public partial class DeckView : UserControl
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckView"/> class.
         /// </summary>

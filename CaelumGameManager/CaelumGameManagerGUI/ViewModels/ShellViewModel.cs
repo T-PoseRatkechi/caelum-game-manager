@@ -10,6 +10,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
@@ -27,7 +28,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
         /// </summary>
         /// <param name="caelumCore">Caelum core.</param>
-        public ShellViewModel(CaelumCore caelumCore)
+        public ShellViewModel(CaelumCore caelumCore, CardConverter cardConverter)
         {
             this.currentGame = caelumCore.GetGameInstance();
             this.currentGame.InitGame();
@@ -43,7 +44,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
             this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);
 
-            this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, this.gameDeck));
+            this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
         }
 
         /// <summary>

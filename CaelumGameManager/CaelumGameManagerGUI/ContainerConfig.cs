@@ -11,6 +11,8 @@ namespace CaelumGameManagerGUI
     using Autofac;
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Cards.Converters;
+    using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Writers;
     using CaelumGameManagerGUI.Models;
@@ -34,14 +36,6 @@ namespace CaelumGameManagerGUI
 
             var caelumLibrary = Assembly.Load(nameof(CaelumCoreLibrary));
 
-            /*
-            builder.RegisterAssemblyTypes(caelumLibrary)
-                .Where(t => t.Namespace.Contains("Configs") ||
-                            t.Namespace.Contains("Games") ||
-                            t.Namespace.Contains("Decks"))
-                .AsImplementedInterfaces();
-            */
-
             // Factories as single instance.
             builder.RegisterAssemblyTypes(caelumLibrary)
                 .Where(t => t.Namespace.Contains("Configs") ||
@@ -62,7 +56,8 @@ namespace CaelumGameManagerGUI
             // Deck builders.
             builder.RegisterType<DeckBuilderFactory>().As<IDeckBuilderFactory>().SingleInstance();
 
-            // builder.RegisterType<DeckBuilderBasic>().As<IDeckBuilder>().SingleInstance();
+            // Converters
+            builder.RegisterType<CardConverter>().SingleInstance();
 
             // Logging.
             var loggerFactory = new LoggerFactory().AddSerilog(Log.Logger);
