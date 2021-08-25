@@ -11,6 +11,7 @@ namespace CaelumCoreLibrary.Cards.Converters
     using System.Text;
     using System.Threading.Tasks;
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
+    using CaelumCoreLibrary.Writers;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -22,9 +23,9 @@ namespace CaelumCoreLibrary.Cards.Converters
         /// Initializes a new instance of the <see cref="CardConverter"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
-        public CardConverter(ILogger log)
+        public CardConverter(ILogger log, IWriter writer)
         {
-            this.AemulusConverter = new(log);
+            this.AemulusConverter = new(log, writer);
         }
 
         public AemulusPackageConverter AemulusConverter { get; }

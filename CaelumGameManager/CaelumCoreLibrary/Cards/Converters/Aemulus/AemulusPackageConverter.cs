@@ -8,9 +8,13 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
     using System;
     using System.IO;
     using System.Linq;
+    using System.Xml.Linq;
+    using System.Xml.Serialization;
     using AtlusFileSystemLibrary.Common.IO;
     using AtlusFileSystemLibrary.FileSystems.PAK;
+    using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Games;
+    using CaelumCoreLibrary.Writers;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -31,15 +35,17 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
         };
 
         private readonly ILogger log;
+        private readonly IWriter writer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AemulusPackageConverter"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="gameInstall">Game installation.</param>
-        public AemulusPackageConverter(ILogger log)
+        public AemulusPackageConverter(ILogger log, IWriter writer)
         {
             this.log = log;
+            this.writer = writer;
         }
 
         /// <summary>
@@ -74,6 +80,33 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             // Fixed folder paths of packages in temp folder.
             foreach (var packageDir in Directory.GetDirectories(tempFolder, "*", SearchOption.TopDirectoryOnly))
             {
+                var packageXmlFile = Path.Join(packageDir, "Package.xml");
+
+                // Create card json file from package xml.
+                using (StringReader reader = new(File.ReadAllText(packageXmlFile)))
+                {
+                    AemulusPackageModel packageXml = new XmlSerializer(typeof(AemulusPackageModel)).Deserialize(reader) as AemulusPackageModel;
+
+                    CardModel card = new()
+                    {
+                        Name = packageXml.name,
+                        CardId = packageXml.id,
+                        Authors = new(),
+                        Description = packageXml.description,
+                        Type = CardType.Folder,
+                        Version = packageXml.version,
+                    };
+
+                    this.writer.WriteFile(Path.Join(packageDir, "card.json"), card);
+                }
+
+                // Move SND folder if preset to card data folder.
+                var sndFolder = Path.Join(packageDir, "SND");
+                if (Directory.Exists(sndFolder))
+                {
+                    this.CopyFolder(sndFolder, Path.Join(packageDir, "Data", "SND"));
+                }
+
                 string dataDir = null;
                 if (Directory.Exists(Path.Join(packageDir, "data_e")))
                 {
@@ -84,22 +117,30 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     dataDir = Path.Join(packageDir, "data00004");
                 }
 
-                if (dataDir == null)
+                if (dataDir != null)
                 {
-                    continue;
+                    var dataDirFolders = Directory.GetDirectories(dataDir, "*", SearchOption.TopDirectoryOnly);
+
+                    // Adjusts paths to match the "{originalFile}.bin_\" pattern for nested files.
+                    foreach (var dirFolder in dataDirFolders)
+                    {
+                        this.RecursiveFixFolders(dirFolder, originalFilesFolder, dataDir);
+                    }
+
+                    // Move contents of package data folder to root package folder.
+                    this.CopyFolder(dataDir, Path.Join(packageDir, "Data", "data_e"));
+                    Directory.Delete(dataDir, true);
                 }
 
-                var dataDirFolders = Directory.GetDirectories(dataDir, "*", SearchOption.TopDirectoryOnly);
+                // Delete xml and original data dir.
+                File.Delete(packageXmlFile);
 
-                // Adjusts paths to match the "{originalFile}.bin_\" pattern for nested files.
-                foreach (var dirFolder in dataDirFolders)
-                {
-                    this.RecursiveFixFolders(dirFolder, originalFilesFolder, dataDir);
-                }
-
-                // Move contents of package data folder to root package folder.
-                this.MoveFolderContents(dataDir, packageDir);
+                var dataFolder = Path.Join(packageDir, "Data");
+                Directory.CreateDirectory(dataFolder);
             }
+
+            this.CopyFolder(tempFolder, outputDir);
+            Directory.Delete(tempFolder, true);
         }
 
         private void RecursiveFixFolders(string folder, string originalFilesFolder, string dataFolder)
@@ -156,9 +197,9 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             }
         }
 
-        private void MoveFolderContents(string sourceFolder, string destFolder)
+        private void CopyFolder(string sourceFolder, string destFolder)
         {
-            foreach (var file in Directory.GetFiles(sourceFolder, "*", SearchOption.AllDirectories))
+            foreach (var file in Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories))
             {
                 var outputFile = Path.Join(destFolder, file.Replace(sourceFolder, string.Empty));
                 Directory.CreateDirectory(Path.GetDirectoryName(outputFile));

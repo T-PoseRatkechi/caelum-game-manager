@@ -10,11 +10,7 @@ namespace CaelumGameManagerGUI
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Threading;
     using System.Windows;
-    using System.Windows.Threading;
-    using CaelumCoreLibrary.Common;
-    using CaelumGameManagerGUI.Logging;
     using Serilog;
     using Serilog.Core;
     using WPFLocalizeExtension.Engine;

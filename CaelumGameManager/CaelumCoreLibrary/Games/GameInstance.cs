@@ -66,7 +66,20 @@ namespace CaelumCoreLibrary.Games
             // Kladzey
 
             // Set inital order of cards based on config.
+            var originalCards = this.Deck.Cards;
             this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).ToList();
+
+            // Add back any cards that were removed for not existing
+            if (originalCards.Count != this.Deck.Cards.Count)
+            {
+                foreach (var originalCard in originalCards)
+                {
+                    if (!this.Deck.Cards.Contains(originalCard))
+                    {
+                        this.Deck.Cards.Add(originalCard);
+                    }
+                }
+            }
 
             this.saveTimer.AutoReset = false;
             this.saveTimer.Enabled = false;

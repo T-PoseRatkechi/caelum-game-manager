@@ -17,7 +17,7 @@ namespace CaelumCoreLibrary.Builders
         /// <summary>
         /// Maximum allowed amount of files to exist in an output directory prior to deleting.
         /// </summary>
-        public const int MaxFilesAllowedForDeleting = 512;
+        public const int MaxFilesAllowedForDeleting = 1300;
 
         /// <summary>
         /// List of known invalid output directories.

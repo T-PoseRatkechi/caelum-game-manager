@@ -146,7 +146,7 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-        public void ConvertAemulus(object sender)
+        public async void ConvertAemulus(object sender)
         {
             if (sender != null)
             {
@@ -162,7 +162,9 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 try
                 {
-                    this._cardConverter.AemulusConverter.Import(aemulusDir, this.game.GameInstall.CardsDirectory);
+                    Log.Information("Importing Aemulus packages.");
+                    await Task.Run(() => this._cardConverter.AemulusConverter.Import(aemulusDir, this.game.GameInstall.CardsDirectory));
+                    Log.Information("Aemulus packages imported, please restart Caelum Game Manager.");
                 }
                 catch (Exception e)
                 {

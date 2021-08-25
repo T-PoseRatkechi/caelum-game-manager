@@ -27,6 +27,9 @@ namespace CaelumCoreLibrary.Builders.Files
         /// </summary>
         public const char UnpackedFolderChar = '_';
 
+        // TODO: Make this controllable.
+        private const string P4gDataName = "data_e";
+
         private readonly ILogger log;
         private readonly string unpackedDir;
         private readonly string gameInstallPath;
@@ -53,9 +56,8 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <inheritdoc/>
         public string GetUnpackedGameFile(string relativeGameFile)
         {
-            // Path to P4G data_E.cpk
-            // TODO: Allow changing to other data files.
-            var dataE = Path.Join(this.gameInstallPath, "data_e.cpk");
+            var dataFilePath = Path.Join(this.gameInstallPath, $"{P4gDataName}.cpk");
+            var dataUnpackedDir = Path.Join(this.unpackedDir, P4gDataName);
 
             // Expected location of the unpacked relativeGameFile in game's Unpacked folder.
             var expectedPath = Path.Join(this.unpackedDir, relativeGameFile);
@@ -71,7 +73,7 @@ namespace CaelumCoreLibrary.Builders.Files
             if (this.IsRootFile(relativeGameFile))
             {
                 // Unpack relativeGameFile from game file.
-                this.UnpackCpk(dataE, relativeGameFile);
+                this.UnpackCpk(dataFilePath, dataUnpackedDir, relativeGameFile);
                 return expectedPath;
             }
 
@@ -104,7 +106,7 @@ namespace CaelumCoreLibrary.Builders.Files
                         // Unpack originalRelativeFile from game file, if missing.
                         if (!File.Exists(unpackedRelativeFile))
                         {
-                            this.UnpackCpk(dataE, originalRelativeFile);
+                            this.UnpackCpk(dataFilePath, dataUnpackedDir, originalRelativeFile);
                         }
 
                         // Unpack like PakPack.
@@ -186,8 +188,9 @@ namespace CaelumCoreLibrary.Builders.Files
         /// Unpacks cpk. Set <paramref name="relativePath"/> to unpack a specific file.
         /// </summary>
         /// <param name="inputFile">Input file.</param>
+        /// <param name="outputDir">Where to output files.</param>
         /// <param name="relativePath">Specific file to unpack.</param>
-        private void UnpackCpk(string inputFile, string relativePath = null)
+        private void UnpackCpk(string inputFile, string outputDir, string relativePath = null)
         {
             var fileName = Path.GetFileNameWithoutExtension(inputFile);
             var dir = Path.GetDirectoryName(inputFile);
@@ -222,11 +225,12 @@ namespace CaelumCoreLibrary.Builders.Files
             }
 
             bool fileFound = false;
+            var relativePathNoDataName = relativePath.Replace(P4gDataName, string.Empty).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-            cpk.Unpack(packs, this.unpackedDir, e =>
+            cpk.Unpack(packs, outputDir, e =>
             {
                 // Wow, only getting the file needed is so fast!
-                if (e.Path == relativePath)
+                if (e.Path == relativePathNoDataName)
                 {
                     // if (!ShouldUnpack(e.Path)) return false;
                     // this.log.LogDebug($"Extracting {e.Path} (pac: {e.PacIndex}, file: {e.FileIndex})"); // Will crash GUI.

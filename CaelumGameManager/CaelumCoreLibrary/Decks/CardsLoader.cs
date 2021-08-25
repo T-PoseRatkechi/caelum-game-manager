@@ -71,6 +71,9 @@ namespace CaelumCoreLibrary.Decks
                     continue;
                 }
 
+                var cardDataDir = Path.Join(cardFolder, "Data");
+                Directory.CreateDirectory(cardDataDir);
+
                 var card = this.cardParser.ParseCard(cardPath);
 
                 // Validate card.
