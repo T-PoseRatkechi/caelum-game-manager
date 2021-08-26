@@ -12,10 +12,10 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching.Formats
     /// <summary>
     /// TBL patch format.
     /// </summary>
-    public class TblPatchFormat : IPatch
+    public class ItemTblPatchFormat : IPatch
     {
         /// <inheritdoc/>
-        public string Format { get; set; } = "tblpatch";
+        public string Format { get; set; } = "itemtblpatch";
 
         /// <inheritdoc/>
         public string File { get; set; }
@@ -43,27 +43,27 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching.Formats
         {
             using (BinaryWriter writer = new(System.IO.File.Open(filePath, FileMode.Open)))
             {
-                byte[] sectionSizeBytes = new byte[4];
-                writer.BaseStream.Read(sectionSizeBytes, 0, sectionSizeBytes.Length);
+                byte[] numEntryBytes = new byte[2];
+                writer.BaseStream.Read(numEntryBytes, 0, numEntryBytes.Length);
 
-                for (int currentSegment = 0; currentSegment <= this.Segment; currentSegment++)
+                const int entriesSize = 68;
+
+                var numEntries = BitConverter.ToUInt16(numEntryBytes);
+                var entriesEndOffset = (numEntries * entriesSize) + 2;
+
+                if (this.Segment == 0)
                 {
-                    // In correct segement then write data bytes.
-                    if (currentSegment == this.Segment)
-                    {
-                        writer.BaseStream.Seek(this.Offset, SeekOrigin.Current);
-                        var patchBytes = this.Data.ToByteArray();
+                    writer.BaseStream.Position = 0; // Does ITEMTBL patch offset start from file start??? They do...
+                    writer.BaseStream.Seek(this.Offset, SeekOrigin.Current);
+                    writer.Write(this.Data.ToByteArray());
+                }
+                else
+                {
+                    const int unknownChunk = 30;
+                    writer.BaseStream.Position = entriesEndOffset + unknownChunk;
 
-                        writer.Write(patchBytes);
-                        break;
-                    }
-
-                    // Seek to next segment start.
-                    else
-                    {
-                        var sectionSize = BitConverter.ToUInt32(sectionSizeBytes);
-                        writer.Seek((int)sectionSize, SeekOrigin.Current);
-                    }
+                    writer.Seek(this.Offset, SeekOrigin.Current);
+                    writer.Write(this.Data.ToByteArray());
                 }
             }
         }

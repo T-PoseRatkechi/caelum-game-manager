@@ -149,7 +149,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 var tblpatchesDir = Path.Join(packageDir, "tblpatches");
                 if (Directory.Exists(tblpatchesDir))
                 {
-                    List<TblPatchFormat> convertedPatches = new();
+                    List<IPatch> convertedPatches = new();
 
                     foreach (var tbpPatchFile in Directory.GetFiles(tblpatchesDir, "*.tbp", SearchOption.AllDirectories))
                     {
@@ -158,12 +158,11 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 
                         foreach (var patch in tbpPatch.Patches)
                         {
-                            TblPatchFormat newPatch;
+                            IPatch newPatch;
 
                             if (patch.tbl == "ITEMTBL")
                             {
-                                /*
-                                newPatch = new BinaryPatchFormat()
+                                newPatch = new ItemTblPatchFormat()
                                 {
                                     File = $@"${{UnpackedGameFiles}}\data_e\init_free.bin_\init\itemtbl.bin",
                                     Comment = patch.comment,
@@ -171,7 +170,6 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                                     Offset = patch.offset,
                                     Data = patch.data,
                                 };
-                                */
                             }
                             else
                             {

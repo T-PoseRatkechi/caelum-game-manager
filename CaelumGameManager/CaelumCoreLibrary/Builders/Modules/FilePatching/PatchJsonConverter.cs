@@ -131,6 +131,8 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                     return new BinaryPatchFormat();
                 case "tblpatch":
                     return new TblPatchFormat();
+                case "itemtblpatch":
+                    return new ItemTblPatchFormat();
                 default:
                     throw new JsonException($@"Unknown file patch format ""{format}"".");
             }
