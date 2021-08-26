@@ -79,11 +79,26 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
 
             // Clean up empty folders.
             // TODO: Can probably delete folders instead per file, then per folder.
-            foreach (var dir in Directory.GetDirectories(buildDir))
+            //foreach (var dir in Directory.GetDirectories(buildDir))
+            //{
+            //    if (Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Length == 0)
+            //    {
+            //        Directory.Delete(dir, true);
+            //    }
+            //}
+
+            processDirectory(buildDir);
+        }
+
+        private static void processDirectory(string startLocation)
+        {
+            foreach (var directory in Directory.GetDirectories(startLocation))
             {
-                if (Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Length == 0)
+                processDirectory(directory);
+                if (Directory.GetFiles(directory).Length == 0 &&
+                    Directory.GetDirectories(directory).Length == 0)
                 {
-                    Directory.Delete(dir, true);
+                    Directory.Delete(directory, false);
                 }
             }
         }
@@ -121,32 +136,21 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
                 // Merge files with SprUtils Insert.
                 if (Path.GetExtension(sourceFile) == ".spr")
                 {
-                    bool firstRun = true;
                     // Merge all tmx files in folder into source spr file.
                     foreach (var file in Directory.GetFiles(folder, "*.tmx", SearchOption.TopDirectoryOnly))
                     {
-                        var secondTemp = $"{tempSavePath}.temp";
-
                         SprUtils sprUtils = new(this.log);
 
-                        if (firstRun)
-                        {
-                            sprUtils.InsertTmx3(sourceFile, file, secondTemp);
-                            firstRun = false;
-                        }
-                        else
-                        {
-                            sprUtils.InsertTmx3(tempSavePath, file, secondTemp);
-                        }
+                        sprUtils.InsertTmxFast(sourceFile, file, tempSavePath);
 
                         // Overwrite original source file with merged temp file.
-                        File.Move(secondTemp, tempSavePath, true);
+                        File.Move(tempSavePath, sourceFile, true);
 
                         this.log.LogDebug("Merged {TmxName} into {SprName}", Path.GetFileName(file), Path.GetFileName(sourceFile));
                     }
 
                     // Overwrite original source file with merged temp file.
-                    File.Move(tempSavePath, sourceFile, true);
+                    // File.Move(tempSavePath, sourceFile, true);
                 }
 
                 // Handle merging non-spr files.

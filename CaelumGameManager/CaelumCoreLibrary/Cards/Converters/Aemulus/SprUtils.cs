@@ -68,6 +68,151 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             this.log.LogDebug("Extracted {NumExtracted} TMX files from {SprFile}.", numExtractedFiles, sprFile);
         }
 
+        //public void InsertTmxFast2(string sprFile, string inputTmxFile, string outputFile)
+        //{
+        //    var inputTmxName = Path.GetFileNameWithoutExtension(inputTmxFile);
+
+        //    StreamWriter writer = new()
+        //}
+
+        public void InsertTmxFast(string sprFile, string inputTmxFile, string outputFile)
+        {
+            var inputTmxName = Path.GetFileNameWithoutExtension(inputTmxFile);
+
+            FileStream fs = File.OpenRead(sprFile);
+            var tmxOffsetsList = this.GetTmxOffsetList(fs);
+
+            int inputTmxOffset = -1;
+            int inputTmxIndex = -1;
+
+            for (int i = 0, total = tmxOffsetsList.Count; i < total; i++)
+            {
+                var currentTmxName = this.GetTmxNameByOffset(fs, tmxOffsetsList[i]);
+
+                if (currentTmxName == inputTmxName)
+                {
+                    inputTmxOffset = tmxOffsetsList[i];
+                    inputTmxIndex = i;
+                    break;
+                }
+            }
+
+            if (inputTmxOffset < 0)
+            {
+                throw new ArgumentException($@"Input TMX file ""{inputTmxName}"" was not found in SPR file ""{Path.GetFileName(sprFile)}"".");
+            }
+
+            FileStream outputfs = File.OpenWrite(outputFile);
+            fs.Position = 0;
+
+            // fs.CopyTo(outputfs, 0, inputTmxOffset);
+            var originalBuffer = new byte[inputTmxOffset];
+            fs.Read(originalBuffer);
+            outputfs.Write(originalBuffer);
+
+            fs.Position = inputTmxOffset + 4;
+            byte[] originalSizeBuffer = new byte[4];
+            fs.Read(originalSizeBuffer, 0, 4);
+            var originalSize = BitConverter.ToInt32(originalSizeBuffer);
+
+            var inputBytes = File.ReadAllBytes(inputTmxFile);
+            outputfs.Write(inputBytes);
+
+            fs.Position = tmxOffsetsList[inputTmxIndex + 1];
+            fs.CopyTo(outputfs);
+
+            // Fix offsets for tmx after the one that was inserted.
+            var adjustment = inputBytes.Length - originalSize;
+            for (int i = inputTmxIndex + 1, total = tmxOffsetsList.Count; i < total; i++)
+            {
+                tmxOffsetsList[i] = tmxOffsetsList[i] + adjustment - 16;
+            }
+
+            // Write fixed offsets.
+            outputfs.Position = 32;
+            for (int i = 0, total = tmxOffsetsList.Count; i < total; i++)
+            {
+                outputfs.Position += 4;
+                outputfs.Write(BitConverter.GetBytes(tmxOffsetsList[i]));
+            }
+
+            // Close streams.
+            fs.Close();
+            outputfs.Flush();
+            outputfs.Close();
+        }
+
+        private string GetTmxNameByOffset(Stream stream, int offset)
+        {
+            stream.Position = offset + 36;
+
+            var nameBytesBuffer = new byte[28];
+            stream.Read(nameBytesBuffer, 0, 28);
+
+            var name = Encoding.ASCII.GetString(nameBytesBuffer).TrimEnd('\0');
+
+            return name;
+        }
+
+        private List<int> GetTmxOffsetList(Stream stream)
+        {
+            var tmxOffsetList = new List<int>();
+            const int numTmxEntriesOffset = 24;
+            const int tmxEntriesOffset = 32;
+
+            using (BinaryReader reader = new(stream, Encoding.Default, true))
+            {
+                reader.BaseStream.Position = numTmxEntriesOffset;
+
+                var numEntries = reader.ReadInt32();
+
+                reader.BaseStream.Position = tmxEntriesOffset;
+                for (int i = 0; i < numEntries; i++)
+                {
+                    reader.BaseStream.Position += 4;
+                    tmxOffsetList.Add(reader.ReadInt32());
+                }
+            }
+
+            return tmxOffsetList;
+        }
+
+        private Dictionary<string, int> GetTmxOffsetTable(Stream stream)
+        {
+            var tmxTable = new Dictionary<string, int>();
+            const int numTmxEntriesOffset = 24;
+            const int tmxEntriesOffset = 32;
+
+            using (BinaryReader reader = new(stream))
+            {
+                reader.BaseStream.Position = numTmxEntriesOffset;
+
+                var numEntries = reader.ReadInt32();
+
+                reader.BaseStream.Position = tmxEntriesOffset;
+                for (int i = 0; i < numEntries; i++)
+                {
+                    reader.BaseStream.Position += 4;
+                    var currentTmxOffset = reader.ReadInt32();
+
+                    var currentPosition = reader.BaseStream.Position;
+
+                    // Get tmx entry name.
+                    reader.BaseStream.Position = currentTmxOffset + 36;
+                    var nameBytes = reader.ReadBytes(28);
+                    var name = Encoding.ASCII.GetString(nameBytes).TrimEnd('\0');
+
+                    // Add entry.
+                    tmxTable.Add(name, currentTmxOffset);
+
+                    // Reset position in stream.
+                    reader.BaseStream.Position = currentPosition;
+                }
+            }
+
+            return tmxTable;
+        }
+
         public void InsertTmx3(string sprFile, string inputTmxFile, string outputFile)
         {
             this.InsertTmx2(sprFile, inputTmxFile, outputFile);
