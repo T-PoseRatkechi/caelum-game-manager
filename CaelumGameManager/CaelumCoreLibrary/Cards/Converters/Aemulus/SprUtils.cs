@@ -118,14 +118,31 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             var inputBytes = File.ReadAllBytes(inputTmxFile);
             outputfs.Write(inputBytes);
 
-            fs.Position = tmxOffsetsList[inputTmxIndex + 1];
-            fs.CopyTo(outputfs);
+            bool weirdSpr = false;
+            // Copy like normal if offsets are normal.
+            if (tmxOffsetsList[inputTmxIndex + 1] > inputTmxOffset)
+            {
+                fs.Position = tmxOffsetsList[inputTmxIndex + 1];
+                fs.CopyTo(outputfs);
+            }
+
+            // Copy correctly when offsets are wrong...
+            else
+            {
+                fs.Position = inputTmxOffset + originalSize + 16;
+                fs.CopyTo(outputfs);
+                weirdSpr = true;
+                this.log.LogWarning("Weird SPR file {SprFile}", sprFile);
+            }
 
             // Fix offsets for tmx after the one that was inserted.
             var adjustment = inputBytes.Length - originalSize;
             for (int i = inputTmxIndex + 1, total = tmxOffsetsList.Count; i < total; i++)
             {
-                tmxOffsetsList[i] = tmxOffsetsList[i] + adjustment - 16;
+                if (!weirdSpr)
+                {
+                    tmxOffsetsList[i] = tmxOffsetsList[i] + adjustment - 16;
+                }
             }
 
             // Write fixed offsets.
