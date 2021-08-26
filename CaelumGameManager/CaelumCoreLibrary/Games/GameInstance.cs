@@ -65,18 +65,21 @@ namespace CaelumCoreLibrary.Games
             // CC BY-SA 4.0
             // Kladzey
 
-            // Set inital order of cards based on config.
-            var originalCards = this.Deck.Cards;
-            this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).ToList();
-
-            // Add back any cards that were removed for not existing
-            if (originalCards.Count != this.Deck.Cards.Count)
+            if (this.GameConfig.Settings.Cards != null)
             {
-                foreach (var originalCard in originalCards)
+                // Set inital order of cards based on config.
+                var originalCards = this.Deck.Cards;
+                this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).ToList();
+
+                // Add back any cards that were removed for not existing
+                if (originalCards.Count != this.Deck.Cards.Count)
                 {
-                    if (!this.Deck.Cards.Contains(originalCard))
+                    foreach (var originalCard in originalCards)
                     {
-                        this.Deck.Cards.Add(originalCard);
+                        if (!this.Deck.Cards.Contains(originalCard))
+                        {
+                            this.Deck.Cards.Add(originalCard);
+                        }
                     }
                 }
             }
