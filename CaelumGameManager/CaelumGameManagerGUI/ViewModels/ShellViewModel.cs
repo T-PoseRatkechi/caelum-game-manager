@@ -30,21 +30,28 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <param name="caelumCore">Caelum core.</param>
         public ShellViewModel(CaelumCore caelumCore, CardConverter cardConverter)
         {
-            this.currentGame = caelumCore.GetGameInstance();
-            this.currentGame.InitGame();
-
-            if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
+            try
             {
-                // Clear any earlier debug messages from log window.
-                this.LogVM.Log.Clear();
+                this.currentGame = caelumCore.GetGameInstance();
+                this.currentGame.InitGame();
 
-                // Set min level to info.
-                App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
+                if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
+                {
+                    // Clear any earlier debug messages from log window.
+                    this.LogVM.Log.Clear();
+
+                    // Set min level to info.
+                    App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
+                }
+
+                this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);
+
+                this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
             }
-
-            this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);
-
-            this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
+            catch (Exception e)
+            {
+                Log.Error(e, "Failed to start app.");
+            }
         }
 
         /// <summary>
