@@ -5,39 +5,32 @@
 
 namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 {
-    using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
     using System;
     using System.Collections.Generic;
-    using System.Text.Json;
-    using System.Text.Json.Serialization;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Converter for <see cref="IPatch"/> arrays.
     /// </summary>
     public class PatchJsonConverter : JsonConverter<IPatch[]>
     {
-        /*
-        private static Dictionary<string, Type> PatchFormats = new()
-        {
-            { "binary", typeof(BinaryPatchFormat) },
-            { "tblpatch", typeof(TblPatchFormat) },
-        };
-        */
+        public override bool CanWrite => false;
 
         /// <inheritdoc/>
-        public override IPatch[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override void WriteJson(JsonWriter writer, IPatch[] value, JsonSerializer serializer)
         {
-            List<IPatch> patchList = new();
-
-            this.ParsePatchObjects(patchList, ref reader);
-
-            return patchList.ToArray();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
-        public override void Write(Utf8JsonWriter writer, IPatch[] value, JsonSerializerOptions options)
+        public override IPatch[] ReadJson(JsonReader reader, Type objectType, IPatch[] existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            List<IPatch> patchList = new();
+
+            this.ParsePatchObjects(patchList, reader);
+
+            return patchList.ToArray();
         }
 
         /// <summary>
@@ -45,78 +38,76 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
         /// </summary>
         /// <param name="patches">Patches list to add patches to.</param>
         /// <param name="reader">Reader.</param>
-        private void ParsePatchObjects(List<IPatch> patches, ref Utf8JsonReader reader)
+        private void ParsePatchObjects(List<IPatch> patches, JsonReader reader)
         {
-            if (reader.TokenType != JsonTokenType.StartArray)
+            if (reader.TokenType != JsonToken.StartArray)
             {
                 throw new JsonException();
             }
 
             while (reader.Read())
             {
-                if (reader.TokenType == JsonTokenType.EndArray)
+                if (reader.TokenType == JsonToken.EndArray)
                 {
                     return;
                 }
 
-                if (reader.TokenType == JsonTokenType.StartObject)
+                if (reader.TokenType == JsonToken.StartObject)
                 {
-                    // Skip StartObject token.
+                    // Read start object token.
+                    reader.Read();
                     reader.Read();
 
-                    // Skip format prop name.
-                    reader.Read();
-
-                    // Format prop value.
-                    var formatValue = reader.GetString().ToLower();
-                    reader.Read();
+                    string formatValue = (string)reader.Value;
 
                     // New patch container.
                     IPatch newPatch = this.GetPatchInstance(formatValue);
                     var patchType = newPatch.GetType();
 
                     // Set patch object props.
-                    while (reader.TokenType != JsonTokenType.EndObject)
+                    while (reader.Read())
                     {
+                        if (reader.TokenType == JsonToken.EndObject)
+                        {
+                            break;
+                        }
+
                         // Read JSON element prop name.
-                        var propName = reader.GetString();
-                        reader.Read();
+                        var propName = reader.Value;
 
                         // Get property info from newPatch that matches to propName.
-                        var property = patchType.GetProperty(propName);
+                        var property = patchType.GetProperty((string)propName);
 
                         if (property == null)
                         {
                             throw new JsonException($@"JSON property ""{propName}"" was not found in patch format ""{patchType.Name}"".");
                         }
 
+                        reader.Read();
+
                         // Read the correct type for property value then set
                         // newPatches property to the value read in.
                         if (property.PropertyType == typeof(string))
                         {
-                            var propValue = reader.GetString();
-                            reader.Read();
+                            string propValue = (string)reader.Value;
 
                             property.SetValue(newPatch, propValue);
                         }
                         else if (property.PropertyType == typeof(uint))
                         {
-                            var propValue = reader.GetUInt32();
-                            reader.Read();
+                            uint propValue = Convert.ToUInt32(reader.Value); // No readAsUInt.
 
                             property.SetValue(newPatch, propValue);
                         }
                         else if (property.PropertyType == typeof(int))
                         {
-                            var propValue = reader.GetInt32();
-                            reader.Read();
+                            int propValue = Convert.ToInt32(reader.Value);
 
                             property.SetValue(newPatch, propValue);
                         }
                         else if (property.PropertyType == typeof(bool))
                         {
-                            var propValue = reader.GetBoolean();
-                            reader.Read();
+                            bool propValue = (bool)reader.Value;
 
                             property.SetValue(newPatch, propValue);
                         }

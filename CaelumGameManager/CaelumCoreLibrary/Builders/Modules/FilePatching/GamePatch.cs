@@ -6,9 +6,7 @@
 namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 {
     using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
-    using System;
-    using System.Dynamic;
-    using System.Text.Json.Serialization;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// File patch object.

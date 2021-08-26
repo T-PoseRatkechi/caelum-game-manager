@@ -68,13 +68,12 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             this.log.LogDebug("Extracted {NumExtracted} TMX files from {SprFile}.", numExtractedFiles, sprFile);
         }
 
-        //public void InsertTmxFast2(string sprFile, string inputTmxFile, string outputFile)
-        //{
-        //    var inputTmxName = Path.GetFileNameWithoutExtension(inputTmxFile);
-
-        //    StreamWriter writer = new()
-        //}
-
+        /// <summary>
+        /// Creates a new file at <paramref name="outputFile"/> with <paramref name="inputTmxFile"/> inserted into <paramref name="sprFile"/>.
+        /// </summary>
+        /// <param name="sprFile">SPR files to insert TMX to.</param>
+        /// <param name="inputTmxFile">TMX file to insert.</param>
+        /// <param name="outputFile">Path of to output new file.</param>
         public void InsertTmxFast(string sprFile, string inputTmxFile, string outputFile)
         {
             var inputTmxName = Path.GetFileNameWithoutExtension(inputTmxFile);
@@ -118,31 +117,18 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             var inputBytes = File.ReadAllBytes(inputTmxFile);
             outputfs.Write(inputBytes);
 
-            bool weirdSpr = false;
             // Copy like normal if offsets are normal.
-            if (tmxOffsetsList[inputTmxIndex + 1] > inputTmxOffset)
+            if (inputTmxIndex < tmxOffsetsList.Count - 1 && tmxOffsetsList[inputTmxIndex + 1] > inputTmxOffset)
             {
                 fs.Position = tmxOffsetsList[inputTmxIndex + 1];
                 fs.CopyTo(outputfs);
-            }
-
-            // Copy correctly when offsets are wrong...
-            else
-            {
-                fs.Position = inputTmxOffset + originalSize + 16;
-                fs.CopyTo(outputfs);
-                weirdSpr = true;
-                this.log.LogWarning("Weird SPR file {SprFile}", sprFile);
             }
 
             // Fix offsets for tmx after the one that was inserted.
             var adjustment = inputBytes.Length - originalSize;
             for (int i = inputTmxIndex + 1, total = tmxOffsetsList.Count; i < total; i++)
             {
-                if (!weirdSpr)
-                {
-                    tmxOffsetsList[i] = tmxOffsetsList[i] + adjustment - 16;
-                }
+                tmxOffsetsList[i] = tmxOffsetsList[i] + adjustment - 16;
             }
 
             // Write fixed offsets.
@@ -174,14 +160,14 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
         private List<int> GetTmxOffsetList(Stream stream)
         {
             var tmxOffsetList = new List<int>();
-            const int numTmxEntriesOffset = 24;
+            const int numTmxEntriesOffset = 20;
             const int tmxEntriesOffset = 32;
 
             using (BinaryReader reader = new(stream, Encoding.Default, true))
             {
                 reader.BaseStream.Position = numTmxEntriesOffset;
 
-                var numEntries = reader.ReadInt32();
+                var numEntries = reader.ReadInt16();
 
                 reader.BaseStream.Position = tmxEntriesOffset;
                 for (int i = 0; i < numEntries; i++)
@@ -228,202 +214,6 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             }
 
             return tmxTable;
-        }
-
-        public void InsertTmx3(string sprFile, string inputTmxFile, string outputFile)
-        {
-            this.InsertTmx2(sprFile, inputTmxFile, outputFile);
-
-            // Fix offsets.
-            using BinaryReader reader = new(File.OpenRead(outputFile));
-            List<int> texOffsets = this.GetTmxOffsets2(reader);
-            reader.Close();
-
-            using BinaryWriter writer = new(File.OpenWrite(outputFile));
-
-            writer.BaseStream.Position = 32;
-
-            for (int i = 0, total = texOffsets.Count; i < total; i++)
-            {
-                writer.BaseStream.Position += 4;
-                writer.Write(texOffsets[i]);
-            }
-        }
-
-        public void InsertTmx2(string sprFile, string inputTmxFile, string outputFile)
-        {
-            var inputTmxName = Path.GetFileNameWithoutExtension(inputTmxFile);
-
-            using BinaryReader reader = new(File.OpenRead(sprFile));
-
-            var texturesOffsets = this.GetTmxOffsets(reader);
-
-            int inputTmxOffsetIndex = -1;
-
-            for (int i = 0, total = texturesOffsets.Count; i < total; i++)
-            {
-                reader.BaseStream.Position = texturesOffsets[i];
-
-                // Get texture name.
-                reader.BaseStream.Position += 36;
-                var nameBytes = reader.ReadBytes(28);
-                var name = Encoding.ASCII.GetString(nameBytes).TrimEnd('\0');
-
-                if (name == inputTmxName)
-                {
-                    inputTmxOffsetIndex = i;
-                    break;
-                }
-            }
-
-            if (inputTmxOffsetIndex < 0)
-            {
-                throw new ArgumentException($@"Input TMX file ""{inputTmxName}"" was not found in SPR file ""{Path.GetFileName(sprFile)}"".");
-            }
-
-            using BinaryWriter writer = new(File.OpenWrite(outputFile));
-
-            // Write all data upto edit texture.
-            reader.BaseStream.Position = 0;
-            writer.Write(reader.ReadBytes(texturesOffsets[inputTmxOffsetIndex]));
-
-            // Insert input tmx and save file size.
-            var tmxFileBytes = File.ReadAllBytes(inputTmxFile);
-            writer.Write(tmxFileBytes);
-
-            // Write remainer of original file to output.
-            reader.BaseStream.Position = texturesOffsets[inputTmxOffsetIndex + 1];
-            reader.BaseStream.CopyTo(writer.BaseStream);
-        }
-
-        private List<int> GetTmxOffsets2(BinaryReader reader)
-        {
-            reader.BaseStream.Position = 0;
-
-            List<int> textureOffsets = new();
-
-            while (reader.BaseStream.Position < reader.BaseStream.Length)
-            {
-                if (reader.ReadUInt32() == 0x30584d54)
-                {
-                    textureOffsets.Add((int)(reader.BaseStream.Position - 12));
-                }
-            }
-
-            return textureOffsets;
-        }
-
-        private List<int> GetTmxOffsets(BinaryReader reader)
-        {
-            reader.BaseStream.Position = 24;
-            var numTextures = reader.ReadInt32();
-            reader.BaseStream.Position = 32;
-
-            List<int> textureOffsets = new();
-
-            for (int i = 0; i < numTextures; i++)
-            {
-                reader.BaseStream.Position += 4;
-                textureOffsets.Add(reader.ReadInt32());
-            }
-
-            return textureOffsets;
-        }
-
-        /// <summary>
-        /// Creates a new file at <paramref name="outputFile"/> with <paramref name="inputTmxFile"/> inserted into <paramref name="sprFile"/>.
-        /// </summary>
-        /// <param name="sprFile">SPR files to insert TMX to.</param>
-        /// <param name="inputTmxFile">TMX file to insert.</param>
-        /// <param name="outputFile">Path of to output new file.</param>
-        public void InsertTmx(string sprFile, string inputTmxFile, string outputFile)
-        {
-            var inputTmxName = Path.GetFileNameWithoutExtension(inputTmxFile);
-
-            // Track tmx offsets.
-            List<int> originalTmxOffsets = new();
-
-            int changedOffsetIndex = 0;
-            int offsetAdjustment = 0;
-
-            using (BinaryReader reader = new(File.OpenRead(sprFile)))
-            {
-                int totalTmxFound = 0;
-
-                using (BinaryWriter writer = new(File.Create(outputFile)))
-                {
-
-                    while (reader.BaseStream.Position < reader.BaseStream.Length)
-                    {
-                        var readBytes = reader.ReadBytes(4);
-
-                        // Read bytes are (probably) not part of TMX.
-                        if (BitConverter.ToUInt32(readBytes) != 0x30584d54)
-                        {
-                            // Copy bytes from input spr file to output file.
-                            writer.Write(readBytes);
-                        }
-
-                        // Bytes ARE part of a TMX.
-                        else
-                        {
-                            var tmxStartPostition = reader.BaseStream.Position - 12;
-                            originalTmxOffsets.Add((int)tmxStartPostition);
-
-                            // Go back and get size of tmx;
-                            reader.BaseStream.Seek(-8, SeekOrigin.Current);
-                            var tmxSize = reader.ReadInt32();
-
-                            // Seek to start of texture name bytes.
-                            reader.BaseStream.Position += 28;
-                            var nameBytes = reader.ReadBytes(28);
-                            var tmxName = Encoding.ASCII.GetString(nameBytes).TrimEnd('\0');
-
-                            // Current tmx is not the one we want to replace.
-                            // Copy tmx bytes to output file.
-                            if (tmxName != inputTmxName)
-                            {
-                                // Set writer stream back 8 bytes since it's already written 8 bytes of the current tmx.
-                                writer.BaseStream.Position -= 8;
-
-                                // Set reader to start of tmx bytes.
-                                reader.BaseStream.Position = tmxStartPostition;
-
-                                // Copy tmx bytes.
-                                writer.Write(reader.ReadBytes(tmxSize));
-                            }
-
-                            // TMX is the one we should replace.
-                            else
-                            {
-                                // Set reader to end of original tmx.
-                                reader.BaseStream.Position = tmxStartPostition;
-                                reader.BaseStream.Position += tmxSize;
-
-                                // Set writer stream back 8 bytes since it's already written 8 bytes of the current tmx.
-                                writer.BaseStream.Position -= 8;
-
-                                var newTmxBytes = File.ReadAllBytes(inputTmxFile);
-                                writer.Write(newTmxBytes);
-
-                                changedOffsetIndex = totalTmxFound;
-                                offsetAdjustment = newTmxBytes.Length - tmxSize;
-                            }
-
-                            totalTmxFound++;
-                        }
-                    }
-
-                    // Update offsets in new spr file.
-                    writer.BaseStream.Seek(32 + (changedOffsetIndex * 8), SeekOrigin.Begin);
-
-                    for (int i = changedOffsetIndex + 1; i < totalTmxFound; i++)
-                    {
-                        writer.BaseStream.Position += 4;
-                        writer.Write(originalTmxOffsets[i] + offsetAdjustment);
-                    }
-                }
-            }
         }
     }
 }

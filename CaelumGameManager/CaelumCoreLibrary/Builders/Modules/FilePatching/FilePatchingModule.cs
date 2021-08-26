@@ -7,15 +7,12 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
 {
     using System;
     using System.Collections.Generic;
-    using System.Dynamic;
-    using System.Globalization;
     using System.IO;
-    using System.Text.Json;
-    using System.Text.RegularExpressions;
+    using System.Text;
     using CaelumCoreLibrary.Builders.Files;
-    using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// File patching module.
@@ -57,7 +54,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                     builtCardFiles.Add(patchFile);
 
                     // Parse patch file.
-                    var gamePatch = JsonSerializer.Deserialize<GamePatch>(File.ReadAllText(patchFile));
+                    var gamePatch = JsonConvert.DeserializeObject<GamePatch>(File.ReadAllText(patchFile));
 
                     // Apply patches.
                     foreach (var patch in gamePatch.Patches)

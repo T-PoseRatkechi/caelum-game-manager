@@ -6,13 +6,17 @@
 namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.Serialization;
     using AtlusFileSystemLibrary.Common.IO;
     using AtlusFileSystemLibrary.FileSystems.PAK;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
     using CaelumCoreLibrary.Writers;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Converts Aemulus packages to Caelum Cards.
@@ -30,6 +34,11 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             ".pac",
             ".pack",
             ".spr",
+        };
+
+        private static readonly Dictionary<string, string> tblToTblPath = new()
+        {
+            { "ENCOUNT", @"${UnpackedGameFiles}\data_e\init_free.bin_\battle\ENCOUNT.TBL" }
         };
 
         private readonly ILogger log;
@@ -135,6 +144,64 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 
                 var dataFolder = Path.Join(packageDir, "Data");
                 Directory.CreateDirectory(dataFolder);
+
+                // Convert tbl patches.
+                var tblpatchesDir = Path.Join(packageDir, "tblpatches");
+                if (Directory.Exists(tblpatchesDir))
+                {
+                    List<TblPatchFormat> convertedPatches = new();
+
+                    foreach (var tbpPatchFile in Directory.GetFiles(tblpatchesDir, "*.tbp", SearchOption.AllDirectories))
+                    {
+                        var tbpFileText = File.ReadAllText(tbpPatchFile);
+                        var tbpPatch = JsonConvert.DeserializeObject<TbpPatchFormat>(tbpFileText);
+
+                        foreach (var patch in tbpPatch.Patches)
+                        {
+                            TblPatchFormat newPatch;
+
+                            if (patch.tbl == "ITEMTBL")
+                            {
+                                /*
+                                newPatch = new BinaryPatchFormat()
+                                {
+                                    File = $@"${{UnpackedGameFiles}}\data_e\init_free.bin_\init\itemtbl.bin",
+                                    Comment = patch.comment,
+                                    Segment = patch.section,
+                                    Offset = patch.offset,
+                                    Data = patch.data,
+                                };
+                                */
+                            }
+                            else
+                            {
+                                newPatch = new TblPatchFormat()
+                                {
+                                    File = $@"${{UnpackedGameFiles}}\data_e\init_free.bin_\battle\{patch.tbl}.TBL",
+                                    Comment = patch.comment,
+                                    Segment = patch.section,
+                                    Offset = patch.offset,
+                                    Data = patch.data,
+                                };
+                            }
+
+                            convertedPatches.Add(newPatch);
+                        }
+                    }
+
+                    var gamePatch = new GamePatch()
+                    {
+                        GameName = "Persona 4 Golden",
+                        Patches = convertedPatches.ToArray(),
+                    };
+
+                    var gamePatchString = JsonConvert.SerializeObject(gamePatch, Formatting.Indented);
+                    var gamePatchFile = Path.Join(packageDir, "Data", "Patches", "Converted TBP Patches.json");
+                    Directory.CreateDirectory(Path.GetDirectoryName(gamePatchFile));
+                    File.WriteAllText(gamePatchFile, gamePatchString);
+
+                    this.log.LogDebug("Converted {NumPatches} for package {PackageName}", convertedPatches.Count, Path.GetDirectoryName(packageDir));
+                }
             }
 
             this.CopyFolder(tempFolder, outputDir);
