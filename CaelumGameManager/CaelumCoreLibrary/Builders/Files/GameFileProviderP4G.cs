@@ -14,6 +14,7 @@ namespace CaelumCoreLibrary.Builders.Files
     using System.Linq;
     using AtlusFileSystemLibrary.Common.IO;
     using AtlusFileSystemLibrary.FileSystems.PAK;
+    using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using Microsoft.Extensions.Logging;
     using PreappPartnersLib.FileSystems;
 
@@ -92,10 +93,10 @@ namespace CaelumCoreLibrary.Builders.Files
 
                 // Current path part denotes the unpacked directory of a file.
                 // Example: "init_free.bin_" -> unpacked contents of "init_free.bin".
-                if (currentPart.EndsWith('_'))
+                if (currentPart.EndsWith(UnpackedFolderChar))
                 {
-                    // The relative path to the file the unpacked contents/folder came from.
-                    var originalRelativeFile = string.Join(@"\", pathParts[0..(i + 1)]).TrimEnd('_');
+                    // The relative path to the source file the unpacked contents/folder came from.
+                    var originalRelativeFile = string.Join(@"\", pathParts[0..(i + 1)]).TrimEnd(UnpackedFolderChar);
 
                     // The unpacked path of originalRelativeFile.
                     var unpackedRelativeFile = Path.Join(this.unpackedDir, originalRelativeFile);
@@ -143,29 +144,41 @@ namespace CaelumCoreLibrary.Builders.Files
                     // Current file was unpacked from a file unpacked from a game file.
                     else
                     {
-                        // Unpack like PakPack.
-                        if (!PAKFileSystem.TryOpen(unpackedRelativeFile, out var pak))
+                        if (Path.GetExtension(unpackedRelativeFile) == ".spr")
                         {
-                            throw new ArgumentException($@"Invalid PAK file ""{unpackedRelativeFile}"".");
+                            // Unpacked directory of originalRelativeFile.
+                            var unpackedFileDir = Path.Join(this.unpackedDir, $"{originalRelativeFile}{UnpackedFolderChar}");
+                            Directory.CreateDirectory(unpackedFileDir);
+
+                            SprUtils sprUtils = new(this.log);
+                            sprUtils.ExtractTmx(unpackedRelativeFile, unpackedFileDir);
                         }
-
-                        // Unpacked directory of originalRelativeFile.
-                        var unpackedFileDir = Path.Join(this.unpackedDir, $"{originalRelativeFile}_");
-                        Directory.CreateDirectory(unpackedFileDir);
-
-                        // Unpack contents of originalRelativeFile to its unpack directory.
-                        using (pak)
+                        else
                         {
-                            this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
-                            foreach (string file in pak.EnumerateFiles())
+                            // Unpack like PakPack.
+                            if (!PAKFileSystem.TryOpen(unpackedRelativeFile, out var pak))
                             {
-                                var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
-                                using (var stream = FileUtils.Create(unpackedFileDir + Path.DirectorySeparatorChar + normalizedFilePath))
-                                using (var inputStream = pak.OpenFile(file))
+                                throw new ArgumentException($@"Invalid PAK file ""{unpackedRelativeFile}"".");
+                            }
+
+                            // Unpacked directory of originalRelativeFile.
+                            var unpackedFileDir = Path.Join(this.unpackedDir, $"{originalRelativeFile}{UnpackedFolderChar}");
+                            Directory.CreateDirectory(unpackedFileDir);
+
+                            // Unpack contents of originalRelativeFile to its unpack directory.
+                            using (pak)
+                            {
+                                this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
+                                foreach (string file in pak.EnumerateFiles())
                                 {
-                                    // Console.WriteLine($"Extracting {file}");
-                                    this.log.LogDebug($"Extracting {file}");
-                                    inputStream.CopyTo(stream);
+                                    var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
+                                    using (var stream = FileUtils.Create(unpackedFileDir + Path.DirectorySeparatorChar + normalizedFilePath))
+                                    using (var inputStream = pak.OpenFile(file))
+                                    {
+                                        // Console.WriteLine($"Extracting {file}");
+                                        this.log.LogDebug($"Extracting {file}");
+                                        inputStream.CopyTo(stream);
+                                    }
                                 }
                             }
                         }

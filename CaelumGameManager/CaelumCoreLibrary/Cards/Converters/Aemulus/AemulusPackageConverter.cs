@@ -8,12 +8,9 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
     using System;
     using System.IO;
     using System.Linq;
-    using System.Xml.Linq;
     using System.Xml.Serialization;
     using AtlusFileSystemLibrary.Common.IO;
     using AtlusFileSystemLibrary.FileSystems.PAK;
-    using CaelumCoreLibrary.Common;
-    using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Writers;
     using Microsoft.Extensions.Logging;
 
@@ -32,6 +29,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             ".pak",
             ".pac",
             ".pack",
+            ".spr",
         };
 
         private readonly ILogger log;
@@ -159,29 +157,37 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     Directory.Move(folder, adjustedFolderPath);
                     finalFolder = adjustedFolderPath;
 
+                    var outputDir = Path.Join(originalFilesFolder, adjustedFolderPath.Replace(dataFolder, string.Empty));
+
                     // Unpack archive in case nested file of it is needed.
-
-                    // Unpack like PakPack.
-                    if (!PAKFileSystem.TryOpen(possibleArc, out var pak))
+                    if (possibleArc.EndsWith(".spr"))
                     {
-                        throw new ArgumentException($@"Invalid PAK file ""{possibleArc}"".");
+                        this.log.LogDebug("Found spr file, must unpack");
+                        var sprUtils = new SprUtils(this.log);
+                        sprUtils.ExtractTmx(possibleArc, outputDir);
                     }
-
-                    // Unpack contents.
-                    using (pak)
+                    else
                     {
-                        // this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
-                        var outputDir = Path.Join(originalFilesFolder, adjustedFolderPath.Replace(dataFolder, string.Empty));
-
-                        foreach (string file in pak.EnumerateFiles())
+                        // Unpack like PakPack.
+                        if (!PAKFileSystem.TryOpen(possibleArc, out var pak))
                         {
-                            var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
-                            using (var stream = FileUtils.Create(outputDir + Path.DirectorySeparatorChar + normalizedFilePath))
-                            using (var inputStream = pak.OpenFile(file))
+                            throw new ArgumentException($@"Invalid PAK file ""{possibleArc}"".");
+                        }
+
+                        // Unpack contents.
+                        using (pak)
+                        {
+                            // this.log.LogDebug("PAK format version: {PakVersion}", pak.Version);
+                            foreach (string file in pak.EnumerateFiles())
                             {
-                                // Console.WriteLine($"Extracting {file}");
-                                // this.log.LogDebug($"Extracting {file}");
-                                inputStream.CopyTo(stream);
+                                var normalizedFilePath = file.Replace("../", string.Empty); // Remove backwards relative path
+                                using (var stream = FileUtils.Create(outputDir + Path.DirectorySeparatorChar + normalizedFilePath))
+                                using (var inputStream = pak.OpenFile(file))
+                                {
+                                    // Console.WriteLine($"Extracting {file}");
+                                    this.log.LogDebug($"Extracting {file}");
+                                    inputStream.CopyTo(stream);
+                                }
                             }
                         }
                     }
@@ -199,7 +205,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 
         private void CopyFolder(string sourceFolder, string destFolder)
         {
-            foreach (var file in Directory.GetFileSystemEntries(sourceFolder, "*", SearchOption.AllDirectories))
+            foreach (var file in Directory.GetFiles(sourceFolder, "*", SearchOption.AllDirectories))
             {
                 var outputFile = Path.Join(destFolder, file.Replace(sourceFolder, string.Empty));
                 Directory.CreateDirectory(Path.GetDirectoryName(outputFile));

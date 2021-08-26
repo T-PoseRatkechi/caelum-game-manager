@@ -8,6 +8,7 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
     using AtlusFileSystemLibrary;
     using AtlusFileSystemLibrary.FileSystems.PAK;
     using CaelumCoreLibrary.Builders.Files;
+    using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
@@ -117,38 +118,73 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
                 // Path to save edited file.
                 var tempSavePath = $"{sourceFile}.temp";
 
-                // Open file.
-                if (!PAKFileSystem.TryOpen(sourceFile, out var pak))
+                // Merge files with SprUtils Insert.
+                if (Path.GetExtension(sourceFile) == ".spr")
                 {
-                    throw new ArgumentException($@"Invalid PAK file ""{sourceFile}"".");
-                }
-
-                // Merge any files in current folder into the source file.
-                using (pak)
-                {
-                    foreach (var file in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
+                    bool firstRun = true;
+                    // Merge all tmx files in folder into source spr file.
+                    foreach (var file in Directory.GetFiles(folder, "*.tmx", SearchOption.TopDirectoryOnly))
                     {
-                        var partialPath = file.Replace(folder, string.Empty)
-                            .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-                            .Replace(Path.DirectorySeparatorChar, '/');
+                        var secondTemp = $"{tempSavePath}.temp";
 
-                        if (pak.Exists(partialPath))
+                        SprUtils sprUtils = new(this.log);
+
+                        if (firstRun)
                         {
-                            pak.AddFile(partialPath, file, ConflictPolicy.Replace);
-                            this.log.LogDebug("Merged a File\nFile Merged: {MergedFIle}\nInto Source File: {SourceFile}", file.Replace(buildDir, string.Empty), sourceFile.Replace(buildDir, string.Empty));
+                            sprUtils.InsertTmx3(sourceFile, file, secondTemp);
+                            firstRun = false;
                         }
                         else
                         {
-                            this.log.LogWarning("Expected file {RelativePath} was not found in build file {SourceFile}.", partialPath.Replace(buildDir, string.Empty), sourceFile.Replace(buildDir, string.Empty));
+                            sprUtils.InsertTmx3(tempSavePath, file, secondTemp);
                         }
+
+                        // Overwrite original source file with merged temp file.
+                        File.Move(secondTemp, tempSavePath, true);
+
+                        this.log.LogDebug("Merged {TmxName} into {SprName}", Path.GetFileName(file), Path.GetFileName(sourceFile));
                     }
 
-                    // Save stream? to temp path.
-                    pak.Save(tempSavePath);
+                    // Overwrite original source file with merged temp file.
+                    File.Move(tempSavePath, sourceFile, true);
                 }
 
-                // Overwrite original source file with merged temp file.
-                File.Move(tempSavePath, sourceFile, true);
+                // Handle merging non-spr files.
+                else
+                {
+                    // Open file.
+                    if (!PAKFileSystem.TryOpen(sourceFile, out var pak))
+                    {
+                        throw new ArgumentException($@"Invalid PAK file ""{sourceFile}"".");
+                    }
+
+                    // Merge any files in current folder into the source file.
+                    using (pak)
+                    {
+                        foreach (var file in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
+                        {
+                            var partialPath = file.Replace(folder, string.Empty)
+                                .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                                .Replace(Path.DirectorySeparatorChar, '/');
+
+                            if (pak.Exists(partialPath))
+                            {
+                                pak.AddFile(partialPath, file, ConflictPolicy.Replace);
+                                this.log.LogDebug("Merged a File\nFile Merged: {MergedFIle}\nInto Source File: {SourceFile}", file.Replace(buildDir, string.Empty), sourceFile.Replace(buildDir, string.Empty));
+                            }
+                            else
+                            {
+                                this.log.LogWarning("Expected file {RelativePath} was not found in build file {SourceFile}.", partialPath.Replace(buildDir, string.Empty), sourceFile.Replace(buildDir, string.Empty));
+                            }
+                        }
+
+                        // Save stream? to temp path.
+                        pak.Save(tempSavePath);
+                    }
+
+                    // Overwrite original source file with merged temp file.
+                    File.Move(tempSavePath, sourceFile, true);
+                }
 
                 // Clean up merged files.
                 foreach (var file in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
