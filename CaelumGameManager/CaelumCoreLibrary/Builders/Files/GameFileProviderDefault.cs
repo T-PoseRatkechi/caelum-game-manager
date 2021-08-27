@@ -25,6 +25,11 @@ namespace CaelumCoreLibrary.Builders.Files
             this.gameInstallPath = gameInstallPath;
         }
 
+        public void AppendArchive(string archiveName, string inputFolder)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetGameFile(string gameFilePath)
         {
             throw new NotImplementedException();

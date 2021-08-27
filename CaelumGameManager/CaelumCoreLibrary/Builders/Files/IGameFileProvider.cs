@@ -23,5 +23,7 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <param name="relativeGameFile">The relative file path of the game file.</param>
         /// <returns>The local copy of <paramref name="relativeGameFile"/>.</returns>
         string GetInstallGameFile(string relativeGameFile);
+
+        void AppendArchive(string archiveName, string inputFolder);
     }
 }

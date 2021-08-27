@@ -6,11 +6,11 @@
 namespace CaelumCoreLibrary.Builders.Modules
 {
     using System.Collections.Generic;
-    using CaelumCoreLibrary.Builders.Modules.FilePatching;
     using CaelumCoreLibrary.Builders.Files;
+    using CaelumCoreLibrary.Builders.Modules.FilePatching;
+    using CaelumCoreLibrary.Builders.Modules.PostBuild;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
-    using CaelumCoreLibrary.Builders.Modules.PostBuild;
 
     /// <summary>
     /// Builder for card output.
@@ -19,6 +19,7 @@ namespace CaelumCoreLibrary.Builders.Modules
     {
         private readonly ILogger log;
         private readonly IBuildLogger buildLogger;
+        private readonly IGameFileProvider gameFileProvider;
 
         private readonly List<IBuilderModule> modules = new();
         private readonly FilePatchingModule filePatchingModule;
@@ -30,12 +31,13 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// </summary>
         /// <param name="log">Logger.</param>
         /// <param name="buildLogger">Build logger.</param>
-        public OutputBuilder(ILogger log, IBuildLogger buildLogger, IGameFileProvider unpacker)
+        public OutputBuilder(ILogger log, IBuildLogger buildLogger, IGameFileProvider gameFileProvider)
         {
             this.log = log;
             this.buildLogger = buildLogger;
+            this.gameFileProvider = gameFileProvider;
 
-            this.filePatchingModule = new(log, buildLogger, unpacker);
+            this.filePatchingModule = new(log, buildLogger, gameFileProvider);
 
             this.AddModule(this.filePatchingModule);
         }
