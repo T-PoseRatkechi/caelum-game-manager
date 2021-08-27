@@ -18,7 +18,6 @@
     <UserControl.Resources>
         <local:AuthorsToString x:Key="AuthorsToString" />
     </UserControl.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -60,8 +59,19 @@
                   dd:DragDrop.SelectDroppedItems="True" SelectionMode="Extended"
                   dd:DragDrop.DropHandler="{Binding}" CanUserSortColumns="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="{lex:Loc EnabledText}" Binding="{Binding Path=IsEnabled}"
-                                                IsReadOnly="False"/>
+                <!--
+                How to perform Single click checkbox selection in WPF DataGrid?
+                https://stackoverflow.com/a/7270548
+                CC BY-SA 3.0
+                -->
+                <DataGridTemplateColumn Header="{lex:Loc EnabledText}" IsReadOnly="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="{lex:Loc TypeText}" Binding="{Binding Path=Type}"
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="{lex:Loc NameText}" Binding="{Binding Path=Name}"
