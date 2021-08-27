@@ -204,6 +204,13 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     this.CopyFolder(packageAppendFolder, caelumAppendFolder);
                     Directory.Delete(packageAppendFolder, true);
                 }
+
+                // Rename preview to card.png.
+                var packagePreview = Path.Join(packageDir, "Preview.png");
+                if (File.Exists(packagePreview))
+                {
+                    File.Move(packagePreview, Path.Join(packageDir, "card.png"));
+                }
             }
 
             this.CopyFolder(tempFolder, outputDir);
