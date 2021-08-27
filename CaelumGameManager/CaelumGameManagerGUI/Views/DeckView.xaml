@@ -57,7 +57,8 @@
                   CanUserResizeRows="False" MouseLeftButtonDown="FilteredDeck_MouseDown"
                   dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.SelectDroppedItems="True" SelectionMode="Extended"
-                  dd:DragDrop.DropHandler="{Binding}" CanUserSortColumns="False">
+                  dd:DragDrop.DropHandler="{Binding}" CanUserSortColumns="False"
+                  CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <!--
                 How to perform Single click checkbox selection in WPF DataGrid?
