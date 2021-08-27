@@ -22,7 +22,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// <param name="card"><seealso cref="CardModel"/> instance to dispaly.</param>
         public CardViewModel(CardModel card = null)
         {
-            Card = card;
+            this.Card = card;
         }
 
         /// <summary>
@@ -37,11 +37,6 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         {
             get
             {
-                if (this.Card == null)
-                {
-                    return null;
-                }
-
                 if (this.Card is CardModel installedCard)
                 {
                     string cardImagePath = Path.Join(installedCard.InstallDirectory, "card.png");
