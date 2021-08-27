@@ -36,11 +36,6 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             ".spr",
         };
 
-        private static readonly Dictionary<string, string> tblToTblPath = new()
-        {
-            { "ENCOUNT", @"${UnpackedGameFiles}\data_e\init_free.bin_\battle\ENCOUNT.TBL" }
-        };
-
         private readonly ILogger log;
         private readonly IWriter writer;
 
@@ -199,6 +194,15 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     File.WriteAllText(gamePatchFile, gamePatchString);
 
                     this.log.LogDebug("Converted {NumPatches} for package {PackageName}", convertedPatches.Count, Path.GetDirectoryName(packageDir));
+                }
+
+                // Copy over preappfile append files.
+                var packageAppendFolder = Path.Join(packageDir, "preappfile", "data_e");
+                if (Directory.Exists(packageAppendFolder))
+                {
+                    var caelumAppendFolder = Path.Join(dataFolder, "data_e", "append");
+                    this.CopyFolder(packageAppendFolder, caelumAppendFolder);
+                    Directory.Delete(packageAppendFolder, true);
                 }
             }
 

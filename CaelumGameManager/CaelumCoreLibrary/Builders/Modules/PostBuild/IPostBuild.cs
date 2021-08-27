@@ -5,8 +5,15 @@
 
 namespace CaelumCoreLibrary.Builders.Modules.PostBuild
 {
+    /// <summary>
+    /// PostBuild interface.
+    /// </summary>
     public interface IPostBuild
     {
+        /// <summary>
+        /// Finalizes the build located in <paramref name="buildDir"/>.
+        /// </summary>
+        /// <param name="buildDir">Path to where the build is.</param>
         void FinalizeBuild(string buildDir);
     }
 }

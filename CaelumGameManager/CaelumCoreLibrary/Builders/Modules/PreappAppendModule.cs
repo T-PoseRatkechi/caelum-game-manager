@@ -3,9 +3,12 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+/// <summary>
+/// PreappAppend as a card builder module. Unused in favor of a quicker post-build step.
+/// Might be useful with have multiple new pacs.
+/// </summary>
 namespace CaelumCoreLibrary.Builders.Modules
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using CaelumCoreLibrary.Builders.Files;

@@ -5,17 +5,13 @@
 
 namespace CaelumCoreLibrary.Builders.Modules.PostBuild
 {
+    using System;
+    using System.IO;
     using AtlusFileSystemLibrary;
     using AtlusFileSystemLibrary.FileSystems.PAK;
     using CaelumCoreLibrary.Builders.Files;
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using Microsoft.Extensions.Logging;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Post builder for P4G output.
@@ -44,6 +40,7 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
             this.gameFileProvider = gameFileProvider;
         }
 
+        /// <inheritdoc/>
         public void FinalizeBuild(string buildDir)
         {
             this.Merge(buildDir);
@@ -73,28 +70,61 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
                 }
             }
 
+            this.ProcessAppendFolder(buildDir);
+
             // Merge files from unpacked dirs into their source file
             // from lowest layer until the root layer.
             this.RecursiveFileMerge(buildDir, buildDir);
 
             // Clean up empty folders.
-            // TODO: Can probably delete folders instead per file, then per folder.
-            //foreach (var dir in Directory.GetDirectories(buildDir))
-            //{
-            //    if (Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Length == 0)
-            //    {
-            //        Directory.Delete(dir, true);
-            //    }
-            //}
-
-            processDirectory(buildDir);
+            this.ProcessDirectory(buildDir);
         }
 
-        private static void processDirectory(string startLocation)
+        /// <summary>
+        /// Process then deletes the preappfile append folder.
+        /// </summary>
+        /// <param name="buildDir">Build directory.</param>
+        private void ProcessAppendFolder(string buildDir)
+        {
+            const string newPacName = "data00007.pac";
+
+            var dataFolders = Directory.GetDirectories(buildDir, "data_*", SearchOption.TopDirectoryOnly);
+
+            /*
+            // Only allow one data_x card.
+            if (dataDirs.Length > 1)
+            {
+                throw new ArgumentException($@"More than one data_x folder was found in card ""{card.CardId}"".");
+            }
+            */
+
+            foreach (var dataDir in dataFolders)
+            {
+                var appendDir = Path.Join(dataDir, "append");
+                if (!Directory.Exists(appendDir))
+                {
+                    continue;
+                }
+
+                var archiveToAppend = Path.GetFileName(dataDir);
+
+                this.gameFileProvider.AppendArchive(archiveToAppend, appendDir, newPacName);
+
+                // preappfile's Pack is still using files even though seemingly finished Pack
+                // Stream not getting closed or weirdness with Parallel.ForEach?
+                Directory.Delete(appendDir, true);
+            }
+        }
+
+        /// <summary>
+        /// Deletes any empty folder located in <paramref name="startLocation"/>.
+        /// </summary>
+        /// <param name="startLocation">Starting folder.</param>
+        private void ProcessDirectory(string startLocation)
         {
             foreach (var directory in Directory.GetDirectories(startLocation))
             {
-                processDirectory(directory);
+                this.ProcessDirectory(directory);
                 if (Directory.GetFiles(directory).Length == 0 &&
                     Directory.GetDirectories(directory).Length == 0)
                 {
@@ -148,9 +178,6 @@ namespace CaelumCoreLibrary.Builders.Modules.PostBuild
 
                         this.log.LogDebug("Merged {TmxName} into {SprName}", Path.GetFileName(file), Path.GetFileName(sourceFile));
                     }
-
-                    // Overwrite original source file with merged temp file.
-                    // File.Move(tempSavePath, sourceFile, true);
                 }
 
                 // Handle merging non-spr files.

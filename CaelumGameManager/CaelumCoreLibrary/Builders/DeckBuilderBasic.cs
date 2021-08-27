@@ -48,7 +48,6 @@ namespace CaelumCoreLibrary.Builders
 
             var outputBuilder = new OutputBuilder(this.log, buildLogger, this.unpacker)
                 .AddModule(new PhosModule(this.log, buildLogger))
-                .AddModule(new PreappAppendModule(this.log, buildLogger, this.unpacker))
                 .AddModule(new StandardModule(this.log, buildLogger))
                 .PostBuild(new PostBuildP4G(this.log, buildLogger, this.unpacker));
 

@@ -24,6 +24,13 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <returns>The local copy of <paramref name="relativeGameFile"/>.</returns>
         string GetInstallGameFile(string relativeGameFile);
 
-        void AppendArchive(string archiveName, string inputFolder);
+        /// <summary>
+        /// Appends the contents of <paramref name="inputFolder"/> as a new pac to <paramref name="archiveName"/>. The new pac's name
+        /// can be set manually via <paramref name="newPacName"/>. If no name is provided it defaults to +1 the highest numbered pac.
+        /// </summary>
+        /// <param name="archiveName">Archive to append to.</param>
+        /// <param name="inputFolder">Contents to add to new pac.</param>
+        /// <param name="newPacName">The new pac's name. Assumed to be in the format <c>data#####</c>.</param>
+        void AppendArchive(string archiveName, string inputFolder, string newPacName = null);
     }
 }

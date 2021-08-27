@@ -30,6 +30,11 @@ namespace CaelumCoreLibrary.Builders.Files
             throw new NotImplementedException();
         }
 
+        public void AppendArchive(string archiveName, string inputFolder, string newPacName = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetGameFile(string gameFilePath)
         {
             throw new NotImplementedException();

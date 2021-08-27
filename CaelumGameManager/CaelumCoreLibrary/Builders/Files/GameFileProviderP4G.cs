@@ -197,6 +197,95 @@ namespace CaelumCoreLibrary.Builders.Files
 
         // Praise be to TGE.
 
+        /// <inheritdoc/>
+        public void AppendArchive(string archiveName, string inputFolder, string newPacName = null)
+        {
+            var installArchivePath = Path.Join(this.gameInstallPath, $"{archiveName}.cpk");
+            var backupInstallPath = Path.Join(this.unpackedDir, $"{archiveName}.cpk");
+
+            // Make a backup of the original archive.
+            if (!File.Exists(backupInstallPath))
+            {
+                File.Copy(installArchivePath, backupInstallPath);
+            }
+
+            // Overwrite the current install archive with the original backup.
+            else
+            {
+                File.Copy(backupInstallPath, installArchivePath, true);
+            }
+
+            // Work on the archive in the install.
+            CpkFile cpk = new(installArchivePath);
+
+            var pacName = newPacName;
+            var newPacIndex = newPacName == null ? 7 : Convert.ToInt32(Path.GetFileNameWithoutExtension(newPacName).Remove(0, 4).TrimStart('0'));
+
+            if (pacName == null)
+            {
+                // Get highested pac index from install data pacs.
+                newPacIndex = Directory.GetFiles(this.gameInstallPath, "data*****.pac", SearchOption.TopDirectoryOnly)
+                    .Select(x =>
+                    {
+                        var result = Path.GetFileNameWithoutExtension(x).Remove(0, 4).TrimStart('0');
+                        if (string.IsNullOrEmpty(result))
+                        {
+                            return 0;
+                        }
+                        else
+                        {
+                            return Convert.ToInt32(result);
+                        }
+                    }).Max() + 1;
+
+                // Create name from pac index.
+                pacName = this.FormatPacName($"{this.GetPacBaseNameFromCpkBaseName(installArchivePath, archiveName)}", newPacIndex);
+            }
+
+            var pacPath = Path.Join(this.gameInstallPath, pacName);
+
+            this.log.LogDebug("Appending\nContents of: {FolderPath}\nAs: {NewPac}\nTo: {Archive}", inputFolder, pacName, archiveName);
+
+            int filesAdded = 0;
+
+            // Broken, doesn't close stream?
+            // Think it's related to Parallel.ForEach in AddFiles.
+            var pac = DwPackFile.Pack(inputFolder, newPacIndex, false, e =>
+            {
+                // Can cause GUI log window to crash.
+                // TODO: Fix...
+                // this.log.LogDebug($"Adding {e}");
+                filesAdded++;
+                return true;
+            });
+
+            this.log.LogDebug("Added {NumFiles} files to {PacName}", filesAdded, pacName);
+
+            using var packFile = File.Create(pacPath);
+            pac.Write(packFile, false, e => this.log.LogDebug("Writing {FilePath}", e.Path));
+
+            foreach (var entry in pac.Entries)
+            {
+                entry.CloseStreams();
+            }
+
+            // Add entries to CPK.
+            for (var i = 0; i < pac.Entries.Count; i++)
+            {
+                var entry = pac.Entries[i];
+                cpk.Entries.Add(new CpkFileEntry(entry.Path, (short)i, (short)newPacIndex));
+            }
+
+            // Update data_x.cpk.
+            var archiveStream = File.Create(installArchivePath);
+            cpk.Write(archiveStream);
+
+            packFile.Flush();
+            packFile.Close();
+            archiveStream.Flush();
+            archiveStream.Close();
+        }
+
         /// <summary>
         /// Unpacks cpk. Set <paramref name="relativePath"/> to unpack a specific file.
         /// </summary>
@@ -259,61 +348,6 @@ namespace CaelumCoreLibrary.Builders.Files
             {
                 throw new ArgumentException($@"Root game file ""{relativePath}"" could not be found.");
             }
-        }
-
-        /// <summary>
-        /// Creates a new archive at <paramref name="outputFile"/> from the contents of <paramref name="inputFolder"/> then appends the new entry to <paramref name="archiveName"/>.
-        /// </summary>
-        /// <param name="archiveName">Archive to append <paramref name="outputFile"/> to.</param>
-        /// <param name="inputFolder">Folder to create <paramref name="outputFile"/> from.</param>
-        public void AppendArchive(string archiveName, string inputFolder)
-        {
-            var archivePath = Path.Join(this.gameInstallPath, $"{archiveName}.cpk");
-
-            CpkFile cpk = new(archivePath);
-
-            // Create new PAC
-            // var newPacIndex = cpk.Entries.Select(x => x.PacIndex).Max() + 1;
-            var newPacIndex = Directory.GetFiles(this.gameInstallPath, "data*****.pac", SearchOption.TopDirectoryOnly)
-                .Select(x =>
-                {
-                    var result = Path.GetFileNameWithoutExtension(x).Remove(0, 4).TrimStart('0');
-                    if (string.IsNullOrEmpty(result))
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return Convert.ToInt32(result);
-                    }
-                }).Max() + 1;
-
-            // var newPacIndex = Directory.GetFiles(this.gameInstallPath, "data*****.pac", SearchOption.TopDirectoryOnly).Select(x => Convert.ToInt32(Path.GetFileNameWithoutExtension(x).Remove(0, 4).TrimStart('0'))).Max() + 1;
-            var pacName = this.FormatPacName($"{this.GetPacBaseNameFromCpkBaseName(archivePath, archiveName)}", newPacIndex);
-            var pacPath = Path.Join(this.gameInstallPath, pacName);
-
-            this.log.LogDebug("Appending\nContents of: {FolderPath}\nAs: {NewPac}\nTo: {Archive}", inputFolder, pacName, archiveName);
-
-            int filesAdded = 0;
-            var pac = DwPackFile.Pack(inputFolder, newPacIndex, false, e =>
-            {
-                this.log.LogDebug($"Adding {e}");
-                filesAdded++;
-                return true;
-            });
-
-            using var packFile = File.Create(pacPath);
-
-            pac.Write(packFile, false, e => this.log.LogDebug($"Writing {e.Path}"));
-
-            // Add entries to CPK
-            for (var i = 0; i < pac.Entries.Count; i++)
-            {
-                var entry = pac.Entries[i];
-                cpk.Entries.Add(new CpkFileEntry(entry.Path, (short)i, (short)newPacIndex));
-            }
-
-            cpk.Write(File.Create(archivePath));
         }
 
         private string GetPacBaseNameFromCpkBaseName(string dir, string baseName)
