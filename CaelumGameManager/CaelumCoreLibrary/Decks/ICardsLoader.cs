@@ -18,6 +18,6 @@ namespace CaelumCoreLibrary.Decks
         /// </summary>
         /// <param name="cardsList">List to add loaded cards into.</param>
         /// <returns>List of installed cards.</returns>
-        List<CardModel> GetInstalledCards();
+        List<ICardModel> GetInstalledCards();
     }
 }

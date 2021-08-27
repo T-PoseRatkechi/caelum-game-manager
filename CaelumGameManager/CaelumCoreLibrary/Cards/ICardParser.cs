@@ -12,10 +12,10 @@
     public interface ICardParser
     {
         /// <summary>
-        /// Parses and returns <paramref name="cardFile"/> as an <see cref="CardModel"/>.
+        /// Parses and returns <paramref name="cardFile"/> as an <see cref="ICardModel"/>.
         /// </summary>
         /// <param name="cardFile">Card file to parse.</param>
-        /// <returns><paramref name="cardFile"/> parsed as <see cref="CardModel"/>.</returns>
-        CardModel ParseCard(string cardFile);
+        /// <returns><paramref name="cardFile"/> parsed as <see cref="ICardModel"/>.</returns>
+        ICardModel ParseCard(string cardFile);
     }
 }

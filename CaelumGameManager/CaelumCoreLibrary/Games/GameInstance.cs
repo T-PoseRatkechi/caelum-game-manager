@@ -95,6 +95,7 @@ namespace CaelumCoreLibrary.Games
                 this.GameConfig.SaveGameConfig();
             };
 
+            // Should *really* be removed ASAP.
             this.Deck.OnDeckChanged += (sender, e) =>
             {
                 this.saveTimer.Enabled = true;

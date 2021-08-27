@@ -17,6 +17,6 @@ namespace CaelumCoreLibrary.Cards
         /// </summary>
         /// <param name="gameInstall">Game install instance.</param>
         /// <param name="card">Card to create.</param>
-        void CreateCard(IGameInstall gameInstall, CardModel card);
+        void CreateCard(IGameInstall gameInstall, ICardModel card);
     }
 }

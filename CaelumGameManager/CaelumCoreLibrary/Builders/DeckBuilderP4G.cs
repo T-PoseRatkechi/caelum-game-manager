@@ -26,7 +26,7 @@ namespace CaelumCoreLibrary.Builders
         }
 
         /// <inheritdoc/>
-        public void Build(List<CardModel> deck, string outputDir)
+        public void Build(List<ICardModel> deck, string outputDir)
         {
             this.log.LogInformation($"Building deck for P4G. Total Cards: {deck.Count} - Output: {outputDir}");
         }

@@ -29,7 +29,7 @@ namespace CaelumCoreLibrary.Builders
         /// </summary>
         /// <param name="card">Card that outputted file.</param>
         /// <param name="outputFile">File that was outputted.</param>
-        public void LogOutputFile(CardModel card, string outputFile)
+        public void LogOutputFile(ICardModel card, string outputFile)
         {
             if (this.outputFilesLog.ContainsKey(outputFile))
             {

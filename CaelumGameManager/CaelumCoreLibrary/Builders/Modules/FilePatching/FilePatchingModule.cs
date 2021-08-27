@@ -39,7 +39,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
         }
 
         /// <inheritdoc/>
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtCardFiles)
+        public void BuildCard(ICardModel card, string outputDir, HashSet<string> builtCardFiles)
         {
             // Card patches dir.
             string cardPatchesFolder = Path.Join(card.InstallDirectory, "Data", "Patches");

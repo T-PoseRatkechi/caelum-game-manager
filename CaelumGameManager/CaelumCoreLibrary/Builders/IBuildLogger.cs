@@ -17,7 +17,7 @@ namespace CaelumCoreLibrary.Builders
         /// </summary>
         /// <param name="card">Card.</param>
         /// <param name="outputFile">Output file card interacted with.</param>
-        void LogOutputFile(CardModel card, string outputFile);
+        void LogOutputFile(ICardModel card, string outputFile);
 
         /// <summary>
         /// Writes build log to file.

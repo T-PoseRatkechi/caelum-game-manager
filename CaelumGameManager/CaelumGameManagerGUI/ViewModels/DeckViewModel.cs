@@ -5,24 +5,24 @@
 
 namespace CaelumGameManagerGUI.ViewModels
 {
-    using System.Collections.Generic;
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
+    using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
+    using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Games;
+    using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
     using GongSolutions.Wpf.DragDrop;
-    using Serilog;
-    using System;
-    using System.Threading.Tasks;
-    using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using Microsoft.Win32;
-    using System.IO;
-    using CaelumCoreLibrary.Cards.Converters;
+    using Serilog;
 
     /// <summary>
     /// Deck VM.
@@ -49,7 +49,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private readonly IWindowManager windowManager = new WindowManager();
 
         private bool isBuildingEnabled = true;
-        private BindableCollection<CardModel> _deck;
+        private BindableDeckModel _deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
@@ -59,7 +59,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableCollection<CardModel> deck)
+        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableDeckModel deck)
         {
             this.game = game;
             this._deck = deck;
@@ -138,7 +138,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 if (selectedItem != null)
                 {
-                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck, selectedItem as CardModel));
+                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck, selectedItem as ICardModel));
                     return;
                 }
 
@@ -192,7 +192,7 @@ namespace CaelumGameManagerGUI.ViewModels
             if (dropInfo.Data is IEnumerable groupedCards)
             {
                 // Remove cards from group drop.
-                foreach (CardModel card in groupedCards)
+                foreach (ICardModel card in groupedCards)
                 {
                     var deckCardIndex = this.game.Deck.Cards.FindIndex(c => c.CardId == card.CardId);
 
@@ -212,7 +212,7 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 // Remove card from solo drop.
                 // Strange this didn't break like the group drop...
-                var card = (CardModel)dropInfo.Data;
+                var card = (ICardModel)dropInfo.Data;
                 if (!this.game.Deck.Cards.Remove(card))
                 {
                     Log.Fatal("Failed to remove a card in drop event! Unexpect behaviour likely to occur!");
@@ -236,7 +236,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <returns>Whether card passes filter.</returns>
         private static bool FilterCardsByType(object item, CardType type)
         {
-            CardModel cardModel = item as CardModel;
+            ICardModel cardModel = item as ICardModel;
             if (cardModel != null)
             {
                 if (cardModel.Type == type)

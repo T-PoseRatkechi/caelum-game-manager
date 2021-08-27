@@ -70,7 +70,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// </summary>
         /// <param name="cards">Cards to build.</param>
         /// <param name="outputDir">Output directory.</param>
-        public void BuildOutput(List<CardModel> cards, string outputDir)
+        public void BuildOutput(List<ICardModel> cards, string outputDir)
         {
             /* Working, but builds cards in the order
              * where earliest card has the lowest priority (gets files overwritten).
@@ -100,7 +100,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// </summary>
         /// <param name="card">Card to build.</param>
         /// <param name="outputDir">Directory to output built files.</param>
-        private void BuildCardOutput(CardModel card, string outputDir)
+        private void BuildCardOutput(ICardModel card, string outputDir)
         {
             HashSet<string> builtCardFiles = new();
 

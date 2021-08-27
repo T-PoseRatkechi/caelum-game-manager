@@ -30,7 +30,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         }
 
         /// <inheritdoc/>
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
+        public void BuildCard(ICardModel card, string outputDir, HashSet<string> builtFiles)
         {
             string cardDataDir = Path.Join(card.InstallDirectory, "Data");
 

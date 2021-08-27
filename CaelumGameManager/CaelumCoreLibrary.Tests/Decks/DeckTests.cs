@@ -13,12 +13,12 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void AddCard_AddingCard_ShouldAddToDeck()
         {
             using var mock = AutoMock.GetLoose();
-            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<ICardModel>());
 
             // Arrange
             var deck = mock.Create<Deck>();
 
-            var newCard = new CardModel();
+            var newCard = new ICardModel();
 
             // Act
             deck.AddCard(newCard);
@@ -32,12 +32,12 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void AddCard_AddingDuplicateCardByInstance_ShouldFail()
         {
             using var mock = AutoMock.GetLoose();
-            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<ICardModel>());
 
             // Arrange
             var deck = mock.Create<Deck>();
 
-            var newCard = new CardModel();
+            var newCard = new ICardModel();
 
             // Act
             deck.AddCard(newCard);
@@ -50,17 +50,17 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void AddCard_AddingDuplicateCardByCardId_ShouldFail()
         {
             using var mock = AutoMock.GetLoose();
-            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<ICardModel>());
 
             // Arrange
             var deck = mock.Create<Deck>();
 
-            var firstCard = new CardModel()
+            var firstCard = new ICardModel()
             {
                 CardId = "tposeratkechi_caelummusicmanager"
             };
 
-            var secondCard = new CardModel()
+            var secondCard = new ICardModel()
             {
                 CardId = "tposeratkechi_caelummusicmanager"
             };
@@ -76,12 +76,12 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void HideCard_HidingCard_ShouldSetHidePropTrueInDeck()
         {
             using var mock = AutoMock.GetLoose();
-            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<ICardModel>());
 
             // Arrange
             var deck = mock.Create<Deck>();
 
-            var newCard = new CardModel();
+            var newCard = new ICardModel();
 
             // Act
             deck.AddCard(newCard);
@@ -96,12 +96,12 @@ namespace CaelumCoreLibrary.Tests.Decks
         public void HideCard_HidingAlreadyHiddenCards_ShouldFail()
         {
             using var mock = AutoMock.GetLoose();
-            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<CardModel>());
+            mock.Mock<ICardsLoader>().Setup(x => x.GetInstalledCards()).Returns(new List<ICardModel>());
 
             // Arrange
             var deck = mock.Create<Deck>();
 
-            var newCard = new CardModel();
+            var newCard = new ICardModel();
 
             // Act
             deck.AddCard(newCard);

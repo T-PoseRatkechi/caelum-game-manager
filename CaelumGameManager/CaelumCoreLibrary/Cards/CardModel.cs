@@ -9,60 +9,38 @@ namespace CaelumCoreLibrary.Cards
     using CaelumCoreLibrary.Common;
 
     /// <summary>
-    /// Interface for cards that are installable (has an installation folder somewhere).
+    /// CardModel implementation.
     /// </summary>
-    public class CardModel
+    public class CardModel : ICardModel
     {
-        /// <summary>
-        /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
-        /// Should typically be: {author_name}_{card_name}
-        /// Update Cards must have the same id as the card they are updating.
-        /// </summary>
+        /// <inheritdoc/>
         public string CardId { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the card is enabled.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsEnabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the card is hidden in the deck.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsHidden { get; set; }
 
-        /// <summary>
-        /// Gets or sets name of card.
-        /// </summary>
+        /// <inheritdoc/>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets games card is for.
-        /// </summary>
+        /// <inheritdoc/>
         public string[] Games { get; set; }
 
-        /// <summary>
-        /// Gets or sets authors of the card.
-        /// </summary>
+        /// <inheritdoc/>
         public List<Author> Authors { get; set; }
 
-        /// <summary>
-        /// Gets or sets description of card.
-        /// </summary>
+        /// <inheritdoc/>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets version of card.
-        /// </summary>
+        /// <inheritdoc/>
         public string Version { get; set; }
 
-        /// <summary>
-        /// Gets or sets card type.
-        /// </summary>
+        /// <inheritdoc/>
         public CardType Type { get; set; }
 
-        /// <summary>
-        /// Gets or sets the install path of the card.
-        /// </summary>
+        /// <inheritdoc/>
         public string InstallDirectory { get; set; }
     }
 }

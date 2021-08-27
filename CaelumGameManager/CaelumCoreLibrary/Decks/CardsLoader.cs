@@ -38,11 +38,11 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public List<CardModel> GetInstalledCards()
+        public List<ICardModel> GetInstalledCards()
         {
             this.log.LogDebug("Loading installed cards");
 
-            List<CardModel> installedCards = new();
+            List<ICardModel> installedCards = new();
 
             this.AddCardsFromFolder(installedCards, this.toolsDir);
             this.AddCardsFromFolder(installedCards, this.gameCardsDir);
@@ -57,7 +57,7 @@ namespace CaelumCoreLibrary.Decks
         /// </summary>
         /// <param name="cardsList">List to add new cards to.</param>
         /// <param name="folder">Folder to seach for cards in.</param>
-        private void AddCardsFromFolder(List<CardModel> cardsList, string folder)
+        private void AddCardsFromFolder(List<ICardModel> cardsList, string folder)
         {
             this.log.LogDebug("Loading cards in folder {Folder}", folder);
 

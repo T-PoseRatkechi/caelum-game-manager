@@ -19,6 +19,6 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// <param name="card">Card to build.</param>
         /// <param name="outputDir">Directory to output card build at.</param>
         /// <param name="builtCardFiles">List of <paramref name="card"/>'s files that have been built or processed.</param>
-        void BuildCard(CardModel card, string outputDir, HashSet<string> builtCardFiles);
+        void BuildCard(ICardModel card, string outputDir, HashSet<string> builtCardFiles);
     }
 }

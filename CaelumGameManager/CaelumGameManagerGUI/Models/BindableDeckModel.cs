@@ -8,6 +8,7 @@
 namespace CaelumGameManagerGUI.Models
 {
     using System;
+    using System.Linq;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Decks;
     using CaelumGameManagerGUI.Resources.Localization;
@@ -17,7 +18,7 @@ namespace CaelumGameManagerGUI.Models
     /// <summary>
     /// Wrapper for <seealso cref="IDeck"/> to keep the bindable collection and deck cards in-sync.
     /// </summary>
-    public class BindableDeckModel : BindableCollection<CardModel>
+    public class BindableDeckModel : BindableCollection<ObservableCardModel>
     {
         private readonly IDeck _deck;
 
@@ -33,14 +34,19 @@ namespace CaelumGameManagerGUI.Models
         /// <param name="deck">Deck.</param>
         /// <param name="checkSyncStatus">Flag indicating whether to check if lists are in-sync.</param>
         public BindableDeckModel(IDeck deck, bool checkSyncStatus)
-            : base(deck.Cards)
+            : base(deck.Cards.Select(x => new ObservableCardModel(x)))
         {
             this._deck = deck;
             this._checkSyncStatus = checkSyncStatus;
+
+            this.CollectionChanged += (sender, e) =>
+            {
+                Log.Information("Item change");
+            };
         }
 
         /// <inheritdoc/>
-        protected override void InsertItemBase(int index, CardModel item)
+        protected override void InsertItemBase(int index, ObservableCardModel item)
         {
             try
             {

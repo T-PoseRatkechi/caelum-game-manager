@@ -35,7 +35,7 @@ namespace CaelumCoreLibrary.Decks
         public event EventHandler OnDeckChanged;
 
         /// <inheritdoc/>
-        public List<CardModel> Cards { get; set; }
+        public List<ICardModel> Cards { get; set; }
 
         /// <inheritdoc/>
         public void LoadDeckCards()
@@ -46,7 +46,7 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public void AddCard(CardModel card)
+        public void AddCard(ICardModel card)
         {
             // Don't add duplicate card instances.
             if (this.Cards.Contains(card))
@@ -68,7 +68,7 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public void DeleteCard(CardModel card)
+        public void DeleteCard(ICardModel card)
         {
             // Could not remove card from deck.
             if (!this.Cards.Remove(card))
@@ -83,7 +83,7 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public void HideCard(CardModel card)
+        public void HideCard(ICardModel card)
         {
             // Don't allow hiding cards that are already hidden.
             if (card.IsHidden)

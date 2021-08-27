@@ -15,7 +15,7 @@ namespace CaelumCoreLibrary.Cards
     public class CardParser : ICardParser
     {
         /// <inheritdoc/>
-        public CardModel ParseCard(string cardFile)
+        public ICardModel ParseCard(string cardFile)
         {
             if (string.IsNullOrWhiteSpace(cardFile))
             {

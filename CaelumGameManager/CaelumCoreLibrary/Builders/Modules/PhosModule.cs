@@ -35,7 +35,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         public string PhosGameName { get; init; } = "Persona 4 Golden";
 
         /// <inheritdoc/>
-        public void BuildCard(CardModel card, string outputDir, HashSet<string> builtFiles)
+        public void BuildCard(ICardModel card, string outputDir, HashSet<string> builtFiles)
         {
             string cardDataDir = Path.Join(card.InstallDirectory, "Data");
             var songPresetFiles = Directory.GetFiles(cardDataDir, "*.songs", SearchOption.TopDirectoryOnly);

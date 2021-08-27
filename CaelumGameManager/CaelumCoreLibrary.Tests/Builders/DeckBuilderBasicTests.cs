@@ -24,7 +24,7 @@ namespace CaelumCoreLibrary.Tests.Builders
             var deckBuilderBasic = mock.Create<DeckBuilderBasic>();
 
             // Act
-            var exception = Record.Exception(() => deckBuilderBasic.Build(new List<CardModel>() { }, testDir));
+            var exception = Record.Exception(() => deckBuilderBasic.Build(new List<ICardModel>() { }, testDir));
 
             // Assert
             Assert.Null(exception);

@@ -14,6 +14,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
     using CaelumCoreLibrary.Common;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Utilities;
+    using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Authors;
     using Caliburn.Micro;
@@ -27,8 +28,8 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         private WindowManager windowManager = new WindowManager();
 
         private string selectedType = CardType.Mod.ToString();
-        private BindableCollection<CardModel> cards;
-        private CardModel card;
+        private BindableDeckModel cards;
+        private ICardModel card;
         private IGameInstance game;
         private ICardFactory cardFactory;
 
@@ -42,7 +43,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableCollection<CardModel> deckCards, CardModel card = null)
+        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableDeckModel deckCards, ICardModel card = null)
         {
             this.cards = deckCards;
             this.cardFactory = cardFactory;
@@ -217,7 +218,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
 
                     string cardVersion = string.IsNullOrEmpty(this.CardVersion) ? "1.0.0" : this.CardVersion;
 
-                    CardModel newCard = new();
+                    ObservableCardModel newCard = new();
                     newCard.CardId = this.CardId;
                     newCard.Name = this.CardName;
                     newCard.Description = this.CardDescription;
@@ -236,6 +237,14 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                 {
                     throw new NotImplementedException();
                 }
+            }
+            else
+            {
+                this.card.CardId = this.CardId;
+                this.card.Name = this.CardName;
+                this.card.Description = this.CardDescription;
+                this.card.Authors = this.CardAuthors;
+                // this.card.Version = this.cardVersion;
             }
         }
 

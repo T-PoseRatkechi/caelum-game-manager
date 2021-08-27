@@ -28,7 +28,7 @@ namespace CaelumCoreLibrary.Cards
             this.caelumConfig = caelumConfig;
         }
 
-        public void CreateCard(IGameInstall gameInstall, CardModel card)
+        public void CreateCard(IGameInstall gameInstall, ICardModel card)
         {
             switch (card.Type)
             {

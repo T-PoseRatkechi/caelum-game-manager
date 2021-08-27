@@ -36,7 +36,7 @@ namespace CaelumCoreLibrary.Builders
         }
 
         /// <inheritdoc/>
-        public void Build(List<CardModel> deck, string outputDir)
+        public void Build(List<ICardModel> deck, string outputDir)
         {
             this.log.LogDebug("Building with Basic Deck Builder.");
 
