@@ -66,14 +66,13 @@ namespace CaelumCoreLibrary.Games
             // https://stackoverflow.com/a/55650341
             // CC BY-SA 4.0
             // Kladzey
-
             if (this.GameConfig.Settings.Cards != null)
             {
                 // Set inital order of cards based on config.
                 var originalCards = this.Deck.Cards;
                 this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).Distinct().ToList();
 
-                // Add back any cards that were removed for not existing
+                // Add back any cards that were removed for not existing previously.
                 if (originalCards.Count != this.Deck.Cards.Count)
                 {
                     foreach (var originalCard in originalCards)

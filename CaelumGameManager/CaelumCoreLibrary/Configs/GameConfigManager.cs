@@ -5,7 +5,6 @@
 
 namespace CaelumCoreLibrary.Configs
 {
-    using System;
     using System.IO;
     using System.Timers;
     using CaelumCoreLibrary.Writers;
@@ -67,6 +66,7 @@ namespace CaelumCoreLibrary.Configs
             this.saveTimer.Elapsed += this.SaveTimer_Elapsed;
         }
 
+        // Possibly should be a front-end thing?
         private void SaveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this.writer.WriteFile(this.configFilePath, this.Settings);

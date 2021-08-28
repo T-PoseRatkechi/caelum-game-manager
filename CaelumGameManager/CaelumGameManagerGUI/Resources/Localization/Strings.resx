@@ -196,4 +196,7 @@
   <data name="ErrorDeckBuildFailedMessage" xml:space="preserve">
     <value>Deck build failed.</value>
   </data>
+  <data name="ImportAemulusText" xml:space="preserve">
+    <value>Import Aemulus</value>
+  </data>
 </root>

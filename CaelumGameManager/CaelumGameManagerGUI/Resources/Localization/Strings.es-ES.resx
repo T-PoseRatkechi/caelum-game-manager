@@ -196,4 +196,7 @@
   <data name="ErrorDeckBuildFailedMessage" xml:space="preserve">
     <value>Construcción de baraja fallida.</value>
   </data>
+  <data name="ImportAemulusText" xml:space="preserve">
+    <value>Importar Aemulus</value>
+  </data>
 </root>

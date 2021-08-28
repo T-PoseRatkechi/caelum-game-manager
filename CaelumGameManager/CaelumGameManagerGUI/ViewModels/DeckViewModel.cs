@@ -9,11 +9,13 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Cards.Converters;
+    using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
@@ -144,7 +146,11 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-        public async void ConvertAemulus(object sender)
+        /// <summary>
+        /// Import Aemulus packages and settings.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        public async void ImportAemulus(object sender)
         {
             if (sender != null)
             {
@@ -152,21 +158,61 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 OpenFileDialog openFileDialog = new();
                 openFileDialog.Filter = $"AemulusPackageManager.exe| *.exe";
-                openFileDialog.Title = "Select Aemulus exe...";
+                openFileDialog.Title = "Select AemulusPackageManager.exe...";
+
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    // No file selected.
+                    if (string.IsNullOrEmpty(openFileDialog.FileName))
+                    {
+                        return;
+                    }
+
                     aemulusDir = Path.GetDirectoryName(openFileDialog.FileName);
+                }
+                else
+                {
+                    // Selection cancelled.
+                    return;
                 }
 
                 try
                 {
-                    Log.Information("Importing Aemulus packages.");
+                    Log.Information("Importing Aemulus packages. This may take a while.");
                     await Task.Run(() => this._cardConverter.AemulusConverter.Import(aemulusDir, this.game.GameInstall.CardsDirectory));
-                    Log.Information("Aemulus packages imported, please restart Caelum Game Manager.");
+
+                    Log.Information("Loading Aemulus settings.");
+                    var p4gGamePackagesFile = Path.Join(aemulusDir, "Config", "Persona4GoldenPackages.xml");
+                    var p4gGamePackages = GamePackagesParser.ParseGamePackagesXml(p4gGamePackagesFile);
+
+                    // Set Card order to Aemulus order.
+                    var aemulusPackageOrder = p4gGamePackages.packages.Select(x => x.id).ToArray();
+                    this.game.GameConfig.Settings.Cards = aemulusPackageOrder;
+
+                    // Get P4G install from Aemulus config.
+
+                    Log.Information("Aemulus settings loaded. Reloading cards.");
+                    this.game.Deck.LoadDeckCards();
+                    this.game.InitGame();
+                    this._deck.Clear();
+                    this._deck.AddRange(this.game.Deck.Cards);
+
+                    // Set card enabled settings same as Aemulus.
+                    foreach (var gamePackage in p4gGamePackages.packages)
+                    {
+                        var match = this._deck.First(x => x.CardId == gamePackage.id);
+                        if (match != null)
+                        {
+                            match.IsEnabled = gamePackage.enabled;
+                        }
+                    }
+
+                    Log.Information("Cards reloaded. Aemulus successfully imported.");
+                    this.game.GameConfig.SaveGameConfig();
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Problem encountered while importing Aemulus packages.");
+                    Log.Error(e, "Problem encountered while importing Aemulus.");
                 }
             }
         }

@@ -268,6 +268,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Aemulus.
+        /// </summary>
+        public static string ImportAemulusText {
+            get {
+                return ResourceManager.GetString("ImportAemulusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mods.
         /// </summary>
         public static string ModsText {
