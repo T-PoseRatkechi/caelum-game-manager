@@ -6,7 +6,6 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
@@ -20,14 +19,13 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
-    using GongSolutions.Wpf.DragDrop;
     using Microsoft.Win32;
     using Serilog;
 
     /// <summary>
     /// Deck VM.
     /// </summary>
-    public class DeckViewModel : Screen, IDropTarget
+    public class DeckViewModel : Screen
     {
         /// <summary>
         /// Gets list of available filters.
@@ -49,7 +47,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private readonly IWindowManager windowManager = new WindowManager();
 
         private bool isBuildingEnabled = true;
-        private BindableDeckModel _deck;
+        private BindableCollection<ObservableCardModel> _deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
@@ -59,7 +57,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableDeckModel deck)
+        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableCollection<ObservableCardModel> deck)
         {
             this.game = game;
             this._deck = deck;
@@ -82,7 +80,7 @@ namespace CaelumGameManagerGUI.ViewModels
             set
             {
                 this.filteredDeck = value;
-                this.NotifyOfPropertyChange(nameof(this.FilteredDeck));
+                this.NotifyOfPropertyChange(() => this.FilteredDeck);
             }
         }
 
@@ -173,61 +171,6 @@ namespace CaelumGameManagerGUI.ViewModels
             }
         }
 
-        /// <inheritdoc/>
-        public void DragOver(IDropInfo dropInfo)
-        {
-            // Call default DragOver method, cause most stuff should work by default.
-            DragDrop.DefaultDropHandler.DragOver(dropInfo);
-        }
-
-        /// <inheritdoc/>
-        public void Drop(IDropInfo dropInfo)
-        {
-            // DragDrop drop event removes all selected cards at start from BindableCollection.
-            // The following will also remove the selected cards from GameInstance's deck.
-            // They will then be added back through the BindableCollection's InsertItem method.
-
-            // Kinda iffy solution. DropInfo.Data should be a typed enumerable
-            // but I don't think it is or I'm misunderstanding something...
-            if (dropInfo.Data is IEnumerable groupedCards)
-            {
-                // Remove cards from group drop.
-                foreach (ICardModel card in groupedCards)
-                {
-                    var deckCardIndex = this.game.Deck.Cards.FindIndex(c => c.CardId == card.CardId);
-
-                    if (deckCardIndex < 0)
-                    {
-                        Log.Fatal("Failed to remove a card in group drop event! Unexpected behaviour likely to occur!");
-                        Log.Fatal(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
-                    }
-                    else
-                    {
-                        this.game.Deck.Cards.RemoveAt(deckCardIndex);
-                        Log.Verbose("Removed card with id {CardId}", card.CardId);
-                    }
-                }
-            }
-            else
-            {
-                // Remove card from solo drop.
-                // Strange this didn't break like the group drop...
-                var card = (ICardModel)dropInfo.Data;
-                if (!this.game.Deck.Cards.Remove(card))
-                {
-                    Log.Fatal("Failed to remove a card in drop event! Unexpect behaviour likely to occur!");
-                    Log.Fatal(LocalizedStrings.Instance["ErrorRecommendRestartMessage"]);
-                }
-                else
-                {
-                    Log.Verbose("Removed card with id {CardId}", card.CardId);
-                }
-            }
-
-            // Default drop event.
-            DragDrop.DefaultDropHandler.Drop(dropInfo);
-        }
-
         /// <summary>
         /// Card filter to apply to deck and only display cards of <paramref name="type"/>.
         /// </summary>
@@ -236,8 +179,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <returns>Whether card passes filter.</returns>
         private static bool FilterCardsByType(object item, CardType type)
         {
-            ICardModel cardModel = item as ICardModel;
-            if (cardModel != null)
+            if (item is ICardModel cardModel)
             {
                 if (cardModel.Type == type)
                 {

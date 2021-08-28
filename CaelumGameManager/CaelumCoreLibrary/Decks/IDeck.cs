@@ -10,11 +10,6 @@
     public interface IDeck
     {
         /// <summary>
-        /// Deck changed handler.
-        /// </summary>
-        public event EventHandler OnDeckChanged;
-
-        /// <summary>
         /// Gets or sets cards in deck.
         /// </summary>
         List<ICardModel> Cards { get; set; }
@@ -43,10 +38,5 @@
         /// </summary>
         /// <param name="card">Card to delete.</param>
         void DeleteCard(ICardModel card);
-
-        /// <summary>
-        /// Notify that deck changed.
-        /// </summary>
-        void NotifyDeckChanged();
     }
 }

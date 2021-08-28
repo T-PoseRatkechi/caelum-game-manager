@@ -22,7 +22,6 @@ namespace CaelumCoreLibrary.Decks
         /// Initializes a new instance of the <see cref="Deck"/> class.
         /// </summary>
         /// <param name="cardsLoader">Cards loader to use.</param>
-        /// <param name="gameConfigManager">Game config manager.</param>
         public Deck(ICardsLoader cardsLoader)
         {
             this.cardsLoader = cardsLoader;
@@ -32,9 +31,6 @@ namespace CaelumCoreLibrary.Decks
         }
 
         /// <inheritdoc/>
-        public event EventHandler OnDeckChanged;
-
-        /// <inheritdoc/>
         public List<ICardModel> Cards { get; set; }
 
         /// <inheritdoc/>
@@ -42,7 +38,6 @@ namespace CaelumCoreLibrary.Decks
         {
             // Load installed cards.
             this.Cards = this.cardsLoader.GetInstalledCards();
-            this.NotifyDeckChanged();
         }
 
         /// <inheritdoc/>
@@ -63,8 +58,6 @@ namespace CaelumCoreLibrary.Decks
             {
                 this.Cards.Add(card);
             }
-
-            this.NotifyDeckChanged();
         }
 
         /// <inheritdoc/>
@@ -78,8 +71,6 @@ namespace CaelumCoreLibrary.Decks
 
             // Delete card installation folder.
             Directory.Delete(card.InstallDirectory, true);
-
-            this.NotifyDeckChanged();
         }
 
         /// <inheritdoc/>
@@ -92,14 +83,6 @@ namespace CaelumCoreLibrary.Decks
             }
 
             card.IsHidden = true;
-
-            this.NotifyDeckChanged();
-        }
-
-        /// <inheritdoc/>
-        public void NotifyDeckChanged()
-        {
-            this.OnDeckChanged?.Invoke(this, null);
         }
     }
 }

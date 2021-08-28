@@ -26,6 +26,7 @@ namespace CaelumCoreLibrary.Decks
         /// <summary>
         /// Initializes a new instance of the <see cref="CardsLoader"/> class.
         /// </summary>
+        /// <param name="log">Logger.</param>
         /// <param name="caelumConfig">Caelum config to use for directories.</param>
         /// <param name="gameInstall">Game install instance.</param>
         /// <param name="cardParser">Card parser to use.</param>

@@ -69,7 +69,7 @@ namespace CaelumCoreLibrary.Games
             {
                 // Set inital order of cards based on config.
                 var originalCards = this.Deck.Cards;
-                this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).ToList();
+                this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).Distinct().ToList();
 
                 // Add back any cards that were removed for not existing
                 if (originalCards.Count != this.Deck.Cards.Count)
@@ -93,14 +93,6 @@ namespace CaelumCoreLibrary.Games
                 var cardOrder = this.Deck.Cards.Select(x => x.CardId).ToArray();
                 this.GameConfig.Settings.Cards = cardOrder;
                 this.GameConfig.SaveGameConfig();
-            };
-
-            // Should *really* be removed ASAP.
-            this.Deck.OnDeckChanged += (sender, e) =>
-            {
-                this.saveTimer.Enabled = true;
-                this.saveTimer.Stop();
-                this.saveTimer.Start();
             };
         }
     }

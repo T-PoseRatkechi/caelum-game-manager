@@ -8,12 +8,15 @@
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
+    using System.Collections.Specialized;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
+    using Newtonsoft.Json;
     using Serilog;
 
     /// <summary>
@@ -44,7 +47,9 @@ namespace CaelumGameManagerGUI.ViewModels
                     App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
                 }
 
-                this.gameDeck = new BindableDeckModel(this.currentGame.Deck, this.currentGame.GameConfig.Settings.ShowDebugMessages);
+                var observableCards = this.currentGame.Deck.Cards.Select(x => new ObservableCardModel(x));
+
+                this.gameDeck = new BindableDeckModel(observableCards);
 
                 this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
             }
@@ -87,6 +92,14 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 Log.Information("Caelum Game Manager is ready.");
             }
+
+            this.gameDeck.CollectionChanged += GameDeck_CollectionChanged;
+        }
+
+        private void GameDeck_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.currentGame.GameConfig.Settings.Cards = this.gameDeck.Select(x => x.CardId).ToArray();
+            this.currentGame.GameConfig.SaveGameConfig();
         }
 
         /// <inheritdoc/>

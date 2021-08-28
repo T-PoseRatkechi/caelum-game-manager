@@ -28,7 +28,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         private WindowManager windowManager = new WindowManager();
 
         private string selectedType = CardType.Mod.ToString();
-        private BindableDeckModel cards;
+        private BindableCollection<ObservableCardModel> cards;
         private ICardModel card;
         private IGameInstance game;
         private ICardFactory cardFactory;
@@ -43,7 +43,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableDeckModel deckCards, ICardModel card = null)
+        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableCollection<ObservableCardModel> deckCards, ICardModel card = null)
         {
             this.cards = deckCards;
             this.cardFactory = cardFactory;

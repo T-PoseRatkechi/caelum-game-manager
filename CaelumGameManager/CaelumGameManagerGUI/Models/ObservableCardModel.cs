@@ -3,18 +3,33 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+#pragma warning disable SA1309 // Field names should not begin with underscore
+
 namespace CaelumGameManagerGUI.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
+    using Caliburn.Micro;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// ObservableCardModel implementation.
     /// </summary>
-    public class ObservableCardModel : Caliburn.Micro.PropertyChangedBase, ICardModel
+    public class ObservableCardModel : PropertyChangedBase, ICardModel
     {
+        private string _cardId;
+        private bool _isEnabled;
+        private string _name;
+        private string _description;
+        private string _version;
+        private CardType _type;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObservableCardModel"/> class.
+        /// </summary>
         public ObservableCardModel()
         {
         }
@@ -35,9 +50,9 @@ namespace CaelumGameManagerGUI.Models
             this.Version = card.Version;
             this.Type = card.Type;
             this.InstallDirectory = card.InstallDirectory;
-        }
 
-        private string _cardId;
+            this.PropertyChanged += this.SaveCardChanges;
+        }
 
         /// <inheritdoc/>
         public string CardId
@@ -53,8 +68,6 @@ namespace CaelumGameManagerGUI.Models
                 this.NotifyOfPropertyChange(() => this.IsEnabled);
             }
         }
-
-        private bool _isEnabled;
 
         /// <inheritdoc/>
         public bool IsEnabled
@@ -73,8 +86,6 @@ namespace CaelumGameManagerGUI.Models
 
         /// <inheritdoc/>
         public bool IsHidden { get; set; }
-
-        private string _name;
 
         /// <inheritdoc/>
         public string Name
@@ -98,15 +109,73 @@ namespace CaelumGameManagerGUI.Models
         public List<Author> Authors { get; set; }
 
         /// <inheritdoc/>
-        public string Description { get; set; }
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+
+            set
+            {
+                this._description = value;
+                this.NotifyOfPropertyChange(() => this.Description);
+            }
+        }
 
         /// <inheritdoc/>
-        public string Version { get; set; }
+        public string Version
+        {
+            get
+            {
+                return this._version;
+            }
+
+            set
+            {
+                this._version = value;
+                this.NotifyOfPropertyChange(() => this.Version);
+            }
+        }
 
         /// <inheritdoc/>
-        public CardType Type { get; set; }
+        public CardType Type
+        {
+            get
+            {
+                return this._type;
+            }
+
+            set
+            {
+                this._type = value;
+                this.NotifyOfPropertyChange(() => this.Type);
+            }
+        }
 
         /// <inheritdoc/>
         public string InstallDirectory { get; set; }
+
+        private void SaveCardChanges(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is ICardModel card)
+            {
+                var cardModel = new CardModel()
+                {
+                    CardId = this.CardId,
+                    IsEnabled = this.IsEnabled,
+                    IsHidden = this.IsHidden,
+                    Name = this.Name,
+                    Games = this.Games,
+                    Authors = this.Authors,
+                    Description = this.Description,
+                    Version = this.Version,
+                    Type = this.Type,
+                };
+
+                var cardText = JsonConvert.SerializeObject(cardModel, new JsonSerializerSettings() { Formatting = Formatting.Indented });
+                File.WriteAllText(Path.Join(card.InstallDirectory, "card.json"), cardText);
+            }
+        }
     }
 }
