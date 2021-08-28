@@ -88,10 +88,12 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     continue;
                 }
 
+                AemulusPackageModel packageXml;
+
                 // Create card json file from package xml.
                 using (StringReader reader = new(File.ReadAllText(packageXmlFile)))
                 {
-                    AemulusPackageModel packageXml = new XmlSerializer(typeof(AemulusPackageModel)).Deserialize(reader) as AemulusPackageModel;
+                    packageXml = new XmlSerializer(typeof(AemulusPackageModel)).Deserialize(reader) as AemulusPackageModel;
 
                     CardModel card = new()
                     {
@@ -144,12 +146,13 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 var cardDataDir = Path.Join(packageDir, "Data");
                 Directory.CreateDirectory(cardDataDir);
 
-                // Convert tbl patches.
+                // Convert tbp/tbl patches.
                 var tblpatchesDir = Path.Join(packageDir, "tblpatches");
                 if (Directory.Exists(tblpatchesDir))
                 {
                     List<IPatch> convertedPatches = new();
 
+                    // Convert TBP patches to TBL Patch Format.
                     foreach (var tbpPatchFile in Directory.GetFiles(tblpatchesDir, "*.tbp", SearchOption.AllDirectories))
                     {
                         var tbpFileText = File.ReadAllText(tbpPatchFile);
@@ -184,6 +187,24 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 
                             convertedPatches.Add(newPatch);
                         }
+
+                        this.log.LogDebug("{PackageName}: Converted {NumPatches} TBP patch(es).", packageXml.name, tbpPatch.Patches.Length);
+                    }
+
+                    // Convert tblpatches to Binary Patch Format.
+                    var tblpatchesFiles = Directory.GetFiles(tblpatchesDir, "*.tblpatch", SearchOption.AllDirectories);
+                    foreach (var tblpatchFile in tblpatchesFiles)
+                    {
+                        var convertedPatch = TblpatchesBinaryParser.GetConvertedTblpatch(tblpatchFile);
+                        convertedPatches.Add(convertedPatch);
+                    }
+
+                    if (tblpatchesFiles.Length > 0)
+                    {
+                        this.log.LogWarning(
+                            "{PackageName}: Converted {NumPatches} tblpatch(es). Tblpatches are UNSUPPORTED and may not have converted correctly. Remaking these patches is recommended.",
+                            packageXml.name,
+                            tblpatchesFiles.Length);
                     }
 
                     var gamePatch = new GamePatch()
@@ -197,7 +218,10 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     Directory.CreateDirectory(Path.GetDirectoryName(gamePatchFile));
                     File.WriteAllText(gamePatchFile, gamePatchString);
 
-                    this.log.LogDebug("Converted {NumPatches} for package {PackageName}", convertedPatches.Count, Path.GetDirectoryName(packageDir));
+                    // Delete tblpatches folder.
+                    Directory.Delete(tblpatchesDir, true);
+
+                    this.log.LogDebug("{PackageName}: {NumPatches} total patch(es) converted successfully.", packageXml.name, convertedPatches.Count);
                 }
 
                 // Copy over preappfile append files.
@@ -223,6 +247,8 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     this.CopyFolder(patchesDir, Path.Join(cardDataDir, "patches"));
                     Directory.Delete(patchesDir, true);
                 }
+
+                this.log.LogInformation("{PackageName} successfully imported.", packageXml.name);
             }
 
             this.CopyFolder(tempFolder, outputDir);
