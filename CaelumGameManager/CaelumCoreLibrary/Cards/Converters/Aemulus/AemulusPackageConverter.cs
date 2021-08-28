@@ -113,36 +113,36 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     this.CopyFolder(sndFolder, Path.Join(packageDir, "Data", "SND"));
                 }
 
-                string dataDir = null;
+                string gameDataDir = null;
                 if (Directory.Exists(Path.Join(packageDir, "data_e")))
                 {
-                    dataDir = Path.Join(packageDir, "data_e");
+                    gameDataDir = Path.Join(packageDir, "data_e");
                 }
                 else if (Directory.Exists(Path.Join(packageDir, "data00004")))
                 {
-                    dataDir = Path.Join(packageDir, "data00004");
+                    gameDataDir = Path.Join(packageDir, "data00004");
                 }
 
-                if (dataDir != null)
+                if (gameDataDir != null)
                 {
-                    var dataDirFolders = Directory.GetDirectories(dataDir, "*", SearchOption.TopDirectoryOnly);
+                    var dataDirFolders = Directory.GetDirectories(gameDataDir, "*", SearchOption.TopDirectoryOnly);
 
                     // Adjusts paths to match the "{originalFile}.bin_\" pattern for nested files.
                     foreach (var dirFolder in dataDirFolders)
                     {
-                        this.RecursiveFixFolders(dirFolder, originalFilesFolder, dataDir);
+                        this.RecursiveFixFolders(dirFolder, originalFilesFolder, gameDataDir);
                     }
 
                     // Move contents of package data folder to root package folder.
-                    this.CopyFolder(dataDir, Path.Join(packageDir, "Data", "data_e"));
-                    Directory.Delete(dataDir, true);
+                    this.CopyFolder(gameDataDir, Path.Join(packageDir, "Data", "data_e"));
+                    Directory.Delete(gameDataDir, true);
                 }
 
                 // Delete xml and original data dir.
                 File.Delete(packageXmlFile);
 
-                var dataFolder = Path.Join(packageDir, "Data");
-                Directory.CreateDirectory(dataFolder);
+                var cardDataDir = Path.Join(packageDir, "Data");
+                Directory.CreateDirectory(cardDataDir);
 
                 // Convert tbl patches.
                 var tblpatchesDir = Path.Join(packageDir, "tblpatches");
@@ -204,7 +204,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 var packageAppendFolder = Path.Join(packageDir, "preappfile", "data_e");
                 if (Directory.Exists(packageAppendFolder))
                 {
-                    var caelumAppendFolder = Path.Join(dataFolder, "data_e", "append");
+                    var caelumAppendFolder = Path.Join(cardDataDir, "data_e", "append");
                     this.CopyFolder(packageAppendFolder, caelumAppendFolder);
                     Directory.Delete(packageAppendFolder, true);
                 }
@@ -213,7 +213,15 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 var packagePreview = Path.Join(packageDir, "Preview.png");
                 if (File.Exists(packagePreview))
                 {
-                    File.Move(packagePreview, Path.Join(packageDir, "card.png"));
+                    File.Move(packagePreview, Path.Join(packageDir, "card.png"), true);
+                }
+
+                // Copy over Inaba patches folder to Card data folder.
+                var patchesDir = Path.Join(packageDir, "patches");
+                if (Directory.Exists(patchesDir))
+                {
+                    this.CopyFolder(patchesDir, Path.Join(cardDataDir, "patches"));
+                    Directory.Delete(patchesDir, true);
                 }
             }
 
