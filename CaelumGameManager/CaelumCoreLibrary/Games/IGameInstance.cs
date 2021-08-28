@@ -34,7 +34,7 @@ namespace CaelumCoreLibrary.Games
         /// <summary>
         /// Builds current card in deck to output.
         /// </summary>
-        void BuildDeck();
+        void BuildDeck(IList<ICardModel> cards);
 
         /// <summary>
         /// Initializes game instance.

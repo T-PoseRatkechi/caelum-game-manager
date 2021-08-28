@@ -47,7 +47,7 @@ namespace CaelumGameManagerGUI.ViewModels
         private readonly IWindowManager windowManager = new WindowManager();
 
         private bool isBuildingEnabled = true;
-        private BindableCollection<ObservableCardModel> _deck;
+        private BindableDeckModel _deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
@@ -57,7 +57,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
-        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableCollection<ObservableCardModel> deck)
+        public DeckViewModel(IGameInstance game, ICardFactory cardFactory, CardConverter cardConverter, BindableDeckModel deck)
         {
             this.game = game;
             this._deck = deck;
@@ -211,7 +211,7 @@ namespace CaelumGameManagerGUI.ViewModels
             try
             {
                 this.CanBuildGameDeck = false;
-                await Task.Run(() => this.game.BuildDeck());
+                await Task.Run(() => this.game.BuildDeck(this._deck));
             }
             catch (Exception e)
             {

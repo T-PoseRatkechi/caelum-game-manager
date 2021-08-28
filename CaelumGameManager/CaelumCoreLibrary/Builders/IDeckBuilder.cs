@@ -18,6 +18,6 @@ namespace CaelumCoreLibrary.Builders
         /// </summary>
         /// <param name="deck">Deck of cards to build.</param>
         /// <param name="outputDir">Directory to build card at.</param>
-        void Build(List<ICardModel> deck, string outputDir);
+        void Build(IList<ICardModel> deck, string outputDir);
     }
 }

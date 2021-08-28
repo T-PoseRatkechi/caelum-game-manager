@@ -8,19 +8,20 @@
 namespace CaelumGameManagerGUI.Models
 {
     using System.Collections.Generic;
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Decks;
     using Caliburn.Micro;
 
     /// <summary>
     /// Wrapper for <seealso cref="IDeck"/> to keep the bindable collection and deck cards in-sync.
     /// </summary>
-    public class BindableDeckModel : BindableCollection<ObservableCardModel>
+    public class BindableDeckModel : BindableCollection<ICardModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BindableDeckModel"/> class.
         /// </summary>
         /// <param name="cards">Cards.</param>
-        public BindableDeckModel(IEnumerable<ObservableCardModel> cards)
+        public BindableDeckModel(IEnumerable<ICardModel> cards)
             : base(cards)
         {
         }

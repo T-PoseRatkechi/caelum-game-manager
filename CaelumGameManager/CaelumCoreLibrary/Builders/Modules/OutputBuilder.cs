@@ -70,7 +70,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// </summary>
         /// <param name="cards">Cards to build.</param>
         /// <param name="outputDir">Output directory.</param>
-        public void BuildOutput(List<ICardModel> cards, string outputDir)
+        public void BuildOutput(IList<ICardModel> cards, string outputDir)
         {
             /* Working, but builds cards in the order
              * where earliest card has the lowest priority (gets files overwritten).
@@ -85,7 +85,10 @@ namespace CaelumCoreLibrary.Builders.Modules
             // Build cards in reverse order.
             for (int i = cards.Count - 1; i >= 0; i--)
             {
-                this.BuildCardOutput(cards[i], outputDir);
+                if (cards[i].IsEnabled && !cards[i].IsHidden)
+                {
+                    this.BuildCardOutput(cards[i], outputDir);
+                }
             }
 
             // Use post build if one was set.

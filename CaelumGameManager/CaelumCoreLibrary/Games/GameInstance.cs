@@ -5,10 +5,12 @@
 
 namespace CaelumCoreLibrary.Games
 {
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Timers;
     using CaelumCoreLibrary.Builders;
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
     using Microsoft.Extensions.Logging;
@@ -45,13 +47,13 @@ namespace CaelumCoreLibrary.Games
         public IDeck Deck { get; init; }
 
         /// <inheritdoc/>
-        public void BuildDeck()
+        public void BuildDeck(IList<ICardModel> cards)
         {
-            this.log.LogInformation("Building deck");
+            this.log.LogInformation("Building deck.");
             Stopwatch watch = new();
 
             watch.Start();
-            this.deckBuilder.Build(this.Deck.Cards, this.GameInstall.BuildDirectory);
+            this.deckBuilder.Build(cards, this.GameInstall.BuildDirectory);
             watch.Stop();
 
             this.log.LogInformation("Deck built successfully in {TimeElapsed} ms.", watch.ElapsedMilliseconds);

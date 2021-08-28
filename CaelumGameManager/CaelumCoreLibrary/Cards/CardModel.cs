@@ -7,6 +7,7 @@ namespace CaelumCoreLibrary.Cards
 {
     using System.Collections.Generic;
     using CaelumCoreLibrary.Common;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// CardModel implementation.
@@ -41,6 +42,7 @@ namespace CaelumCoreLibrary.Cards
         public CardType Type { get; set; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public string InstallDirectory { get; set; }
     }
 }
