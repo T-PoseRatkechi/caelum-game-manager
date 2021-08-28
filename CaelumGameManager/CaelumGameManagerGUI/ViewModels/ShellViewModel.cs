@@ -96,16 +96,16 @@ namespace CaelumGameManagerGUI.ViewModels
             this.gameDeck.CollectionChanged += GameDeck_CollectionChanged;
         }
 
-        private void GameDeck_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            this.currentGame.GameConfig.Settings.Cards = this.gameDeck.Select(x => x.CardId).ToArray();
-            this.currentGame.GameConfig.SaveGameConfig();
-        }
-
         /// <inheritdoc/>
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
             return base.OnDeactivateAsync(close, cancellationToken);
+        }
+
+        private void GameDeck_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.currentGame.GameConfig.Settings.Cards = this.gameDeck.Select(x => x.CardId).ToArray();
+            this.currentGame.GameConfig.SaveGameConfig();
         }
     }
 }

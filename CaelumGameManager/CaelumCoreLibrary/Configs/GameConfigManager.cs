@@ -5,7 +5,9 @@
 
 namespace CaelumCoreLibrary.Configs
 {
+    using System;
     using System.IO;
+    using System.Timers;
     using CaelumCoreLibrary.Writers;
 
     /// <summary>
@@ -15,6 +17,7 @@ namespace CaelumCoreLibrary.Configs
     {
         private readonly IWriter writer;
         private readonly string configFilePath;
+        private readonly Timer saveTimer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameConfigManager"/> class.
@@ -25,8 +28,10 @@ namespace CaelumCoreLibrary.Configs
         {
             this.writer = writer;
             this.configFilePath = configFilePath;
+            this.saveTimer = new();
 
             this.LoadGameConfig();
+            this.InitSaveTimer();
         }
 
         /// <inheritdoc/>
@@ -48,6 +53,21 @@ namespace CaelumCoreLibrary.Configs
 
         /// <inheritdoc/>
         public void SaveGameConfig()
+        {
+            this.saveTimer.Stop();
+            this.saveTimer.Start();
+        }
+
+        private void InitSaveTimer()
+        {
+            // Save only every 1.5 seconds.
+            this.saveTimer.Interval = 1000;
+            this.saveTimer.AutoReset = false;
+
+            this.saveTimer.Elapsed += this.SaveTimer_Elapsed;
+        }
+
+        private void SaveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this.writer.WriteFile(this.configFilePath, this.Settings);
         }
