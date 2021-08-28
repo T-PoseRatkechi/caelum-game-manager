@@ -83,6 +83,10 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             foreach (var packageDir in Directory.GetDirectories(tempFolder, "*", SearchOption.TopDirectoryOnly))
             {
                 var packageXmlFile = Path.Join(packageDir, "Package.xml");
+                if (!File.Exists(packageXmlFile))
+                {
+                    continue;
+                }
 
                 // Create card json file from package xml.
                 using (StringReader reader = new(File.ReadAllText(packageXmlFile)))
