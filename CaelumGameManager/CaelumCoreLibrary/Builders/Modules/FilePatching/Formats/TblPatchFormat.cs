@@ -44,10 +44,11 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching.Formats
             using (BinaryWriter writer = new(System.IO.File.Open(filePath, FileMode.Open)))
             {
                 byte[] sectionSizeBytes = new byte[4];
-                writer.BaseStream.Read(sectionSizeBytes, 0, sectionSizeBytes.Length);
 
                 for (int currentSegment = 0; currentSegment <= this.Segment; currentSegment++)
                 {
+                    writer.BaseStream.Read(sectionSizeBytes, 0, sectionSizeBytes.Length);
+
                     // In correct segement then write data bytes.
                     if (currentSegment == this.Segment)
                     {
@@ -61,8 +62,11 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching.Formats
                     // Seek to next segment start.
                     else
                     {
+                        // Seek over segment and padding.
                         var sectionSize = BitConverter.ToUInt32(sectionSizeBytes);
-                        writer.Seek((int)sectionSize, SeekOrigin.Current);
+                        var padding = 16 - ((int)(sectionSize + sectionSizeBytes.Length) % 16);
+
+                        writer.Seek((int)(sectionSize + padding), SeekOrigin.Current);
                     }
                 }
             }
