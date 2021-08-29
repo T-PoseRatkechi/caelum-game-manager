@@ -12,6 +12,7 @@ namespace CaelumGameManagerGUI.Models
     using System.IO;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
+    using CaelumGameManagerGUI.Resources.Localization;
     using Caliburn.Micro;
     using Newtonsoft.Json;
 
@@ -162,12 +163,13 @@ namespace CaelumGameManagerGUI.Models
         {
             get
             {
-                if (this.Type == CardType.None)
+                return this.Type switch
                 {
-                    return string.Empty;
-                }
-
-                return this.Type.ToString();
+                    CardType.Folder => LocalizedStrings.Instance["FolderText"],
+                    CardType.Mod => LocalizedStrings.Instance["ModText"],
+                    CardType.Launcher => LocalizedStrings.Instance["LauncherText"],
+                    _ => string.Empty,
+                };
             }
         }
 

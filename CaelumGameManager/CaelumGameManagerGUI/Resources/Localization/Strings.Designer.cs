@@ -259,6 +259,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Folder.
+        /// </summary>
+        public static string FolderText {
+            get {
+                return ResourceManager.GetString("FolderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Rebuild.
         /// </summary>
         public static string FullRebuildText {
@@ -277,11 +286,29 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Launcher.
+        /// </summary>
+        public static string LauncherText {
+            get {
+                return ResourceManager.GetString("LauncherText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mods.
         /// </summary>
         public static string ModsText {
             get {
                 return ResourceManager.GetString("ModsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod.
+        /// </summary>
+        public static string ModText {
+            get {
+                return ResourceManager.GetString("ModText", resourceCulture);
             }
         }
         

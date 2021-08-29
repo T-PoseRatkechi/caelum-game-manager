@@ -199,4 +199,13 @@
   <data name="ImportAemulusText" xml:space="preserve">
     <value>Importar Aemulus</value>
   </data>
+  <data name="FolderText" xml:space="preserve">
+    <value>Carpetas</value>
+  </data>
+  <data name="ModText" xml:space="preserve">
+    <value>Mod</value>
+  </data>
+  <data name="LauncherText" xml:space="preserve">
+    <value>Lanzador</value>
+  </data>
 </root>
