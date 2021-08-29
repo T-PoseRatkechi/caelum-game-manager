@@ -52,7 +52,10 @@ namespace CaelumCoreLibrary.Builders.Files
             // this.gameInstallPath = gameInstallPath;
         }
 
-        private string GameInstallPath => this.gameConfig.GameInstallPath;
+        /// <summary>
+        /// Gets the game install directory from the game config install path.
+        /// </summary>
+        private string GameInstallDirectory => Path.GetDirectoryName(this.gameConfig.GameInstallPath);
 
         /// <inheritdoc/>
         public string GetInstallGameFile(string relativeGameFile)
@@ -63,7 +66,7 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <inheritdoc/>
         public string GetUnpackedGameFile(string relativeGameFile)
         {
-            var dataFilePath = Path.Join(this.GameInstallPath, $"{P4gDataName}.cpk");
+            var dataFilePath = Path.Join(this.GameInstallDirectory, $"{P4gDataName}.cpk");
             var dataUnpackedDir = Path.Join(this.unpackedDir, P4gDataName);
 
             // Expected location of the unpacked relativeGameFile in game's Unpacked folder.
@@ -206,7 +209,7 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <inheritdoc/>
         public void AppendArchive(string archiveName, string inputFolder, string newPacName = null)
         {
-            var installArchivePath = Path.Join(this.GameInstallPath, $"{archiveName}.cpk");
+            var installArchivePath = Path.Join(this.GameInstallDirectory, $"{archiveName}.cpk");
             var backupInstallPath = Path.Join(this.unpackedDir, $"{archiveName}.cpk");
 
             // Make a backup of the original archive.
@@ -230,7 +233,7 @@ namespace CaelumCoreLibrary.Builders.Files
             if (pacName == null)
             {
                 // Get highested pac index from install data pacs.
-                newPacIndex = Directory.GetFiles(this.GameInstallPath, "data*****.pac", SearchOption.TopDirectoryOnly)
+                newPacIndex = Directory.GetFiles(this.GameInstallDirectory, "data*****.pac", SearchOption.TopDirectoryOnly)
                     .Select(x =>
                     {
                         var result = Path.GetFileNameWithoutExtension(x).Remove(0, 4).TrimStart('0');
@@ -248,7 +251,7 @@ namespace CaelumCoreLibrary.Builders.Files
                 pacName = this.FormatPacName($"{this.GetPacBaseNameFromCpkBaseName(installArchivePath, archiveName)}", newPacIndex);
             }
 
-            var pacPath = Path.Join(this.GameInstallPath, pacName);
+            var pacPath = Path.Join(this.GameInstallDirectory, pacName);
 
             this.log.LogDebug("Appending\nContents of: {FolderPath}\nAs: {NewPac}\nTo: {Archive}", inputFolder, pacName, archiveName);
 
