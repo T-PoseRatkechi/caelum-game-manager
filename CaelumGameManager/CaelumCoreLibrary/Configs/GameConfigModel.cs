@@ -3,11 +3,11 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-using CaelumCoreLibrary.Games.Launchers;
-using System.Collections.Generic;
-
 namespace CaelumCoreLibrary.Configs
 {
+    using System.Collections.Generic;
+    using CaelumCoreLibrary.Games.Launchers;
+
     /// <summary>
     /// Interface for game configs.
     /// </summary>
@@ -26,7 +26,7 @@ namespace CaelumCoreLibrary.Configs
         /// <summary>
         /// Gets or sets the game launcher.
         /// </summary>
-        public List<GameLauncherModel> GameLaunchers { get; set; }
+        public List<GameLauncherModel> GameLaunchers { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the game's theme.

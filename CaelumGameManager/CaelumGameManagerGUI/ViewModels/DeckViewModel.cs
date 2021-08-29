@@ -92,6 +92,8 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public List<string> FilterKeys { get; } = new(Filters.Keys);
 
+        public List<GameLauncherModel> GameLaunchers => this.game.GameConfig.Settings.GameLaunchers;
+
         /// <summary>
         /// Gets or sets the selected filter on deck.
         /// </summary>
@@ -194,7 +196,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     var aemulusConfig = AemulusConfigParser.ParseAemulusConfig(Path.Join(aemulusDir, "Config", "Config.xml"));
                     if (aemulusConfig.p4gConfig.exePath != null)
                     {
-                        this.game.GameConfig.Settings.GameInstallPath = Path.GetDirectoryName(aemulusConfig.p4gConfig.exePath);
+                        this.game.GameConfig.Settings.GameInstallPath = aemulusConfig.p4gConfig.exePath;
                         this.game.GameConfig.Settings.OutputDirectory = aemulusConfig.p4gConfig.modDir;
                         this.game.GameConfig.Settings.OutputBuildOnly = true;
 

@@ -46,6 +46,7 @@
                 <Button x:Name="BuildGameDeck" Content="{lex:Loc BuildText}">
                 </Button>
                 <Button Content="{lex:Loc FullRebuildText}" IsEnabled="{Binding CanBuildGameDeck}"/>
+                <ComboBox ItemsSource="{Binding Path=GameLaunchers}" DisplayMemberPath="LauncherPath"/>
             </StackPanel>
             <TextBlock Grid.Column="2" Text="{lex:Loc CardsText}" FontSize="25"
                        HorizontalAlignment="Right" Padding="0 0 10 0"/>

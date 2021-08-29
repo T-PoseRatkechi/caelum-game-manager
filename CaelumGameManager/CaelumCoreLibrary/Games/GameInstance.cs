@@ -53,12 +53,43 @@ namespace CaelumCoreLibrary.Games
             // Start game with default launcher.
             if (gameLauncher == null)
             {
+                // Start game with a launcher if one exists in config.
+                if (this.GameConfig.Settings.GameLaunchers != null && this.GameConfig.Settings.GameLaunchers.Count > 0)
+                {
+                    // Start game with default launcher if settings valid.
+                    if (this.GameConfig.Settings.DefaultGameLauncher < this.GameConfig.Settings.GameLaunchers.Count)
+                    {
+                        var defaultLauncher = this.GameConfig.Settings.GameLaunchers[this.GameConfig.Settings.DefaultGameLauncher];
+                        this.log.LogDebug(
+                            "Launching game with default launcher.\nPath: {LauncherPath}\nArguments: {LauncherArgs}",
+                            defaultLauncher.LauncherPath,
+                            defaultLauncher.LauncherArgs);
+                        defaultLauncher.Start();
+                    }
 
+                    // Start game with first launcher if settings invalid.
+                    else
+                    {
+                        this.log.LogError(
+                            "Default launcher setting {DefaultLauncherIndex} does not exist.\nStarting game with first game launcher.",
+                            this.GameConfig.Settings.DefaultGameLauncher);
+                        var launcher = this.GameConfig.Settings.GameLaunchers[0];
+                        this.log.LogDebug(
+                            "Launching game with default launcher.\nPath: {LauncherPath}\nArguments: {LauncherArgs}",
+                            launcher.LauncherPath,
+                            launcher.LauncherArgs);
+                        launcher.Start();
+                    }
+                }
+                else
+                {
+                    this.log.LogError("Game {GameName} has no launchers to start game.", this.GameInstall.GameName);
+                }
             }
             else
             {
                 this.log.LogDebug(
-                    "Launching game with given game launcher.\nPath: {LauncherPath}\nArguements: {LauncherArgs}",
+                    "Launching game with given game launcher.\nPath: {LauncherPath}\nArguments: {LauncherArgs}",
                     gameLauncher.LauncherPath,
                     gameLauncher.LauncherArgs);
                 gameLauncher.Start();
