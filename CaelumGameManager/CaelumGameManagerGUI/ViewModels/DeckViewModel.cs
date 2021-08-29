@@ -203,7 +203,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.game.Deck.LoadDeckCards();
                     this.game.InitGame();
                     this._deck.Clear();
-                    this._deck.AddRange(this.game.Deck.Cards);
+                    this._deck.AddRange(this.game.Deck.Cards.Select(x => new ObservableCardModel(x)));
 
                     // Set card enabled settings same as Aemulus.
                     foreach (var gamePackage in p4gGamePackages.packages)
