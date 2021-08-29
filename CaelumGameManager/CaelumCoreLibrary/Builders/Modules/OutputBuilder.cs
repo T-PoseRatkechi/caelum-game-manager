@@ -85,7 +85,7 @@ namespace CaelumCoreLibrary.Builders.Modules
             // Build cards in reverse order.
             for (int i = cards.Count - 1; i >= 0; i--)
             {
-                if (cards[i].IsEnabled && !cards[i].IsHidden)
+                if (cards[i].IsEnabled && !cards[i].IsHidden && cards[i].Type != CardType.None)
                 {
                     this.BuildCardOutput(cards[i], outputDir);
                 }

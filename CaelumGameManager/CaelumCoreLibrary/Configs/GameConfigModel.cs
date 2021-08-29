@@ -3,8 +3,6 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-using System.Collections.Generic;
-
 namespace CaelumCoreLibrary.Configs
 {
     /// <summary>
@@ -31,6 +29,12 @@ namespace CaelumCoreLibrary.Configs
         /// Gets or sets the game's output directory.
         /// </summary>
         public string OutputDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to build directly in the output directory, skipping
+        /// requiring a successful build first.
+        /// </summary>
+        public bool OutputBuildOnly { get; set; }
 
         /// <summary>
         /// Gets or sets game cards by IDs. Used for preserving building priority.

@@ -190,7 +190,14 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.game.GameConfig.Settings.Cards = aemulusPackageOrder;
 
                     // Get P4G install from Aemulus config.
-                    // TODO
+                    var aemulusConfig = AemulusConfigParser.ParseAemulusConfig(Path.Join(aemulusDir, "Config", "Config.xml"));
+                    if (aemulusConfig.p4gConfig.exePath != null)
+                    {
+                        this.game.GameConfig.Settings.GameInstallPath = Path.GetDirectoryName(aemulusConfig.p4gConfig.exePath);
+                        this.game.GameConfig.Settings.OutputDirectory = aemulusConfig.p4gConfig.modDir;
+                        this.game.GameConfig.Settings.GameLauncher = aemulusConfig.p4gConfig.reloadedPath;
+                        this.game.GameConfig.Settings.OutputBuildOnly = true;
+                    }
 
                     Log.Information("Aemulus settings loaded. Reloading cards.");
                     this.game.Deck.LoadDeckCards();
