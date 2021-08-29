@@ -208,7 +208,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     // Set card enabled settings same as Aemulus.
                     foreach (var gamePackage in p4gGamePackages.packages)
                     {
-                        var match = this._deck.First(x => x.CardId == gamePackage.id);
+                        var match = this._deck.FirstOrDefault(x => x.CardId == gamePackage.id);
                         if (match != null)
                         {
                             match.IsEnabled = gamePackage.enabled;

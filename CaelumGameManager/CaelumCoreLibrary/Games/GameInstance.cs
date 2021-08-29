@@ -53,7 +53,19 @@ namespace CaelumCoreLibrary.Games
             Stopwatch watch = new();
 
             watch.Start();
-            this.deckBuilder.Build(cards, this.GameInstall.BuildDirectory);
+            if (this.GameConfig.Settings.OutputBuildOnly && this.GameConfig.Settings.OutputDirectory != null)
+            {
+                this.deckBuilder.Build(cards, this.GameConfig.Settings.OutputDirectory);
+            }
+            else
+            {
+                this.deckBuilder.Build(cards, this.GameInstall.BuildDirectory);
+                if (this.GameConfig.Settings.OutputDirectory != null)
+                {
+                    // TODO: Copy built to output directory.
+                }
+            }
+
             watch.Stop();
 
             this.log.LogInformation("Deck built successfully in {TimeElapsed} ms.", watch.ElapsedMilliseconds);
