@@ -43,5 +43,10 @@ namespace CaelumCoreLibrary.Games
         /// Gets game's unpacked directory.
         /// </summary>
         string UnpackedDirectory { get; }
+
+        /// <summary>
+        /// Gets game's launchers directory.
+        /// </summary>
+        string LaunchersDirectory { get; }
     }
 }

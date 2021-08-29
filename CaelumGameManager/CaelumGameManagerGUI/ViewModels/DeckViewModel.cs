@@ -17,6 +17,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using CaelumCoreLibrary.Games;
+    using CaelumCoreLibrary.Games.Launchers;
     using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
@@ -195,13 +196,21 @@ namespace CaelumGameManagerGUI.ViewModels
                     {
                         this.game.GameConfig.Settings.GameInstallPath = Path.GetDirectoryName(aemulusConfig.p4gConfig.exePath);
                         this.game.GameConfig.Settings.OutputDirectory = aemulusConfig.p4gConfig.modDir;
-                        this.game.GameConfig.Settings.GameLauncher = aemulusConfig.p4gConfig.reloadedPath;
                         this.game.GameConfig.Settings.OutputBuildOnly = true;
+
+                        if (!string.IsNullOrEmpty(aemulusConfig.p4gConfig.reloadedPath))
+                        {
+                            this.game.GameConfig.Settings.GameLaunchers.Add(new GameLauncherModel()
+                            {
+                                LauncherPath = aemulusConfig.p4gConfig.reloadedPath,
+                                LauncherArgs = @"--launch ""${GameInstall}P4G.exe""",
+                            });
+                        }
                     }
 
                     Log.Information("Aemulus settings loaded. Reloading cards.");
                     this.game.Deck.LoadDeckCards();
-                    this.game.InitGame();
+                    this.game.InitDeck();
                     this._deck.Clear();
                     this._deck.AddRange(this.game.Deck.Cards.Select(x => new ObservableCardModel(x)));
 
@@ -215,8 +224,8 @@ namespace CaelumGameManagerGUI.ViewModels
                         }
                     }
 
-                    Log.Information("Cards reloaded. Aemulus successfully imported.");
                     this.game.GameConfig.SaveGameConfig();
+                    Log.Information("Cards reloaded. Aemulus successfully imported.");
                 }
                 catch (Exception e)
                 {

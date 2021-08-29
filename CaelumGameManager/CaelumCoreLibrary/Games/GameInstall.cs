@@ -35,6 +35,7 @@ namespace CaelumCoreLibrary.Games
             this.DownloadsDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Downloads"));
             this.BuildDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Build"));
             this.UnpackedDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Unpacked"));
+            this.LaunchersDirectory = CaelumFileIO.BuildDirectory(Path.Join(this.BaseDirectory, "Launchers"));
         }
 
         /// <inheritdoc/>
@@ -54,5 +55,8 @@ namespace CaelumCoreLibrary.Games
 
         /// <inheritdoc/>
         public string UnpackedDirectory { get; init; }
+
+        /// <inheritdoc/>
+        public string LaunchersDirectory { get; init; }
     }
 }

@@ -36,7 +36,7 @@ namespace CaelumGameManagerGUI.ViewModels
             try
             {
                 this.currentGame = caelumCore.GetGameInstance();
-                this.currentGame.InitGame();
+                this.currentGame.InitDeck();
 
                 if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
                 {

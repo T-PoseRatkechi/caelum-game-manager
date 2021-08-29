@@ -13,6 +13,7 @@ namespace CaelumCoreLibrary.Games
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
+    using CaelumCoreLibrary.Games.Launchers;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -47,6 +48,24 @@ namespace CaelumCoreLibrary.Games
         public IDeck Deck { get; init; }
 
         /// <inheritdoc/>
+        public void StartGame(GameLauncherModel gameLauncher = null)
+        {
+            // Start game with default launcher.
+            if (gameLauncher == null)
+            {
+
+            }
+            else
+            {
+                this.log.LogDebug(
+                    "Launching game with given game launcher.\nPath: {LauncherPath}\nArguements: {LauncherArgs}",
+                    gameLauncher.LauncherPath,
+                    gameLauncher.LauncherArgs);
+                gameLauncher.Start();
+            }
+        }
+
+        /// <inheritdoc/>
         public void BuildDeck(IList<ICardModel> cards)
         {
             this.log.LogInformation("Building deck.");
@@ -72,7 +91,7 @@ namespace CaelumCoreLibrary.Games
         }
 
         /// <inheritdoc/>
-        public void InitGame()
+        public void InitDeck()
         {
             // Sort a list from another list IDs
             // https://stackoverflow.com/a/55650341

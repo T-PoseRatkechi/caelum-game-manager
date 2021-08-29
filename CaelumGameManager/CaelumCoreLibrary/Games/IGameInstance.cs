@@ -10,6 +10,7 @@ namespace CaelumCoreLibrary.Games
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
+    using CaelumCoreLibrary.Games.Launchers;
 
     /// <summary>
     /// Game instance interface.
@@ -37,8 +38,14 @@ namespace CaelumCoreLibrary.Games
         void BuildDeck(IList<ICardModel> cards);
 
         /// <summary>
+        /// Starts the game with the given launcher or the default launcher if none given.
+        /// </summary>
+        /// <param name="gameLauncher">Game launcher to use to start game.</param>
+        void StartGame(GameLauncherModel gameLauncher = null);
+
+        /// <summary>
         /// Initializes game instance.
         /// </summary>
-        void InitGame();
+        void InitDeck();
     }
 }
