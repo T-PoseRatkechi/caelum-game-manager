@@ -70,7 +70,9 @@
 
             <ContentControl
                         Grid.Row="0" Grid.RowSpan="3"
-                        x:Name="ActiveItem"/>
+                        x:Name="ActiveItem"
+                          BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                          BorderThickness="5"/>
             <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch"/>
             <ContentControl x:Name="LogVM" Grid.Row="4"/>
         </Grid>

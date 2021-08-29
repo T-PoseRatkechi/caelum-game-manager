@@ -25,6 +25,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
         public string author { get; set; }
 
         public string version { get; set; }
+        public string link { get; set; }
 
         public string description { get; set; }
     }

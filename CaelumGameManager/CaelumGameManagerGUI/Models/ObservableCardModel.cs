@@ -74,6 +74,11 @@ namespace CaelumGameManagerGUI.Models
         {
             get
             {
+                if (this.Type == CardType.None)
+                {
+                    return false;
+                }
+
                 return this._isEnabled;
             }
 
@@ -150,6 +155,19 @@ namespace CaelumGameManagerGUI.Models
             {
                 this._type = value;
                 this.NotifyOfPropertyChange(() => this.Type);
+            }
+        }
+
+        public string TypeString
+        {
+            get
+            {
+                if (this.Type == CardType.None)
+                {
+                    return string.Empty;
+                }
+
+                return this.Type.ToString();
             }
         }
 

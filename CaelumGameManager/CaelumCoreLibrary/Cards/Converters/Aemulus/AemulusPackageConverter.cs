@@ -94,6 +94,13 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 using (StringReader reader = new(File.ReadAllText(packageXmlFile)))
                 {
                     packageXml = new XmlSerializer(typeof(AemulusPackageModel)).Deserialize(reader) as AemulusPackageModel;
+                    CardType cardType = CardType.Folder;
+
+                    // Probably package from Community Pack seperator.
+                    if (packageXml.author == "" && packageXml.version == "" && packageXml.link == "")
+                    {
+                        cardType = CardType.None;
+                    }
 
                     CardModel card = new()
                     {
@@ -101,7 +108,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                         CardId = packageXml.id,
                         Authors = new(),
                         Description = packageXml.description,
-                        Type = CardType.Folder,
+                        Type = cardType,
                         Version = packageXml.version,
                     };
 

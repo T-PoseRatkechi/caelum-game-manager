@@ -59,6 +59,6 @@ namespace CaelumCoreLibrary.Cards
         /// Simply a placeholder. Placeholder cards don't contain any data outside of a name.
         /// Installed in the game's <c>cards</c> folder.
         /// </summary>
-        Empty = 7,
+        None = 7,
     }
 }

@@ -190,6 +190,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.game.GameConfig.Settings.Cards = aemulusPackageOrder;
 
                     // Get P4G install from Aemulus config.
+                    // TODO
 
                     Log.Information("Aemulus settings loaded. Reloading cards.");
                     this.game.Deck.LoadDeckCards();

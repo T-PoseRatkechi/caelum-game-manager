@@ -8,6 +8,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:dd="urn:gong-wpf-dragdrop"
+        xmlns:cards="clr-namespace:CaelumCoreLibrary.Cards;assembly=CaelumCoreLibrary"
         lex:LocalizeDictionary.DesignCulture="es"
         lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
@@ -58,7 +59,28 @@
                   dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.SelectDroppedItems="True" SelectionMode="Extended"
                   dd:DragDrop.DropHandler="{Binding}" CanUserSortColumns="False"
-                  CanUserDeleteRows="False">
+                  CanUserDeleteRows="False" AlternationCount="2">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow" BasedOn="{StaticResource MahApps.Styles.DataGridRow}">
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="False"/>
+                                <Condition Property="ItemsControl.AlternationIndex" Value="1"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#20AAAAAA"/>
+                        </MultiTrigger>
+                        <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.None}">
+                            <Setter Property="Background" Value="#1f1137"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <!--
                 How to perform Single click checkbox selection in WPF DataGrid?
@@ -68,12 +90,17 @@
                 <DataGridTemplateColumn Header="{lex:Loc EnabledText}" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.None}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
                             <CheckBox IsChecked="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}"
                                       HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{lex:Loc TypeText}" Binding="{Binding Path=Type}"
+                <DataGridTextColumn Header="{lex:Loc TypeText}" Binding="{Binding Path=TypeString}"
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="{lex:Loc NameText}" Binding="{Binding Path=Name}"
                                             IsReadOnly="True"/>
