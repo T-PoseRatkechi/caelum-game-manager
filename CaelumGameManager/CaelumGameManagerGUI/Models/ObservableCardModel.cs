@@ -156,9 +156,14 @@ namespace CaelumGameManagerGUI.Models
             {
                 this._type = value;
                 this.NotifyOfPropertyChange(() => this.Type);
+                this.NotifyOfPropertyChange(() => this.TypeString);
             }
         }
 
+        /// <summary>
+        /// Gets card type as a localized string.
+        /// Currently does not update correctly after importing Aemulus packages.
+        /// </summary>
         public string TypeString
         {
             get

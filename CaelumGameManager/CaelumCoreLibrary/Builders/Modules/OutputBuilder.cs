@@ -88,6 +88,7 @@ namespace CaelumCoreLibrary.Builders.Modules
                 if (cards[i].IsEnabled && !cards[i].IsHidden && cards[i].Type != CardType.None)
                 {
                     this.BuildCardOutput(cards[i], outputDir);
+                    this.log.LogInformation("{CardName} successfully built.", cards[i].Name);
                 }
             }
 

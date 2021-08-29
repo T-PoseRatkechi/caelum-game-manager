@@ -15,6 +15,8 @@ namespace CaelumCoreLibrary.Builders.Files
     using AtlusFileSystemLibrary.Common.IO;
     using AtlusFileSystemLibrary.FileSystems.PAK;
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
+    using CaelumCoreLibrary.Configs;
+    using CaelumCoreLibrary.Games;
     using Microsoft.Extensions.Logging;
     using PreappPartnersLib.FileSystems;
 
@@ -33,20 +35,24 @@ namespace CaelumCoreLibrary.Builders.Files
 
         private readonly ILogger log;
         private readonly string unpackedDir;
-        private readonly string gameInstallPath;
+        private readonly GameConfigModel gameConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameFileProviderP4G"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
-        /// <param name="gameInstallPath">Game isntall path.</param>
+        /// <param name="gameConfig">Game config instance.</param>
         /// <param name="unpackedDir">Directory path of the game's unpacked folder.</param>
-        public GameFileProviderP4G(ILogger log, string gameInstallPath, string unpackedDir)
+        public GameFileProviderP4G(ILogger log, GameConfigModel gameConfig, string unpackedDir)
         {
             this.log = log;
             this.unpackedDir = unpackedDir;
-            this.gameInstallPath = gameInstallPath;
+            this.gameConfig = gameConfig;
+
+            // this.gameInstallPath = gameInstallPath;
         }
+
+        private string GameInstallPath => this.gameConfig.GameInstallPath;
 
         /// <inheritdoc/>
         public string GetInstallGameFile(string relativeGameFile)
@@ -57,7 +63,7 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <inheritdoc/>
         public string GetUnpackedGameFile(string relativeGameFile)
         {
-            var dataFilePath = Path.Join(this.gameInstallPath, $"{P4gDataName}.cpk");
+            var dataFilePath = Path.Join(this.GameInstallPath, $"{P4gDataName}.cpk");
             var dataUnpackedDir = Path.Join(this.unpackedDir, P4gDataName);
 
             // Expected location of the unpacked relativeGameFile in game's Unpacked folder.
@@ -200,7 +206,7 @@ namespace CaelumCoreLibrary.Builders.Files
         /// <inheritdoc/>
         public void AppendArchive(string archiveName, string inputFolder, string newPacName = null)
         {
-            var installArchivePath = Path.Join(this.gameInstallPath, $"{archiveName}.cpk");
+            var installArchivePath = Path.Join(this.GameInstallPath, $"{archiveName}.cpk");
             var backupInstallPath = Path.Join(this.unpackedDir, $"{archiveName}.cpk");
 
             // Make a backup of the original archive.
@@ -224,7 +230,7 @@ namespace CaelumCoreLibrary.Builders.Files
             if (pacName == null)
             {
                 // Get highested pac index from install data pacs.
-                newPacIndex = Directory.GetFiles(this.gameInstallPath, "data*****.pac", SearchOption.TopDirectoryOnly)
+                newPacIndex = Directory.GetFiles(this.GameInstallPath, "data*****.pac", SearchOption.TopDirectoryOnly)
                     .Select(x =>
                     {
                         var result = Path.GetFileNameWithoutExtension(x).Remove(0, 4).TrimStart('0');
@@ -242,7 +248,7 @@ namespace CaelumCoreLibrary.Builders.Files
                 pacName = this.FormatPacName($"{this.GetPacBaseNameFromCpkBaseName(installArchivePath, archiveName)}", newPacIndex);
             }
 
-            var pacPath = Path.Join(this.gameInstallPath, pacName);
+            var pacPath = Path.Join(this.GameInstallPath, pacName);
 
             this.log.LogDebug("Appending\nContents of: {FolderPath}\nAs: {NewPac}\nTo: {Archive}", inputFolder, pacName, archiveName);
 
