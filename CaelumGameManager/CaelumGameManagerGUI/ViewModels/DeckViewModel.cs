@@ -68,6 +68,9 @@ namespace CaelumGameManagerGUI.ViewModels
             this._cardConverter = cardConverter;
 
             this.FilteredDeck = CollectionViewSource.GetDefaultView(this._deck);
+
+            // Set default launcher.
+            this._selectedGameLauncher = this.GameLauncher[this.game.GameConfig.Settings.DefaultGameLauncher];
         }
 
         /// <summary>
@@ -92,7 +95,30 @@ namespace CaelumGameManagerGUI.ViewModels
         /// </summary>
         public List<string> FilterKeys { get; } = new(Filters.Keys);
 
-        public List<GameLauncherModel> GameLaunchers => this.game.GameConfig.Settings.GameLaunchers;
+        /// <summary>
+        /// Gets the game's available game launchers.
+        /// </summary>
+        public List<GameLauncherModel> GameLauncher => this.game.GameConfig.Settings.GameLaunchers;
+
+        /// <summary>
+        /// Gets or sets the index of currently selected game launcher.
+        /// </summary>
+        private GameLauncherModel _selectedGameLauncher;
+
+        public GameLauncherModel SelectedGameLauncher
+        {
+            get
+            {
+                return this._selectedGameLauncher;
+            }
+
+            set
+            {
+                this._selectedGameLauncher = value;
+                this.game.GameConfig.Settings.DefaultGameLauncher = this.game.GameConfig.Settings.GameLaunchers.IndexOf(this._selectedGameLauncher);
+                this.game.GameConfig.SaveGameConfig();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the selected filter on deck.
@@ -200,12 +226,14 @@ namespace CaelumGameManagerGUI.ViewModels
                         this.game.GameConfig.Settings.OutputDirectory = aemulusConfig.p4gConfig.modDir;
                         this.game.GameConfig.Settings.OutputBuildOnly = true;
 
+                        // Add Reloaded as game launcher.
                         if (!string.IsNullOrEmpty(aemulusConfig.p4gConfig.reloadedPath))
                         {
                             this.game.GameConfig.Settings.GameLaunchers.Add(new GameLauncherModel()
                             {
+                                LauncherName = "P4G with Reloaded II",
                                 LauncherPath = aemulusConfig.p4gConfig.reloadedPath,
-                                LauncherArgs = @"--launch ""${GameInstall}P4G.exe""",
+                                LauncherArgs = @"--launch ""${GameInstall}""",
                             });
                         }
                     }
@@ -286,6 +314,11 @@ namespace CaelumGameManagerGUI.ViewModels
             {
                 this.CanBuildGameDeck = true;
             }
+        }
+
+        public void StartGame()
+        {
+            this.game.StartGame(this.SelectedGameLauncher);
         }
     }
 }

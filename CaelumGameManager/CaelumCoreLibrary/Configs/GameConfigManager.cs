@@ -7,6 +7,7 @@ namespace CaelumCoreLibrary.Configs
 {
     using System.IO;
     using System.Timers;
+    using CaelumCoreLibrary.Games.Launchers;
     using CaelumCoreLibrary.Writers;
 
     /// <summary>
@@ -48,6 +49,8 @@ namespace CaelumCoreLibrary.Configs
                 this.Settings = new GameConfigModel();
                 this.SaveGameConfig();
             }
+
+            this.ValidateConfig();
         }
 
         /// <inheritdoc/>
@@ -57,6 +60,39 @@ namespace CaelumCoreLibrary.Configs
             this.saveTimer.Start();
         }
 
+        /// <summary>
+        /// Validates and corrects any issues with the config.
+        /// </summary>
+        private void ValidateConfig()
+        {
+            // Set game launchers prop to empty list if null.
+            if (this.Settings.GameLaunchers == null)
+            {
+                this.Settings.GameLaunchers = new();
+            }
+
+            // Add default game launcher if missing.
+            if (this.Settings.GameLaunchers.Count == 0)
+            {
+                this.Settings.GameLaunchers.Add(new GameLauncherModel()
+                {
+                    LauncherName = "Default",
+                    LauncherPath = "${GameInstall}",
+                    LauncherArgs = null,
+                });
+            }
+
+            // Set default game launcher to first launcher if exceeds available launchers.
+            if (this.Settings.DefaultGameLauncher > this.Settings.GameLaunchers.Count)
+            {
+                this.Settings.DefaultGameLauncher = 0;
+                // this.log
+            }
+        }
+
+        /// <summary>
+        /// Initializes the save timer.
+        /// </summary>
         private void InitSaveTimer()
         {
             // Save only every 1.5 seconds.

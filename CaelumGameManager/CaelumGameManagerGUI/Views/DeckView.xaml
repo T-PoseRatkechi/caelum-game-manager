@@ -12,6 +12,7 @@
         lex:LocalizeDictionary.DesignCulture="es"
         lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d" 
         d:DesignHeight="450" d:DesignWidth="800"
         d:Background="White">
@@ -36,17 +37,35 @@
                 <ColumnDefinition Width="auto" MinWidth="100"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{lex:Loc DeckText}" FontSize="25"/>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10 0 0 0">
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" Text="{lex:Loc DeckText}" FontSize="25" Margin="0 0 10 0"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button}">
                         <Setter Property="Margin" Value="0 0 10 0"/>
                     </Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
+                        <Setter Property="Margin" Value="0 0 10 0"/>
+                    </Style>
                 </StackPanel.Resources>
-                <Button x:Name="BuildGameDeck" Content="{lex:Loc BuildText}">
+                <Button x:Name="BuildGameDeck" MinWidth="100">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome Kind="HammerSolid" Width="25" Height="20" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                        <TextBlock Text="{lex:Loc BuildText}" VerticalAlignment="Center" FontSize="15"/>
+                    </StackPanel>
                 </Button>
-                <Button Content="{lex:Loc FullRebuildText}" IsEnabled="{Binding CanBuildGameDeck}"/>
-                <ComboBox ItemsSource="{Binding Path=GameLaunchers}" DisplayMemberPath="LauncherPath"/>
+                <Button IsEnabled="{Binding CanBuildGameDeck}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="Refresh" Width="25" Height="20" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                        <TextBlock Text="{lex:Loc FullRebuildText}" VerticalAlignment="Center" FontSize="15"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="StartGame">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="PlayArrow" Width="25" VerticalAlignment="Center"/>
+                        <TextBlock Text="Play" FontSize="15" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <ComboBox x:Name="GameLauncher" DisplayMemberPath="LauncherName" MinWidth="150"/>
             </StackPanel>
             <TextBlock Grid.Column="2" Text="{lex:Loc CardsText}" FontSize="25"
                        HorizontalAlignment="Right" Padding="0 0 10 0"/>

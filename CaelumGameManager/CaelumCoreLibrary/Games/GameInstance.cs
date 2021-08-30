@@ -64,7 +64,7 @@ namespace CaelumCoreLibrary.Games
                             "Launching game with default launcher.\nPath: {LauncherPath}\nArguments: {LauncherArgs}",
                             defaultLauncher.LauncherPath,
                             defaultLauncher.LauncherArgs);
-                        defaultLauncher.Start();
+                        defaultLauncher.Start(this.GameConfig.Settings.GameInstallPath);
                     }
 
                     // Start game with first launcher if settings invalid.
@@ -78,7 +78,7 @@ namespace CaelumCoreLibrary.Games
                             "Launching game with default launcher.\nPath: {LauncherPath}\nArguments: {LauncherArgs}",
                             launcher.LauncherPath,
                             launcher.LauncherArgs);
-                        launcher.Start();
+                        launcher.Start(this.GameConfig.Settings.GameInstallPath);
                     }
                 }
                 else
@@ -92,7 +92,7 @@ namespace CaelumCoreLibrary.Games
                     "Launching game with given game launcher.\nPath: {LauncherPath}\nArguments: {LauncherArgs}",
                     gameLauncher.LauncherPath,
                     gameLauncher.LauncherArgs);
-                gameLauncher.Start();
+                gameLauncher.Start(this.GameConfig.Settings.GameInstallPath);
             }
         }
 
