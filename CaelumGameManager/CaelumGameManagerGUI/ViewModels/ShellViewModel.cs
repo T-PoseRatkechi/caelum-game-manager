@@ -84,6 +84,9 @@ namespace CaelumGameManagerGUI.ViewModels
             base.OnViewReady(view);
             var rand = new Random();
 
+            Log.Information(
+                "\n..::Special Thanks::..\nTGEnigma | AtlusFileSystemLibrary, Amicitia.IO, preappfile, and more.\nPractically everything in Persona modding relies on something he made.\n" +
+                "Tekka | Aemulus Package Manager\nCreated the many features that make modding Persona actually practical for 99% of people.");
             if (rand.Next(0, 3) == 0)
             {
                 Log.Information("Shuba shuba shuba!");
@@ -93,7 +96,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 Log.Information("Caelum Game Manager is ready.");
             }
 
-            this.gameDeck.CollectionChanged += GameDeck_CollectionChanged;
+            this.gameDeck.CollectionChanged += this.GameDeck_CollectionChanged;
         }
 
         /// <inheritdoc/>
