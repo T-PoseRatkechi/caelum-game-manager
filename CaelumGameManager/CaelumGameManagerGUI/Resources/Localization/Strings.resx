@@ -208,4 +208,7 @@
   <data name="LauncherText" xml:space="preserve">
     <value>Launcher</value>
   </data>
+  <data name="PlayText" xml:space="preserve">
+    <value>Play</value>
+  </data>
 </root>

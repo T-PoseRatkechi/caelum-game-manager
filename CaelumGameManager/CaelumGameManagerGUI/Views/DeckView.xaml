@@ -47,22 +47,19 @@
                         <Setter Property="Margin" Value="0 0 10 0"/>
                     </Style>
                 </StackPanel.Resources>
+                <Button IsEnabled="{Binding CanBuildGameDeck}">
+                    <iconPacks:PackIconMaterial Kind="FileRefresh" Width="25" Height="20" VerticalAlignment="Center"/>
+                </Button>
                 <Button x:Name="BuildGameDeck" MinWidth="100">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconFontAwesome Kind="HammerSolid" Width="25" Height="20" VerticalAlignment="Center" Margin="0 0 5 0"/>
                         <TextBlock Text="{lex:Loc BuildText}" VerticalAlignment="Center" FontSize="15"/>
                     </StackPanel>
                 </Button>
-                <Button IsEnabled="{Binding CanBuildGameDeck}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterialDesign Kind="Refresh" Width="25" Height="20" VerticalAlignment="Center" Margin="0 0 5 0"/>
-                        <TextBlock Text="{lex:Loc FullRebuildText}" VerticalAlignment="Center" FontSize="15"/>
-                    </StackPanel>
-                </Button>
                 <Button x:Name="StartGame">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterialDesign Kind="PlayArrow" Width="25" VerticalAlignment="Center"/>
-                        <TextBlock Text="Play" FontSize="15" VerticalAlignment="Center" />
+                        <TextBlock Text="{lex:Loc PlayText}" FontSize="15" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <ComboBox x:Name="GameLauncher" DisplayMemberPath="LauncherName" MinWidth="150"/>
