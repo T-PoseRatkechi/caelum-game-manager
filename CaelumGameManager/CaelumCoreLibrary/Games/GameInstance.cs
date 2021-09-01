@@ -158,7 +158,7 @@ namespace CaelumCoreLibrary.Games
             };
 
             // Add default launcher which is just the game path.
-            this.Deck.Cards.Add(defaultGameLauncher);
+            this.Deck.Cards.Insert(0, defaultGameLauncher);
         }
     }
 }
