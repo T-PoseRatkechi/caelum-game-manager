@@ -18,6 +18,7 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using CaelumCoreLibrary.Games;
     using CaelumCoreLibrary.Utilities;
+    using CaelumGameManagerGUI.Cards;
     using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
@@ -265,7 +266,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     this.game.Deck.LoadDeckCards();
                     this.game.InitDeck();
                     this._deck.Clear();
-                    this._deck.AddRange(this.game.Deck.Cards.Select(x => new ObservableCardModel(x)));
+                    this._deck.AddRange(this.game.Deck.Cards.ToObservableCards());
 
                     // Set card enabled settings same as Aemulus.
                     foreach (var gamePackage in p4gGamePackages.packages)
@@ -278,6 +279,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     }
 
                     this.game.GameConfig.SaveGameConfig();
+                    this.NotifyOfPropertyChange(() => this.GameLauncher);
                     Log.Information("Cards reloaded. Aemulus successfully imported.");
                 }
                 catch (Exception e)
