@@ -11,23 +11,17 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Controls;
     using System.Windows.Data;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Cards.Converters;
-    using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using CaelumCoreLibrary.Games;
-    using CaelumCoreLibrary.Utilities;
-    using CaelumGameManagerGUI.Cards;
     using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
-    using Microsoft.Win32;
-    using Newtonsoft.Json;
     using Serilog;
 
     /// <summary>

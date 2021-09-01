@@ -10,94 +10,48 @@ namespace CaelumCoreLibrary.Builders
     using System.IO;
     using CaelumCoreLibrary.Builders.Files;
     using CaelumCoreLibrary.Builders.Modules;
-    using CaelumCoreLibrary.Builders.Modules.PostBuild;
     using CaelumCoreLibrary.Cards;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Simple deck builder: copy and paste, file overwriting, patching, etc.
     /// </summary>
-    public class DeckBuilderBasic : IDeckBuilder
+    public class DeckBuilderBasic : DeckBuilderBase
     {
-        private const int MaxFilesDeleted = DeckBuilderUtilities.MaxFilesAllowedForDeleting;
-
-        private readonly ILogger log;
-        private readonly IGameFileProvider unpacker;
+        private readonly IGameFileProvider gameFileProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckBuilderBasic"/> class.
         /// </summary>
         /// <param name="log">Logger.</param>
-        /// <param name="fileSystem">File system.</param>
-        public DeckBuilderBasic(ILogger log, IGameFileProvider unpacker)
+        /// <param name="gameFileProvider">Game file provider.</param>
+        public DeckBuilderBasic(ILogger log, IGameFileProvider gameFileProvider)
+            : base(log)
         {
-            this.log = log;
-            this.unpacker = unpacker;
+            this.gameFileProvider = gameFileProvider;
         }
 
         /// <inheritdoc/>
-        public void Build(IList<ICardModel> deck, string outputDir)
+        public override void Build(IList<ICardModel> deck, string outputDir)
         {
-            this.log.LogDebug("Building with Basic Deck Builder.");
+            this.Log.LogDebug("Building with Basic Deck Builder.");
 
             this.PrepareOutputFolder(outputDir);
 
-            this.log.LogDebug("Building cards.");
+            this.Log.LogDebug("Building cards.");
 
             IBuildLogger buildLogger = new BuildLogger();
 
-            var outputBuilder = new OutputBuilder(this.log, buildLogger, this.unpacker)
-                .AddModule(new PhosModule(this.log, buildLogger))
-                .AddModule(new StandardModule(this.log, buildLogger))
-                .PostBuild(new PostBuildP4G(this.log, buildLogger, this.unpacker));
+            var outputBuilder = new OutputBuilder(this.Log, buildLogger, this.gameFileProvider)
+                .AddModule(new PhosModule(this.Log, buildLogger))
+                .AddModule(new StandardModule(this.Log, buildLogger));
 
             outputBuilder.BuildOutput(deck, outputDir);
 
-            this.log.LogDebug("Cards built.");
+            this.Log.LogDebug("Cards built.");
 
             // Write deck build log.
             buildLogger.WriteOutputLog(Path.Join(outputDir, "buildlog.txt"));
-        }
-
-        /// <summary>
-        /// Prepares output folder for building.
-        /// </summary>
-        /// <param name="outputDir">Output folder.</param>
-        /// <param name="ignoreMaxFilesWarning">Flag indicating whether to ignore the maximum allowed files for deleting.</param>
-        public void PrepareOutputFolder(string outputDir, bool ignoreMaxFilesWarning = false)
-        {
-            if (string.IsNullOrWhiteSpace(outputDir))
-            {
-                throw new ArgumentException($"'{nameof(outputDir)}' cannot be null or whitespace.", nameof(outputDir));
-            }
-
-            // TODO: Adjust for optimized building.
-
-            // Disallow potentially unwanted output folders.
-            if (!DeckBuilderUtilities.IsValidOutputDirectory(outputDir))
-            {
-                throw new ArgumentException($"!!!DISALLOWED OUTPUT DIRECTORY SET!!! CHANGE ASAP!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
-            }
-
-            string[] outputDirFiles = Directory.GetFiles(outputDir, "*.*", SearchOption.AllDirectories);
-
-            // Check number files that will be deleted exceeds max limit.
-            // This check can be skipped by setting ignoreMaxFilesWarning to true.
-            if (outputDirFiles.Length > MaxFilesDeleted && !ignoreMaxFilesWarning)
-            {
-                throw new ArgumentException($"!!!OUTPUT DIRECTORY CONTAINS MORE FILES THAN ALLOWED TO DELETE {MaxFilesDeleted}!!! DELETE MANUALLY OR CHANGE THIS SETTING!!! OUTPUT DIRECTORY: {outputDir}", nameof(outputDir));
-            }
-
-            this.log.LogInformation("Preparing output folder.");
-
-            this.log.LogDebug("Deleting {NumFiles} files", outputDirFiles.Length);
-            foreach (var file in outputDirFiles)
-            {
-                File.Delete(file);
-                this.log.LogTrace("Deleted file: {FilePath}.", file);
-            }
-
-            this.log.LogInformation("Output folder prepared.");
         }
     }
 }

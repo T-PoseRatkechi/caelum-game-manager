@@ -68,7 +68,7 @@ namespace CaelumGameManagerGUI.ViewModels
             set { this.currentGame = value; }
         }
 
-        public ShellToolbarViewModel ShellToolbar { get; init; }
+        public ShellToolbarViewModel ShellToolbar { get; set; }
 
         /// <summary>
         /// Gets the current game's name.
