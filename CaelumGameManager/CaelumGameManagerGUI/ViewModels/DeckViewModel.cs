@@ -3,11 +3,14 @@
 // This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+#pragma warning disable SA1309 // Field names should not begin with underscore
+
 namespace CaelumGameManagerGUI.ViewModels
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -52,11 +55,13 @@ namespace CaelumGameManagerGUI.ViewModels
         private readonly IWindowManager windowManager = new WindowManager();
 
         private bool isBuildingEnabled = true;
-        private BindableDeckModel _deck;
 
         private string selectedFilter = LocalizedStrings.Instance["AllText"];
 
-        private ICollectionView filteredDeck;
+        private BindableDeckModel _deck;
+        private ICollectionView _filteredDeck;
+        private ILauncherCardModel _selectedGameLauncher;
+        private ICardModel _selectedCard;
 
 
         /// <summary>
@@ -80,12 +85,12 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             get
             {
-                return this.filteredDeck;
+                return this._filteredDeck;
             }
 
             set
             {
-                this.filteredDeck = value;
+                this._filteredDeck = value;
                 this.NotifyOfPropertyChange(() => this.FilteredDeck);
             }
         }
@@ -103,8 +108,6 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets or sets the index of currently selected game launcher.
         /// </summary>
-        private ILauncherCardModel _selectedGameLauncher;
-
         public ILauncherCardModel SelectedGameLauncher
         {
             get
@@ -157,6 +160,28 @@ namespace CaelumGameManagerGUI.ViewModels
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets selected card.
+        /// </summary>
+        public ICardModel SelectedCard
+        {
+            get
+            {
+                return this._selectedCard;
+            }
+
+            set
+            {
+                this._selectedCard = value;
+                this.NotifyOfPropertyChange(() => this.IsCardSelected);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a card is selected.
+        /// </summary>
+        public bool IsCardSelected => this.SelectedCard != null;
 
         /// <summary>
         /// Open the Create/Edit Card window.
@@ -356,6 +381,14 @@ namespace CaelumGameManagerGUI.ViewModels
             finally
             {
                 this.CanBuildGameDeck = true;
+            }
+        }
+
+        public void OpenCardFolder()
+        {
+            if (this.SelectedCard != null && this.SelectedCard.InstallDirectory != null)
+            {
+                Process.Start("explorer.exe", this.SelectedCard.InstallDirectory);
             }
         }
 

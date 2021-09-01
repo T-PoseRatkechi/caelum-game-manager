@@ -226,4 +226,7 @@
   <data name="ImportAemulusSuccessMessage" xml:space="preserve">
     <value>Aemulus successfully imported.</value>
   </data>
+  <data name="OpenCardFolderText" xml:space="preserve">
+    <value>Open Card Folder</value>
+  </data>
 </root>

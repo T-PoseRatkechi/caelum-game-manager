@@ -358,6 +358,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Card Folder.
+        /// </summary>
+        public static string OpenCardFolderText {
+            get {
+                return ResourceManager.GetString("OpenCardFolderText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other(s).
         /// </summary>
         public static string OthersText {
