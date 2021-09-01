@@ -7,7 +7,6 @@ namespace CaelumCoreLibrary.Configs
 {
     using System.IO;
     using System.Timers;
-    using CaelumCoreLibrary.Games.Launchers;
     using CaelumCoreLibrary.Writers;
 
     /// <summary>
@@ -65,6 +64,7 @@ namespace CaelumCoreLibrary.Configs
         /// </summary>
         private void ValidateConfig()
         {
+            /*
             // Set game launchers prop to empty list if null.
             if (this.Settings.GameLaunchers == null)
             {
@@ -88,6 +88,7 @@ namespace CaelumCoreLibrary.Configs
                 this.Settings.DefaultGameLauncher = 0;
                 // this.log
             }
+            */
         }
 
         /// <summary>

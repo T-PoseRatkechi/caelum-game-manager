@@ -241,6 +241,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to start launcher..
+        /// </summary>
+        public static string ErrorLauncherStartFailedMessage {
+            get {
+                return ResourceManager.GetString("ErrorLauncherStartFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered unexpected error! Restart recommended!.
         /// </summary>
         public static string ErrorRecommendRestartMessage {

@@ -27,7 +27,7 @@ namespace CaelumCoreLibrary.Cards
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        public string[] Games { get; set; }
+        public List<string> Games { get; set; }
 
         /// <inheritdoc/>
         public List<Author> Authors { get; set; }

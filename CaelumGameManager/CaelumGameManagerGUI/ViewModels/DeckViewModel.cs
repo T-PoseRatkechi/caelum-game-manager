@@ -17,12 +17,13 @@ namespace CaelumGameManagerGUI.ViewModels
     using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Cards.Converters.Aemulus;
     using CaelumCoreLibrary.Games;
-    using CaelumCoreLibrary.Games.Launchers;
+    using CaelumCoreLibrary.Utilities;
     using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
     using CaelumGameManagerGUI.ViewModels.Cards;
     using Caliburn.Micro;
     using Microsoft.Win32;
+    using Newtonsoft.Json;
     using Serilog;
 
     /// <summary>
@@ -70,7 +71,7 @@ namespace CaelumGameManagerGUI.ViewModels
             this.FilteredDeck = CollectionViewSource.GetDefaultView(this._deck);
 
             // Set default launcher.
-            this._selectedGameLauncher = this.GameLauncher[this.game.GameConfig.Settings.DefaultGameLauncher];
+            this._selectedGameLauncher = (ILauncherCardModel)this._deck.FirstOrDefault(card => card.CardId == this.game.GameConfig.Settings.DefaultGameLauncher);
         }
 
         /// <summary>
@@ -98,14 +99,14 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets the game's available game launchers.
         /// </summary>
-        public List<GameLauncherModel> GameLauncher => this.game.GameConfig.Settings.GameLaunchers;
+        public List<ICardModel> GameLauncher => this._deck.Where(card => card.Type == CardType.Launcher).ToList();
 
         /// <summary>
         /// Gets or sets the index of currently selected game launcher.
         /// </summary>
-        private GameLauncherModel _selectedGameLauncher;
+        private ILauncherCardModel _selectedGameLauncher;
 
-        public GameLauncherModel SelectedGameLauncher
+        public ILauncherCardModel SelectedGameLauncher
         {
             get
             {
@@ -115,7 +116,7 @@ namespace CaelumGameManagerGUI.ViewModels
             set
             {
                 this._selectedGameLauncher = value;
-                this.game.GameConfig.Settings.DefaultGameLauncher = this.game.GameConfig.Settings.GameLaunchers.IndexOf(this._selectedGameLauncher);
+                this.game.GameConfig.Settings.DefaultGameLauncher = this._selectedGameLauncher.CardId;
                 this.game.GameConfig.SaveGameConfig();
             }
         }
@@ -229,12 +230,34 @@ namespace CaelumGameManagerGUI.ViewModels
                         // Add Reloaded as game launcher.
                         if (!string.IsNullOrEmpty(aemulusConfig.p4gConfig.reloadedPath))
                         {
-                            this.game.GameConfig.Settings.GameLaunchers.Add(new GameLauncherModel()
+                            var launchersDir = this.game.GameInstall.LaunchersDirectory;
+                            var reloadedCardId = "sewer56_reloadedii";
+                            var reloadedCardDir = Path.Join(launchersDir, reloadedCardId);
+
+                            // Copy reloaded to launchers dir as a card.
+                            Directory.CreateDirectory(reloadedCardDir);
+
+                            LauncherCardModel reloadedCard = new()
                             {
-                                LauncherName = "P4G with Reloaded II",
-                                LauncherPath = aemulusConfig.p4gConfig.reloadedPath,
+                                CardId = reloadedCardId,
+                                Name = "Reloaded II",
+                                Authors = null,
+                                Games = new() { "Persona 4 Golden" },
+                                IsEnabled = true,
+                                Version = "1.0.0",
+                                Description = "[Reloaded II] is a Universal DLL Injection based Mod Loader and Management System.",
+                                Type = CardType.Launcher,
+                                LauncherPath = "Reloaded-II.exe",
                                 LauncherArgs = @"--launch ""${GameInstall}""",
-                            });
+                                InstallDirectory = reloadedCardDir,
+                            };
+
+                            // Write card file.
+                            var cardText = JsonConvert.SerializeObject(reloadedCard, Formatting.Indented);
+                            File.WriteAllText(Path.Join(reloadedCardDir, "card.json"), cardText);
+
+                            CaelumFileIO.CopyFolder(Path.GetDirectoryName(aemulusConfig.p4gConfig.reloadedPath), Path.Join(reloadedCardDir, "Data"));
+                            Log.Information("Imported Reloaded II as a Launcher.");
                         }
                     }
 
@@ -318,7 +341,19 @@ namespace CaelumGameManagerGUI.ViewModels
 
         public void StartGame()
         {
-            this.game.StartGame(this.SelectedGameLauncher);
+            try
+            {
+                this.CanBuildGameDeck = false;
+                this.game.StartGame(this.SelectedGameLauncher);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, LocalizedStrings.Instance["ErrorDeckBuildFailedMessage"]);
+            }
+            finally
+            {
+                this.CanBuildGameDeck = true;
+            }
         }
     }
 }

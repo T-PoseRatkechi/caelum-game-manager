@@ -19,6 +19,7 @@
 
     <UserControl.Resources>
         <local:AuthorsToString x:Key="AuthorsToString" />
+        <local:TypeToString x:Key="TypeToString" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -62,7 +63,7 @@
                         <TextBlock Text="{lex:Loc PlayText}" FontSize="15" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <ComboBox x:Name="GameLauncher" DisplayMemberPath="LauncherName" MinWidth="150"/>
+                <ComboBox x:Name="GameLauncher" DisplayMemberPath="Name" MinWidth="150"/>
             </StackPanel>
             <TextBlock Grid.Column="2" Text="{lex:Loc CardsText}" FontSize="25"
                        HorizontalAlignment="Right" Padding="0 0 10 0"/>
@@ -111,17 +112,20 @@
                                 <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.None}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.Launcher}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
                             </DataTemplate.Triggers>
                             <CheckBox IsChecked="{Binding Path=IsEnabled, UpdateSourceTrigger=PropertyChanged}"
                                       HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{lex:Loc TypeText}" Binding="{Binding Path=TypeString}"
+                <DataGridTextColumn Header="{lex:Loc TypeText}" Binding="{Binding Path=Type, Converter={StaticResource TypeToString}}"
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="{lex:Loc NameText}" Binding="{Binding Path=Name}"
                                             IsReadOnly="True"/>
-                <DataGridTextColumn Header="{lex:Loc AuthorsText}" Binding="{Binding Path=Authors[0].Name}" 
+                <DataGridTextColumn Header="{lex:Loc AuthorsText}" Binding="{Binding Path=Authors, Converter={StaticResource AuthorsToString}}" 
                                             IsReadOnly="True"/>
                 <DataGridTextColumn Header="{lex:Loc VersionText}" Binding="{Binding Path=Version}"
                                             IsReadOnly="True"/>

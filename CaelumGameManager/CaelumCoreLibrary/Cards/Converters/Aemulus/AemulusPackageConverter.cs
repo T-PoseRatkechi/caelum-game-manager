@@ -14,6 +14,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
     using AtlusFileSystemLibrary.FileSystems.PAK;
     using CaelumCoreLibrary.Builders.Modules.FilePatching;
     using CaelumCoreLibrary.Builders.Modules.FilePatching.Formats;
+    using CaelumCoreLibrary.Utilities;
     using CaelumCoreLibrary.Writers;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
@@ -119,7 +120,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 var sndFolder = Path.Join(packageDir, "SND");
                 if (Directory.Exists(sndFolder))
                 {
-                    this.CopyFolder(sndFolder, Path.Join(packageDir, "Data", "SND"));
+                    CaelumFileIO.CopyFolder(sndFolder, Path.Join(packageDir, "Data", "SND"));
                 }
 
                 string gameDataDir = null;
@@ -143,7 +144,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     }
 
                     // Move contents of package data folder to root package folder.
-                    this.CopyFolder(gameDataDir, Path.Join(packageDir, "Data", "data_e"));
+                    CaelumFileIO.CopyFolder(gameDataDir, Path.Join(packageDir, "Data", "data_e"));
                     Directory.Delete(gameDataDir, true);
                 }
 
@@ -208,8 +209,8 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
 
                     if (tblpatchesFiles.Length > 0)
                     {
-                        this.log.LogWarning(
-                            "{PackageName}: Converted {NumPatches} tblpatch(es). Tblpatches are UNSUPPORTED and may not have converted correctly. Remaking these patches is recommended.",
+                        this.log.LogDebug(
+                            "{PackageName}: Converted {NumPatches} tblpatch(es) to binary patches.",
                             packageXml.name,
                             tblpatchesFiles.Length);
                     }
@@ -221,7 +222,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     };
 
                     var gamePatchString = JsonConvert.SerializeObject(gamePatch, Formatting.Indented);
-                    var gamePatchFile = Path.Join(packageDir, "Data", "Patches", "Converted TBP Patches.json");
+                    var gamePatchFile = Path.Join(packageDir, "Data", "Patches", "Converted Patches.json");
                     Directory.CreateDirectory(Path.GetDirectoryName(gamePatchFile));
                     File.WriteAllText(gamePatchFile, gamePatchString);
 
@@ -236,7 +237,7 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 if (Directory.Exists(packageAppendFolder))
                 {
                     var caelumAppendFolder = Path.Join(cardDataDir, "data_e", "append");
-                    this.CopyFolder(packageAppendFolder, caelumAppendFolder);
+                    CaelumFileIO.CopyFolder(packageAppendFolder, caelumAppendFolder);
                     Directory.Delete(packageAppendFolder, true);
                 }
 
@@ -251,14 +252,14 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                 var patchesDir = Path.Join(packageDir, "patches");
                 if (Directory.Exists(patchesDir))
                 {
-                    this.CopyFolder(patchesDir, Path.Join(cardDataDir, "patches"));
+                    CaelumFileIO.CopyFolder(patchesDir, Path.Join(cardDataDir, "patches"));
                     Directory.Delete(patchesDir, true);
                 }
 
                 this.log.LogInformation("{PackageName} successfully imported.", packageXml.name);
             }
 
-            this.CopyFolder(tempFolder, outputDir);
+            CaelumFileIO.CopyFolder(tempFolder, outputDir);
             Directory.Delete(tempFolder, true);
         }
 
@@ -321,16 +322,6 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
             foreach (var dir in directories)
             {
                 this.RecursiveFixFolders(dir, originalFilesFolder, dataFolder);
-            }
-        }
-
-        private void CopyFolder(string sourceFolder, string destFolder)
-        {
-            foreach (var file in Directory.GetFiles(sourceFolder, "*", SearchOption.AllDirectories))
-            {
-                var outputFile = Path.Join(destFolder, file.Replace(sourceFolder, string.Empty));
-                Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
-                File.Copy(file, outputFile, true);
             }
         }
     }

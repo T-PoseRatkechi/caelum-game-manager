@@ -10,6 +10,7 @@ namespace CaelumGameManagerGUI.Views
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Input;
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Common;
     using CaelumGameManagerGUI.Resources.Localization;
 
@@ -99,6 +100,35 @@ namespace CaelumGameManagerGUI.Views
     }
 
     /// <summary>
+    /// Converts card type to localized string.
+    /// </summary>
+    public class TypeToString : IValueConverter
+    {
+        /// <inheritdoc/>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is CardType type)
+            {
+                return type switch
+                {
+                    CardType.Folder => LocalizedStrings.Instance["FolderText"],
+                    CardType.Mod => LocalizedStrings.Instance["ModText"],
+                    CardType.Launcher => LocalizedStrings.Instance["LauncherText"],
+                    _ => string.Empty,
+                };
+            }
+
+            return string.Empty;
+        }
+
+        /// <inheritdoc/>
+        public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    /// <summary>
     /// For converting authors array to single string.
     /// </summary>
     public class AuthorsToString : IValueConverter
@@ -122,7 +152,7 @@ namespace CaelumGameManagerGUI.Views
                 return $"{list[0].Name} +{list.Length - 1} {LocalizedStrings.Instance["OthersText"]}";
             }
 
-            return LocalizedStrings.Instance["UnknownText"];
+            return string.Empty;
         }
 
         /// <inheritdoc/>

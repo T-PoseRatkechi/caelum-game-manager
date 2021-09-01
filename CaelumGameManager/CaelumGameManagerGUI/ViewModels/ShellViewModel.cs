@@ -12,11 +12,11 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Models;
     using Caliburn.Micro;
-    using Newtonsoft.Json;
     using Serilog;
 
     /// <summary>
@@ -47,7 +47,17 @@ namespace CaelumGameManagerGUI.ViewModels
                     App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
                 }
 
-                var observableCards = this.currentGame.Deck.Cards.Select(x => new ObservableCardModel(x));
+                var observableCards = this.currentGame.Deck.Cards.Select(x =>
+                {
+                    if (x.Type == CardType.Launcher)
+                    {
+                        return new ObservableLauncherCard(x);
+                    }
+                    else
+                    {
+                        return new ObservableCard(x);
+                    }
+                });
 
                 this.gameDeck = new BindableDeckModel(observableCards);
 

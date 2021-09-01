@@ -8,12 +8,10 @@ namespace CaelumCoreLibrary.Games
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Timers;
     using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Decks;
-    using CaelumCoreLibrary.Games.Launchers;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -23,9 +21,6 @@ namespace CaelumCoreLibrary.Games
     {
         private readonly ILogger log;
         private readonly IDeckBuilder deckBuilder;
-
-        // Save timer for saving config.
-        private readonly Timer saveTimer = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameInstance"/> class.
@@ -48,13 +43,20 @@ namespace CaelumCoreLibrary.Games
         public IDeck Deck { get; init; }
 
         /// <inheritdoc/>
-        public void StartGame(GameLauncherModel gameLauncher = null)
+        public void StartGame(ILauncherCardModel gameLauncher = null)
         {
+            if (gameLauncher.Type != CardType.Launcher)
+            {
+                this.log.LogWarning("Card {CardName} is not a game launcher.", gameLauncher.Name);
+                return;
+            }
+
             // Start game with default launcher.
             if (gameLauncher == null)
             {
+                /*
                 // Start game with a launcher if one exists in config.
-                if (this.GameConfig.Settings.GameLaunchers != null && this.GameConfig.Settings.GameLaunchers.Count > 0)
+                if (this.GameConfig.Settings.DefaultGameLauncher != null)
                 {
                     // Start game with default launcher if settings valid.
                     if (this.GameConfig.Settings.DefaultGameLauncher < this.GameConfig.Settings.GameLaunchers.Count)
@@ -85,6 +87,7 @@ namespace CaelumCoreLibrary.Games
                 {
                     this.log.LogError("Game {GameName} has no launchers to start game.", this.GameInstall.GameName);
                 }
+                */
             }
             else
             {
@@ -147,16 +150,15 @@ namespace CaelumCoreLibrary.Games
                 }
             }
 
-            this.saveTimer.AutoReset = false;
-            this.saveTimer.Enabled = false;
-            this.saveTimer.Interval = 1000;
-
-            this.saveTimer.Elapsed += (sender, e) =>
+            var defaultGameLauncher = new LauncherCardModel()
             {
-                var cardOrder = this.Deck.Cards.Select(x => x.CardId).ToArray();
-                this.GameConfig.Settings.Cards = cardOrder;
-                this.GameConfig.SaveGameConfig();
+                CardId = $"${this.GameInstall.GameName}_default".ToLower(),
+                Name = "Default",
+                LauncherPath = "${GameInstall}",
             };
+
+            // Add default launcher which is just the game path.
+            this.Deck.Cards.Add(defaultGameLauncher);
         }
     }
 }

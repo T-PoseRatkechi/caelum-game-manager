@@ -5,9 +5,6 @@
 
 namespace CaelumCoreLibrary.Configs
 {
-    using System.Collections.Generic;
-    using CaelumCoreLibrary.Games.Launchers;
-
     /// <summary>
     /// Interface for game configs.
     /// </summary>
@@ -21,12 +18,7 @@ namespace CaelumCoreLibrary.Configs
         /// <summary>
         /// Gets or sets the default game launcher (index) to use.
         /// </summary>
-        public int DefaultGameLauncher { get; set; }
-
-        /// <summary>
-        /// Gets or sets the game launcher.
-        /// </summary>
-        public List<GameLauncherModel> GameLaunchers { get; set; } = new();
+        public string DefaultGameLauncher { get; set; }
 
         /// <summary>
         /// Gets or sets the game's theme.

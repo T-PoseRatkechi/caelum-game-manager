@@ -109,7 +109,7 @@ namespace CaelumGameManagerGUI.Models
         }
 
         /// <inheritdoc/>
-        public string[] Games { get; set; }
+        public List<string> Games { get; set; }
 
         /// <inheritdoc/>
         public List<Author> Authors { get; set; }

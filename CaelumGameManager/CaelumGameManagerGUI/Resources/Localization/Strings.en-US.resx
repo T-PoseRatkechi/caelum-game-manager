@@ -211,4 +211,7 @@
   <data name="PlayText" xml:space="preserve">
     <value>Play</value>
   </data>
+  <data name="ErrorLauncherStartFailedMessage" xml:space="preserve">
+    <value>Failed to start launcher.</value>
+  </data>
 </root>

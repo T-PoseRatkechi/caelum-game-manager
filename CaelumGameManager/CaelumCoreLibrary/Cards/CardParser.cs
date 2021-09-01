@@ -5,9 +5,9 @@
 
 namespace CaelumCoreLibrary.Cards
 {
+    using Newtonsoft.Json;
     using System;
     using System.IO;
-    using System.Text.Json;
 
     /// <summary>
     /// Base implementation of <see cref="ICardParser"/>.
@@ -15,7 +15,8 @@ namespace CaelumCoreLibrary.Cards
     public class CardParser : ICardParser
     {
         /// <inheritdoc/>
-        public ICardModel ParseCard(string cardFile)
+        public ICardModel ParseCard<T>(string cardFile)
+            where T : ICardModel
         {
             if (string.IsNullOrWhiteSpace(cardFile))
             {
@@ -23,7 +24,7 @@ namespace CaelumCoreLibrary.Cards
             }
 
             string cardText = File.ReadAllText(cardFile);
-            var card = JsonSerializer.Deserialize<CardModel>(cardText);
+            var card = JsonConvert.DeserializeObject<T>(cardText);
 
             card.InstallDirectory = Path.GetDirectoryName(cardFile);
 

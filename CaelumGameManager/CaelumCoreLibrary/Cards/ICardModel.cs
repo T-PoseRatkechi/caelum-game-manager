@@ -38,7 +38,7 @@ namespace CaelumCoreLibrary.Cards
         /// <summary>
         /// Gets or sets games card is for.
         /// </summary>
-        public string[] Games { get; set; }
+        public List<string> Games { get; set; }
 
         /// <summary>
         /// Gets or sets authors of the card.

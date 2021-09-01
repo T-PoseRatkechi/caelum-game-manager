@@ -170,7 +170,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         {
             get
             {
-                if (this.CardAuthors.Count == 0)
+                if (this.CardAuthors == null || this.CardAuthors.Count == 0)
                 {
                     return null;
                 }

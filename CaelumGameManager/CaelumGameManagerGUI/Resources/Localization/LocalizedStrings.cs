@@ -19,14 +19,16 @@ namespace CaelumGameManagerGUI.Resources.Localization
     public class LocalizedStrings
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LocalizedStrings"/> class.
+        /// </summary>
+        public LocalizedStrings()
+        {
+        }
+
+        /// <summary>
         /// Gets localized strings instance.
         /// </summary>
         public static LocalizedStrings Instance { get; } = new();
-
-        public LocalizedStrings()
-        {
-
-        }
 
         /// <summary>
         /// Gets the specified key string from WPFLocalizeExtension.

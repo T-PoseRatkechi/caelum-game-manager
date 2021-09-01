@@ -12,6 +12,7 @@ namespace CaelumCoreLibrary.Decks
     using CaelumCoreLibrary.Configs;
     using CaelumCoreLibrary.Games;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Loads cards from tools and game install folder.
@@ -20,8 +21,8 @@ namespace CaelumCoreLibrary.Decks
     {
         private readonly ILogger log;
         private readonly ICardParser cardParser;
+        private readonly IGameInstall gameInstall;
         private readonly string toolsDir;
-        private readonly string gameCardsDir;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CardsLoader"/> class.
@@ -34,8 +35,8 @@ namespace CaelumCoreLibrary.Decks
         {
             this.log = log;
             this.toolsDir = caelumConfig.ToolsDirectory;
-            this.gameCardsDir = gameInstall.CardsDirectory;
             this.cardParser = cardParser;
+            this.gameInstall = gameInstall;
         }
 
         /// <inheritdoc/>
@@ -45,8 +46,9 @@ namespace CaelumCoreLibrary.Decks
 
             List<ICardModel> installedCards = new();
 
-            this.AddCardsFromFolder(installedCards, this.toolsDir);
-            this.AddCardsFromFolder(installedCards, this.gameCardsDir);
+            this.AddCardsFromFolder<CardModel>(installedCards, this.toolsDir);
+            this.AddCardsFromFolder<CardModel>(installedCards, this.gameInstall.CardsDirectory);
+            this.AddCardsFromFolder<LauncherCardModel>(installedCards, this.gameInstall.LaunchersDirectory);
 
             this.log.LogDebug("Loaded {InstalledCardsTotal} total cards", installedCards.Count);
 
@@ -58,7 +60,8 @@ namespace CaelumCoreLibrary.Decks
         /// </summary>
         /// <param name="cardsList">List to add new cards to.</param>
         /// <param name="folder">Folder to seach for cards in.</param>
-        private void AddCardsFromFolder(List<ICardModel> cardsList, string folder)
+        private void AddCardsFromFolder<T>(List<ICardModel> cardsList, string folder)
+            where T : ICardModel
         {
             this.log.LogDebug("Loading cards in folder {Folder}", folder);
 
@@ -75,7 +78,7 @@ namespace CaelumCoreLibrary.Decks
                 var cardDataDir = Path.Join(cardFolder, "Data");
                 Directory.CreateDirectory(cardDataDir);
 
-                var card = this.cardParser.ParseCard(cardPath);
+                var card = this.cardParser.ParseCard<T>(cardPath);
 
                 // Validate card.
                 // Don't allow duplicate cards to be added.

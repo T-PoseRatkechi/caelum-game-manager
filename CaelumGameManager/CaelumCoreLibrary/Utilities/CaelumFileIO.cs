@@ -28,5 +28,20 @@ namespace CaelumCoreLibrary.Utilities
 
             return dirPath;
         }
+
+        /// <summary>
+        /// Copies the contents of <paramref name="sourceFolder"/> to <paramref name="destFolder"/>, overwriting any existing files.
+        /// </summary>
+        /// <param name="sourceFolder">Source folder to copy.</param>
+        /// <param name="destFolder">Destination folder.</param>
+        public static void CopyFolder(string sourceFolder, string destFolder)
+        {
+            foreach (var file in Directory.GetFiles(sourceFolder, "*", SearchOption.AllDirectories))
+            {
+                var outputFile = Path.Join(destFolder, file.Replace(sourceFolder, string.Empty));
+                Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
+                File.Copy(file, outputFile, true);
+            }
+        }
     }
 }

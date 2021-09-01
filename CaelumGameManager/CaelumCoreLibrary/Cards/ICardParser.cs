@@ -16,6 +16,8 @@
         /// </summary>
         /// <param name="cardFile">Card file to parse.</param>
         /// <returns><paramref name="cardFile"/> parsed as <see cref="ICardModel"/>.</returns>
-        ICardModel ParseCard(string cardFile);
+        /// <typeparam name="T">Card type.</typeparam>
+        ICardModel ParseCard<T>(string cardFile)
+            where T : ICardModel;
     }
 }
