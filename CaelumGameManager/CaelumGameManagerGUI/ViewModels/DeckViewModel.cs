@@ -70,9 +70,7 @@ namespace CaelumGameManagerGUI.ViewModels
             this._cardConverter = cardConverter;
 
             this.FilteredDeck = CollectionViewSource.GetDefaultView(this._deck);
-
-            // Set default launcher.
-            this._selectedGameLauncher = (ILauncherCardModel)this._deck.FirstOrDefault(card => card.CardId == this.game.GameConfig.Settings.DefaultGameLauncher);
+            this.SetInitialLauncher();
         }
 
         /// <summary>
@@ -117,6 +115,12 @@ namespace CaelumGameManagerGUI.ViewModels
             set
             {
                 this._selectedGameLauncher = value;
+
+                if (this._selectedGameLauncher == null)
+                {
+                    this._selectedGameLauncher = (ILauncherCardModel)this.GameLauncher[0];
+                }
+
                 this.game.GameConfig.Settings.DefaultGameLauncher = this._selectedGameLauncher.CardId;
                 this.game.GameConfig.SaveGameConfig();
             }
@@ -279,7 +283,11 @@ namespace CaelumGameManagerGUI.ViewModels
                     }
 
                     this.game.GameConfig.SaveGameConfig();
+
+                    // Annoying bug causes currently select item text to disappear after this.
+                    // Item is still default, just text missing. TODO: Code behind to fix?
                     this.NotifyOfPropertyChange(() => this.GameLauncher);
+
                     Log.Information("Cards reloaded. Aemulus successfully imported.");
                 }
                 catch (Exception e)
@@ -306,6 +314,16 @@ namespace CaelumGameManagerGUI.ViewModels
             }
 
             return false;
+        }
+
+        private void SetInitialLauncher()
+        {
+            // Set default launcher.
+            this._selectedGameLauncher = (ILauncherCardModel)this._deck.FirstOrDefault(card => card.CardId == this.game.GameConfig.Settings.DefaultGameLauncher);
+            if (this._selectedGameLauncher == null)
+            {
+                this._selectedGameLauncher = (ILauncherCardModel)this.GameLauncher[0];
+            }
         }
 
 #pragma warning disable SA1600 // Elements should be documented
