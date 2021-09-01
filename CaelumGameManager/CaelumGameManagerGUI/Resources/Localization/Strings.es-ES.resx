@@ -214,4 +214,16 @@
   <data name="ErrorLauncherStartFailedMessage" xml:space="preserve">
     <value>No se pudo iniciar el lanzador.</value>
   </data>
+  <data name="ErrorAemulusImportFailedMessage" xml:space="preserve">
+    <value>No se pudo importar Aemulus.</value>
+  </data>
+  <data name="WindowSelectAemulusTitle" xml:space="preserve">
+    <value>Seleccionar AemulusPackageManager.exe...</value>
+  </data>
+  <data name="ImportAemulusMessage" xml:space="preserve">
+    <value>Importación de Aemulus. Esto puede tardar un rato.</value>
+  </data>
+  <data name="ImportAemulusSuccessMessage" xml:space="preserve">
+    <value>Aemulus se importó correctamente.</value>
+  </data>
 </root>

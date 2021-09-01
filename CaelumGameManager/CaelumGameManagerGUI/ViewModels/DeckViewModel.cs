@@ -193,7 +193,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 OpenFileDialog openFileDialog = new();
                 openFileDialog.Filter = $"AemulusPackageManager.exe| *.exe";
-                openFileDialog.Title = "Select AemulusPackageManager.exe...";
+                openFileDialog.Title = LocalizedStrings.Instance["WindowSelectAemulusTitle"];
 
                 if (openFileDialog.ShowDialog() == true)
                 {
@@ -213,10 +213,10 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 try
                 {
-                    Log.Information("Importing Aemulus packages. This may take a while.");
+                    Log.Information(LocalizedStrings.Instance["ImportAemulusMessage"]);
                     await Task.Run(() => this._cardConverter.AemulusConverter.Import(aemulusDir, this.game.GameInstall.CardsDirectory));
 
-                    Log.Information("Loading Aemulus settings.");
+                    Log.Debug("Loading Aemulus settings.");
                     var p4gGamePackagesFile = Path.Join(aemulusDir, "Config", "Persona4GoldenPackages.xml");
                     var p4gGamePackages = GamePackagesParser.ParseGamePackagesXml(p4gGamePackagesFile);
 
@@ -262,11 +262,11 @@ namespace CaelumGameManagerGUI.ViewModels
                             File.WriteAllText(Path.Join(reloadedCardDir, "card.json"), cardText);
 
                             CaelumFileIO.CopyFolder(Path.GetDirectoryName(aemulusConfig.p4gConfig.reloadedPath), Path.Join(reloadedCardDir, "Data"));
-                            Log.Information("Imported Reloaded II as a Launcher.");
+                            Log.Debug("Imported Reloaded II as a Launcher.");
                         }
                     }
 
-                    Log.Information("Aemulus settings loaded. Reloading cards.");
+                    Log.Debug("Aemulus settings loaded. Reloading cards.");
                     this.game.Deck.LoadDeckCards();
                     this.game.InitDeck();
                     this._deck.Clear();
@@ -288,11 +288,11 @@ namespace CaelumGameManagerGUI.ViewModels
                     // Item is still default, just text missing. TODO: Code behind to fix?
                     this.NotifyOfPropertyChange(() => this.GameLauncher);
 
-                    Log.Information("Cards reloaded. Aemulus successfully imported.");
+                    Log.Information(LocalizedStrings.Instance["ImportAemulusSuccessMessage"]);
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Problem encountered while importing Aemulus.");
+                    Log.Error(e, LocalizedStrings.Instance["ErrorAemulusImportFailedMessage"]);
                 }
             }
         }

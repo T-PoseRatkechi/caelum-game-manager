@@ -37,11 +37,6 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center">
-                <iconPacks:PackIconMaterial Kind="MusicBox" Grid.Column="1" Width="auto" Height="auto"/>
-                <iconPacks:PackIconMaterial Kind="MusicBox" Grid.Column="1" Width="auto" Height="auto"/>
-                <iconPacks:PackIconMaterial Kind="MusicBox" Grid.Column="1" Width="auto" Height="auto"/>
-                <iconPacks:PackIconMaterial Kind="MusicBox" Grid.Column="1" Width="auto" Height="auto"/>
-                <iconPacks:PackIconMaterial Kind="MusicBox" Grid.Column="1" Width="auto" Height="auto"/>
             </StackPanel>
             <Viewbox Grid.Row="1" VerticalAlignment="Bottom" Width="auto">
                 <TextBlock Text="{Binding Path=CurrentGame.GameInstall.GameName}" Padding="0 0 10 0" Opacity="0.4">

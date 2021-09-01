@@ -214,4 +214,16 @@
   <data name="ErrorLauncherStartFailedMessage" xml:space="preserve">
     <value>Failed to start launcher.</value>
   </data>
+  <data name="ErrorAemulusImportFailedMessage" xml:space="preserve">
+    <value>Failed to import Aemulus.</value>
+  </data>
+  <data name="WindowSelectAemulusTitle" xml:space="preserve">
+    <value>Select AemulusPackageManager.exe...</value>
+  </data>
+  <data name="ImportAemulusMessage" xml:space="preserve">
+    <value>Import Aemulus. This may take a while.</value>
+  </data>
+  <data name="ImportAemulusSuccessMessage" xml:space="preserve">
+    <value>Aemulus successfully imported.</value>
+  </data>
 </root>

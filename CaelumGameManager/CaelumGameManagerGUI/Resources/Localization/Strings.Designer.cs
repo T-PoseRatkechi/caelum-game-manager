@@ -232,6 +232,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to import Aemulus..
+        /// </summary>
+        public static string ErrorAemulusImportFailedMessage {
+            get {
+                return ResourceManager.GetString("ErrorAemulusImportFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deck build failed..
         /// </summary>
         public static string ErrorDeckBuildFailedMessage {
@@ -282,6 +291,24 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string FullRebuildText {
             get {
                 return ResourceManager.GetString("FullRebuildText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Aemulus. This may take a while..
+        /// </summary>
+        public static string ImportAemulusMessage {
+            get {
+                return ResourceManager.GetString("ImportAemulusMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aemulus successfully imported..
+        /// </summary>
+        public static string ImportAemulusSuccessMessage {
+            get {
+                return ResourceManager.GetString("ImportAemulusSuccessMessage", resourceCulture);
             }
         }
         
@@ -399,6 +426,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string WindowImageFileFilter {
             get {
                 return ResourceManager.GetString("WindowImageFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select AemulusPackageManager.exe....
+        /// </summary>
+        public static string WindowSelectAemulusTitle {
+            get {
+                return ResourceManager.GetString("WindowSelectAemulusTitle", resourceCulture);
             }
         }
         

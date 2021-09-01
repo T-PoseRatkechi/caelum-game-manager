@@ -76,19 +76,6 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         {
             get
             {
-                if (string.IsNullOrEmpty(this.CardName) || this.CardAuthors.Count < 1)
-                {
-                    this._cardId = null;
-                }
-                else
-                {
-                    var tempId = $"{this.CardAuthors[0].Name}_{this.CardName}".ToLower().Replace(" ", string.Empty);
-                    if (CardUtils.IsValidId(tempId))
-                    {
-                        this._cardId = tempId;
-                    }
-                }
-
                 return this._cardId;
             }
         }
