@@ -8,6 +8,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CaelumGameManagerGUI.Views"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:toolbars="clr-namespace:CaelumGameManagerGUI.Views.Toolbars"
         lex:LocalizeDictionary.DesignCulture="en"
         lex:ResxLocalizationProvider.DefaultAssembly="CaelumGameManager"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
@@ -22,10 +24,13 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*"/>
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
+
+        <!--Toolbar-->
+        <ContentControl x:Name="ShellToolbar" Grid.ColumnSpan="10"/>
 
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -49,7 +54,7 @@
                 </TextBlock>
             </Viewbox>
         </Grid>
-        
+
         <!--Active Item and Log-->
         <Grid Grid.Column="2" Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -63,11 +68,10 @@
                 <RowDefinition Height="*" MinHeight="100"/>
             </Grid.RowDefinitions>
 
-            <ContentControl
-                        Grid.Row="0" Grid.RowSpan="3"
-                        x:Name="ActiveItem"
-                          BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                          BorderThickness="5"/>
+            <ContentControl Grid.Row="0" Grid.RowSpan="3"
+                            x:Name="ActiveItem"
+                            BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                            BorderThickness="5"/>
             <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch"/>
             <ContentControl x:Name="LogVM" Grid.Row="4"/>
         </Grid>

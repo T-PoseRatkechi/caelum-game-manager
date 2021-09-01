@@ -229,4 +229,7 @@
   <data name="OpenCardFolderText" xml:space="preserve">
     <value>Open Card Folder</value>
   </data>
+  <data name="WindowSelectFileTitle" xml:space="preserve">
+    <value>Select File...</value>
+  </data>
 </root>

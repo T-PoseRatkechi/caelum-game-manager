@@ -12,11 +12,11 @@ namespace CaelumGameManagerGUI.ViewModels
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Cards.Converters;
     using CaelumCoreLibrary.Games;
     using CaelumGameManagerGUI.Cards;
     using CaelumGameManagerGUI.Models;
+    using CaelumGameManagerGUI.ViewModels.Toolbars;
     using Caliburn.Micro;
     using Serilog;
 
@@ -51,6 +51,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 this.gameDeck = new BindableDeckModel(this.currentGame.Deck.Cards.ToObservableCards());
 
                 this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
+                this.ShellToolbar = new(this.currentGame, this.gameDeck, cardConverter);
             }
             catch (Exception e)
             {
@@ -66,6 +67,8 @@ namespace CaelumGameManagerGUI.ViewModels
             get { return this.currentGame; }
             set { this.currentGame = value; }
         }
+
+        public ShellToolbarViewModel ShellToolbar { get; init; }
 
         /// <summary>
         /// Gets the current game's name.

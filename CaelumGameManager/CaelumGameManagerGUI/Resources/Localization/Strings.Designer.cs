@@ -455,5 +455,14 @@ namespace CaelumGameManagerGUI.Resources.Localization {
                 return ResourceManager.GetString("WindowSelectAvatarTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select File....
+        /// </summary>
+        public static string WindowSelectFileTitle {
+            get {
+                return ResourceManager.GetString("WindowSelectFileTitle", resourceCulture);
+            }
+        }
     }
 }
