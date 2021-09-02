@@ -40,7 +40,8 @@ namespace CaelumGameManagerGUI
         /// <returns>Game instance.</returns>
         public IGameInstance GetGameInstance()
         {
-            return this.gameInstanceFactory.CreateGameInstance("Persona 4 Golden");
+            // return this.gameInstanceFactory.CreateGameInstance("Persona 4 Golden");
+            return this.gameInstanceFactory.CreateGameInstance("Persona 5");
         }
     }
 }

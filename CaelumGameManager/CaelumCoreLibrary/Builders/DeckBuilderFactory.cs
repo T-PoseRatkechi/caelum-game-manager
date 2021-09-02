@@ -33,6 +33,8 @@ namespace CaelumCoreLibrary.Builders
             {
                 case "Persona 4 Golden":
                     return new DeckBuilderP4G(this.log, gameInstall, gameConfig);
+                case "Persona 5":
+                    return new DeckBuilderP5(this.log, gameInstall, gameConfig);
                 default:
                     return new DeckBuilderBasic(this.log, new GameFileProviderDefault(this.log, gameConfig.GameInstallPath));
             }

@@ -48,8 +48,6 @@ namespace CaelumCoreLibrary.Builders.Files
             this.log = log;
             this.unpackedDir = unpackedDir;
             this.gameConfig = gameConfig;
-
-            // this.gameInstallPath = gameInstallPath;
         }
 
         /// <summary>
