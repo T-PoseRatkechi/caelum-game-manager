@@ -33,6 +33,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
         /// </summary>
         /// <param name="caelumCore">Caelum core.</param>
+        /// <param name="cardConverter">Card converter.</param>
         public ShellViewModel(CaelumCore caelumCore, CardConverter cardConverter)
         {
             try

@@ -7,12 +7,24 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
 {
     using System;
     using System.Windows.Input;
+    using CaelumCoreLibrary.Configs;
 
     /// <summary>
     /// Command for enabling debug mode.
     /// </summary>
     public class EnableDebugCommand : ICommand
     {
+        private readonly IGameConfigManager gameConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnableDebugCommand"/> class.
+        /// </summary>
+        /// <param name="gameConfig">Game config manager.</param>
+        public EnableDebugCommand(IGameConfigManager gameConfig)
+        {
+            this.gameConfig = gameConfig;
+        }
+
         /// <inheritdoc/>
         public event EventHandler CanExecuteChanged;
 
@@ -25,7 +37,14 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
         /// <inheritdoc/>
         public void Execute(object parameter)
         {
-            App.LogLevelController.MinimumLevel = (App.LogLevelController.MinimumLevel == Serilog.Events.LogEventLevel.Debug) ? Serilog.Events.LogEventLevel.Information : Serilog.Events.LogEventLevel.Debug;
+            // Toggle debug mode.
+            App.LogLevelController.MinimumLevel = this.gameConfig.Settings.ShowDebugMessages ? Serilog.Events.LogEventLevel.Information : Serilog.Events.LogEventLevel.Debug;
+
+            // Toggle debug mode in game config.
+            this.gameConfig.Settings.ShowDebugMessages = !this.gameConfig.Settings.ShowDebugMessages;
+
+            // Save changes to game config file.
+            this.gameConfig.SaveGameConfig();
         }
     }
 }

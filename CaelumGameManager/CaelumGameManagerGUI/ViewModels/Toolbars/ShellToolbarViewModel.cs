@@ -38,9 +38,12 @@ namespace CaelumGameManagerGUI.ViewModels.Toolbars
             this._windowManager = windowManager;
         }
 
+        /// <summary>
+        /// Open config window.
+        /// </summary>
         public void OpenConfig()
         {
-            this._windowManager.ShowDialogAsync(new MainConfigViewModel());
+            this._windowManager.ShowDialogAsync(new MainConfigViewModel(this._gameInstance.GameConfig));
         }
 
         /// <summary>

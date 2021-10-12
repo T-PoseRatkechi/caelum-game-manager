@@ -5,6 +5,7 @@
 
 namespace CaelumGameManagerGUI.ViewModels.Configs
 {
+    using CaelumCoreLibrary.Configs;
     using System.Windows.Input;
 
     /// <summary>
@@ -12,8 +13,16 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
     /// </summary>
     public class MainConfigViewModel
     {
-        public MainConfigViewModel()
+        private readonly IGameConfigManager gameConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainConfigViewModel"/> class.
+        /// </summary>
+        /// <param name="gameConfig">Game config.</param>
+        public MainConfigViewModel(IGameConfigManager gameConfig)
         {
+            this.gameConfig = gameConfig;
+            this.EnableDebug = new EnableDebugCommand(gameConfig);
         }
 
         /// <summary>
@@ -30,6 +39,6 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
         /// <summary>
         /// Gets command for enabling or disabling debug mode.
         /// </summary>
-        public ICommand EnableDebug { get; } = new EnableDebugCommand();
+        public ICommand EnableDebug { get; init; }
     }
 }
