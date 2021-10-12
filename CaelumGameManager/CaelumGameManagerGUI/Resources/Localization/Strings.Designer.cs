@@ -151,6 +151,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Config.
+        /// </summary>
+        public static string ConfigText {
+            get {
+                return ResourceManager.GetString("ConfigText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string ConfirmText {
@@ -219,6 +228,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string EditCardText {
             get {
                 return ResourceManager.GetString("EditCardText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Settings.
+        /// </summary>
+        public static string EditSettingsText {
+            get {
+                return ResourceManager.GetString("EditSettingsText", resourceCulture);
             }
         }
         

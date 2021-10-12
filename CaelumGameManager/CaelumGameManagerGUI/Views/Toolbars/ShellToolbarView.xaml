@@ -17,7 +17,10 @@
             <MenuItem Header="{lex:Loc ImportAemulusText}"
                     cal:Message.Attach="ImportAemulus()"/>
         </MenuItem>
-        <MenuItem Header="S_ettings"/>
+        <MenuItem Header="{lex:Loc ConfigText}">
+            <MenuItem Header="{lex:Loc EditSettingsText}"
+                      cal:Message.Attach="OpenConfig()"/>
+        </MenuItem>
         <MenuItem Header="_About"/>
     </Menu>
 </UserControl>

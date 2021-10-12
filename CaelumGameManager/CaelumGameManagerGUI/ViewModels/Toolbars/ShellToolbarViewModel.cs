@@ -18,6 +18,7 @@ namespace CaelumGameManagerGUI.ViewModels.Toolbars
     using CaelumGameManagerGUI.Common;
     using CaelumGameManagerGUI.Models;
     using CaelumGameManagerGUI.Resources.Localization;
+    using CaelumGameManagerGUI.ViewModels.Configs;
     using Caliburn.Micro;
     using Newtonsoft.Json;
     using Serilog;
@@ -27,12 +28,19 @@ namespace CaelumGameManagerGUI.ViewModels.Toolbars
         private IGameInstance _gameInstance;
         private CardConverter _cardConverter;
         private BindableDeckModel _deck;
+        private readonly IWindowManager _windowManager;
 
-        public ShellToolbarViewModel(IGameInstance gameInstance, BindableDeckModel deck, CardConverter cardConverter)
+        public ShellToolbarViewModel(IGameInstance gameInstance, BindableDeckModel deck, CardConverter cardConverter, IWindowManager windowManager)
         {
             this._cardConverter = cardConverter;
             this._gameInstance = gameInstance;
             this._deck = deck;
+            this._windowManager = windowManager;
+        }
+
+        public void OpenConfig()
+        {
+            this._windowManager.ShowDialogAsync(new MainConfigViewModel());
         }
 
         /// <summary>

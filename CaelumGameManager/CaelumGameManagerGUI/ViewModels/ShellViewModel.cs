@@ -27,6 +27,7 @@ namespace CaelumGameManagerGUI.ViewModels
     {
         private IGameInstance currentGame;
         private BindableDeckModel gameDeck;
+        private readonly IWindowManager windowManager = new WindowManager();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
@@ -51,7 +52,7 @@ namespace CaelumGameManagerGUI.ViewModels
                 this.gameDeck = new BindableDeckModel(this.currentGame.Deck.Cards.ToObservableCards());
 
                 this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
-                this.ShellToolbar = new(this.currentGame, this.gameDeck, cardConverter);
+                this.ShellToolbar = new(this.currentGame, this.gameDeck, cardConverter, this.windowManager);
             }
             catch (Exception e)
             {

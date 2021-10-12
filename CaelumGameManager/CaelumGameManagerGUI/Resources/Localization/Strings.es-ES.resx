@@ -232,4 +232,10 @@
   <data name="WindowSelectFileTitle" xml:space="preserve">
     <value>Seleccionar de Archivo...</value>
   </data>
+  <data name="EditSettingsText" xml:space="preserve">
+    <value>Editar Ajustes</value>
+  </data>
+  <data name="ConfigText" xml:space="preserve">
+    <value>Config</value>
+  </data>
 </root>
