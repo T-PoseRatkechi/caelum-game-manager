@@ -29,6 +29,8 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
 
         public string OutputDirectory => this.gameConfig.Settings.OutputDirectory;
 
+        public bool DirectBuild => this.gameConfig.Settings.OutputBuildOnly;
+
         /// <summary>
         /// Gets a value indicating whether debug mode is enabled.
         /// </summary>

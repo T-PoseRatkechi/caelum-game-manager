@@ -29,15 +29,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="Debug Mode" FontSize="20" FontWeight="DemiBold"/>
-            <mah:ToggleSwitch
-                              DockPanel.Dock="Top"
-                              OffContent="Disabled"
-                              OnContent="Enabled"
-                              IsOn="{Binding DebugEnabled, Mode=OneWay}"
-                              Command="{Binding EnableDebug}"
-                              />
 
+            <!-- Game Install -->
             <TextBlock Text="{lex:Loc GameInstallText}" FontSize="20" FontWeight="DemiBold"/>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -53,6 +46,7 @@
                 <TextBox Grid.Column="1" x:Name="GameInstallPath" VerticalAlignment="Center" TextWrapping="NoWrap" IsReadOnly="True"/>
             </Grid>
 
+            <!-- Output Directory -->
             <TextBlock Text="{lex:Loc OutputDirectoryText}" FontSize="20" FontWeight="DemiBold"/>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -67,6 +61,32 @@
                 </Button>
                 <TextBox Grid.Column="1" x:Name="OutputDirectory" VerticalAlignment="Center" TextWrapping="NoWrap" IsReadOnly="True"/>
             </Grid>
+
+            <!-- Output Build Only -->
+            <TextBlock Text="{lex:Loc DirectBuildText}" FontSize="20" FontWeight="DemiBold"/>
+            <mah:ToggleSwitch
+                              OffContent="Disabled"
+                              OnContent="Enabled"
+                              IsOn="{Binding DirectBuild, Mode=OneWay}"
+                              Command="{Binding EnableDebug}"
+                              />
+
+            <!-- Debug Mode -->
+            <TextBlock Text="Debug Mode" FontSize="20" FontWeight="DemiBold"/>
+            <mah:ToggleSwitch
+                              OffContent="Disabled"
+                              OnContent="Enabled"
+                              IsOn="{Binding DebugEnabled, Mode=OneWay}"
+                              Command="{Binding EnableDebug}"
+                              />
+
+            <!-- Game Theme -->
+            <TextBlock Text="{lex:Loc GameThemeText}" FontSize="20" FontWeight="DemiBold"/>
+            <ComboBox MinWidth="100" HorizontalAlignment="Left">
+                <ComboBoxItem Content="Red"/>
+                <ComboBoxItem Content="Blue"/>
+                <ComboBoxItem Content="Yellow"/>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>

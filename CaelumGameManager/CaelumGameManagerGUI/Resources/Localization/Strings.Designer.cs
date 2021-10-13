@@ -214,6 +214,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Build.
+        /// </summary>
+        public static string DirectBuildText {
+            get {
+                return ResourceManager.GetString("DirectBuildText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Donate.
         /// </summary>
         public static string DonateText {
@@ -318,6 +327,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string GameInstallText {
             get {
                 return ResourceManager.GetString("GameInstallText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Theme.
+        /// </summary>
+        public static string GameThemeText {
+            get {
+                return ResourceManager.GetString("GameThemeText", resourceCulture);
             }
         }
         

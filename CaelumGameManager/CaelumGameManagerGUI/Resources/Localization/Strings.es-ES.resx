@@ -247,4 +247,10 @@
   <data name="OutputDirectoryText" xml:space="preserve">
     <value>Directorio de Producción</value>
   </data>
+  <data name="DirectBuildText" xml:space="preserve">
+    <value>Construcción Directa</value>
+  </data>
+  <data name="GameThemeText" xml:space="preserve">
+    <value>Tema del Juego</value>
+  </data>
 </root>

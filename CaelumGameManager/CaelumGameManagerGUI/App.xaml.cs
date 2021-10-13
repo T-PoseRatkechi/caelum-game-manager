@@ -39,7 +39,7 @@ namespace CaelumGameManagerGUI
             LocalizeDictionary.Instance.Culture = CultureInfo.CurrentCulture;
             */
 
-            LocalizeDictionary.Instance.Culture = new CultureInfo("es-ES");
+            // LocalizeDictionary.Instance.Culture = new CultureInfo("es-ES");
             LocalizeDictionary.Instance.MissingKeyEvent += (object sender, MissingKeyEventArgs evt) =>
             {
                 Log.Warning("String key missing! Key: {key}, Culture: {culture}", evt.Key, LocalizeDictionary.Instance.Culture.Name);
