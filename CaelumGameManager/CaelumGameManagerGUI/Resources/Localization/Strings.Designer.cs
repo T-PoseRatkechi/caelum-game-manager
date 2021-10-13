@@ -412,6 +412,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Output Directory.
+        /// </summary>
+        public static string OutputDirectoryText {
+            get {
+                return ResourceManager.GetString("OutputDirectoryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play.
         /// </summary>
         public static string PlayText {

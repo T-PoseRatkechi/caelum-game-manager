@@ -244,4 +244,7 @@
   <data name="GameInstallText" xml:space="preserve">
     <value>Instalación del Juego</value>
   </data>
+  <data name="OutputDirectoryText" xml:space="preserve">
+    <value>Directorio de Producción</value>
+  </data>
 </root>

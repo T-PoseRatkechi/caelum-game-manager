@@ -27,6 +27,8 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
 
         public string GameInstallPath => this.gameConfig.Settings.GameInstallPath;
 
+        public string OutputDirectory => this.gameConfig.Settings.OutputDirectory;
+
         /// <summary>
         /// Gets a value indicating whether debug mode is enabled.
         /// </summary>

@@ -52,6 +52,21 @@
                 </Button>
                 <TextBox Grid.Column="1" x:Name="GameInstallPath" VerticalAlignment="Center" TextWrapping="NoWrap" IsReadOnly="True"/>
             </Grid>
+
+            <TextBlock Text="{lex:Loc OutputDirectoryText}" FontSize="20" FontWeight="DemiBold"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" MaxWidth="200" MinWidth="100"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Margin="5 0 5 0">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome Kind="FolderOpenSolid" Margin="0 0 5 0"/>
+                        <TextBlock Text="{lex:Loc SelectText}" FontSize="12"/>
+                    </StackPanel>
+                </Button>
+                <TextBox Grid.Column="1" x:Name="OutputDirectory" VerticalAlignment="Center" TextWrapping="NoWrap" IsReadOnly="True"/>
+            </Grid>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>
