@@ -313,6 +313,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game Install.
+        /// </summary>
+        public static string GameInstallText {
+            get {
+                return ResourceManager.GetString("GameInstallText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Aemulus. This may take a while..
         /// </summary>
         public static string ImportAemulusMessage {
@@ -408,6 +417,15 @@ namespace CaelumGameManagerGUI.Resources.Localization {
         public static string PlayText {
             get {
                 return ResourceManager.GetString("PlayText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        public static string SelectText {
+            get {
+                return ResourceManager.GetString("SelectText", resourceCulture);
             }
         }
         

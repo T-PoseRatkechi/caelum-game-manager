@@ -25,6 +25,8 @@ namespace CaelumGameManagerGUI.ViewModels.Configs
             this.EnableDebug = new EnableDebugCommand(gameConfig);
         }
 
+        public string GameInstallPath => this.gameConfig.Settings.GameInstallPath;
+
         /// <summary>
         /// Gets a value indicating whether debug mode is enabled.
         /// </summary>

@@ -238,4 +238,10 @@
   <data name="ConfigText" xml:space="preserve">
     <value>Config</value>
   </data>
+  <data name="SelectText" xml:space="preserve">
+    <value>Seleccionar</value>
+  </data>
+  <data name="GameInstallText" xml:space="preserve">
+    <value>Instalación del Juego</value>
+  </data>
 </root>
