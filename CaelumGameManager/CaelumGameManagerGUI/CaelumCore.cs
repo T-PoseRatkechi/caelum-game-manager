@@ -5,7 +5,6 @@
 
 namespace CaelumGameManagerGUI
 {
-    using CaelumCoreLibrary.Builders;
     using CaelumCoreLibrary.Cards;
     using CaelumCoreLibrary.Games;
 
@@ -21,7 +20,6 @@ namespace CaelumGameManagerGUI
         /// Initializes a new instance of the <see cref="CaelumCore"/> class.
         /// </summary>
         /// <param name="gameInstanceFactory">Game instance factory.</param>
-        /// <param name="deckBuilder">Deck builder.</param>
         /// <param name="cardFactory">Card factory.</param>
         public CaelumCore(IGameInstanceFactory gameInstanceFactory, ICardFactory cardFactory)
         {
@@ -41,6 +39,7 @@ namespace CaelumGameManagerGUI
         public IGameInstance GetGameInstance()
         {
             return this.gameInstanceFactory.CreateGameInstance("Persona 4 Golden");
+
             // return this.gameInstanceFactory.CreateGameInstance("Persona 5");
         }
     }
