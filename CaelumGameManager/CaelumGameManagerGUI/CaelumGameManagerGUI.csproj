@@ -37,7 +37,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="13.2.43" />
-    <PackageReference Include="WPFLocalizeExtension" Version="3.8.0" />
+    <PackageReference Include="WPFLocalizeExtension" Version="3.9.2" />
   </ItemGroup>
 
   <ItemGroup>
