@@ -38,26 +38,21 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             try
             {
-                this.currentGame = caelumCore.GetGameInstance();
-                this.currentGame.InitDeck();
+                this.InitGameInstance(caelumCore, cardConverter);
+                var rand = new Random();
 
-                if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
+                if (rand.Next(0, 3) == 0)
                 {
-                    // Clear any earlier debug messages from log window.
-                    this.LogVM.Log.Clear();
-
-                    // Set min level to info.
-                    App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
+                    Log.Information("Shuba shuba shuba!");
                 }
-
-                this.gameDeck = new BindableDeckModel(this.currentGame.Deck.Cards.ToObservableCards());
-
-                this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
-                this.ShellToolbar = new(this.currentGame, this.gameDeck, cardConverter, this.windowManager);
+                else
+                {
+                    Log.Information("Caelum Game Manager is ready.");
+                }
             }
             catch (Exception e)
             {
-                Log.Error(e, "Failed to start app.");
+                Log.Error(e, "Failed to initialize game instance.");
             }
         }
 
@@ -83,27 +78,6 @@ namespace CaelumGameManagerGUI.ViewModels
         public LogViewModel LogVM { get; } = new();
 
         /// <inheritdoc/>
-        protected override void OnViewReady(object view)
-        {
-            base.OnViewReady(view);
-            var rand = new Random();
-
-            Log.Information(
-                "\n..::Special Thanks::..\nTGEnigma | AtlusFileSystemLibrary, Amicitia.IO, preappfile, and more.\nPractically everything in Persona modding relies on something he made.\n" +
-                "Tekka | Aemulus Package Manager\nCreated the many features that make modding Persona actually practical for 99% of people.");
-            if (rand.Next(0, 3) == 0)
-            {
-                Log.Information("Shuba shuba shuba!");
-            }
-            else
-            {
-                Log.Information("Caelum Game Manager is ready.");
-            }
-
-            this.gameDeck.CollectionChanged += this.GameDeck_CollectionChanged;
-        }
-
-        /// <inheritdoc/>
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
             return base.OnDeactivateAsync(close, cancellationToken);
@@ -111,8 +85,33 @@ namespace CaelumGameManagerGUI.ViewModels
 
         private void GameDeck_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            this.currentGame.GameConfig.Settings.Cards = this.gameDeck.Select(x => x.CardId).ToArray();
+            this.currentGame.GameConfig.Settings.Cards = this.gameDeck.Select(x => x.Id).ToArray();
             this.currentGame.GameConfig.SaveGameConfig();
+        }
+
+        /// <summary>
+        /// Initializes a game instance.
+        /// </summary>
+        /// <param name="caelumCore">Caelum core.</param>
+        /// <param name="cardConverter">Card converter.</param>
+        private void InitGameInstance(CaelumCore caelumCore, CardConverter cardConverter)
+        {
+            this.currentGame = caelumCore.GetGameInstance();
+            this.currentGame.InitDeck();
+
+            if (!this.currentGame.GameConfig.Settings.ShowDebugMessages)
+            {
+                // Clear any earlier debug messages from log window.
+                this.LogVM.Log.Clear();
+
+                // Set min level to info.
+                App.LogLevelController.MinimumLevel = Serilog.Events.LogEventLevel.Information;
+            }
+
+            this.gameDeck = new BindableDeckModel(this.currentGame.Deck.Cards.ToObservableCards());
+
+            this.ActivateItemAsync(new DeckViewModel(this.currentGame, caelumCore.CardFactory, cardConverter, this.gameDeck));
+            this.ShellToolbar = new(this.currentGame, this.gameDeck, cardConverter, this.windowManager);
         }
     }
 }
