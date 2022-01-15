@@ -19,7 +19,7 @@ namespace CaelumGameManagerGUI.Cards
         {
             var observableCards = cards.Select(x =>
             {
-                if (x.Type == CardType.Launcher)
+                if (x.Metadata.Type == CardType.Launcher)
                 {
                     return new ObservableLauncherCard(x);
                 }

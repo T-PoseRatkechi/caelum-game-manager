@@ -82,14 +82,14 @@ namespace CaelumCoreLibrary.Decks
 
                 // Validate card.
                 // Don't allow duplicate cards to be added.
-                if (cardsList.FindIndex(x => x.CardId == card.CardId) > -1)
+                if (cardsList.FindIndex(x => x.Id == card.Id) > -1)
                 {
-                    throw new InvalidOperationException($@"Cannot add card because a card already exists with the id ""{card.CardId}""! File: {cardFolder}");
+                    throw new InvalidOperationException($@"Cannot add card because a card already exists with the id ""{card.Id}""! File: {cardFolder}");
                 }
 
                 // Add card to list.
                 cardsList.Add(card);
-                this.log.LogDebug("Loaded card {CardName} with Card ID {CardId}", card.Name, card.CardId);
+                this.log.LogDebug("Loaded card {CardName} with Card ID {CardId}", card.Metadata.Name, card.Id);
             }
         }
     }

@@ -15,34 +15,19 @@ namespace CaelumCoreLibrary.Cards
     public class CardModel : ICardModel
     {
         /// <inheritdoc/>
-        public string CardId { get; set; }
+        public CardMetadataModel Metadata { get; set; }
 
         /// <inheritdoc/>
-        public bool IsEnabled { get; set; }
+        public string Id { get; set; }
 
         /// <inheritdoc/>
-        public bool IsHidden { get; set; }
+        public bool Enabled { get; set; }
 
         /// <inheritdoc/>
-        public string Name { get; set; }
-
-        /// <inheritdoc/>
-        public List<string> Games { get; set; }
-
-        /// <inheritdoc/>
-        public List<Author> Authors { get; set; }
-
-        /// <inheritdoc/>
-        public string Description { get; set; }
-
-        /// <inheritdoc/>
-        public string Version { get; set; }
-
-        /// <inheritdoc/>
-        public CardType Type { get; set; }
+        public bool Hidden { get; set; }
 
         /// <inheritdoc/>
         [JsonIgnore]
-        public string InstallDirectory { get; set; }
+        public string InstallFolder { get; set; }
     }
 }

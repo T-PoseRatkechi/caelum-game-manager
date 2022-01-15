@@ -17,31 +17,16 @@ namespace CaelumCoreLibrary.Cards
     public class LauncherCardModel : ICardModel, ILauncherCardModel
     {
         /// <inheritdoc/>
-        public string CardId { get; set; }
+        public CardMetadataModel Metadata { get; set; }
 
         /// <inheritdoc/>
-        public bool IsEnabled { get; set; }
+        public string Id { get; set; }
 
         /// <inheritdoc/>
-        public bool IsHidden { get; set; }
+        public bool Enabled { get; set; }
 
         /// <inheritdoc/>
-        public string Name { get; set; }
-
-        /// <inheritdoc/>
-        public List<string> Games { get; set; }
-
-        /// <inheritdoc/>
-        public List<Author> Authors { get; set; }
-
-        /// <inheritdoc/>
-        public string Description { get; set; }
-
-        /// <inheritdoc/>
-        public string Version { get; set; }
-
-        /// <inheritdoc/>
-        public CardType Type { get; set; } = CardType.Launcher;
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// Gets or sets the path of the launcher exe to use, relative to the data folder.
@@ -54,8 +39,7 @@ namespace CaelumCoreLibrary.Cards
         public string LauncherArgs { get; set; }
 
         /// <inheritdoc/>
-        [JsonIgnore]
-        public string InstallDirectory { get; set; }
+        public string InstallFolder { get; set; }
 
         /// <summary>
         /// Starts the launcher with args.
@@ -71,7 +55,7 @@ namespace CaelumCoreLibrary.Cards
             }
             else
             {
-                fullPath = Path.Join(this.InstallDirectory, "Data", this.LauncherPath);
+                fullPath = Path.Join(this.InstallFolder, "Data", this.LauncherPath);
             }
 
             ProcessStartInfo startInfo = new(fullPath);

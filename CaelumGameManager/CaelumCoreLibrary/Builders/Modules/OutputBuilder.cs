@@ -86,11 +86,11 @@ namespace CaelumCoreLibrary.Builders.Modules
             // Build cards in reverse order.
             for (int i = cards.Count - 1; i >= 0; i--)
             {
-                if (cards[i].IsEnabled && !cards[i].IsHidden &&
-                    cards[i].Type != CardType.None && cards[i].Type != CardType.Launcher)
+                if (cards[i].Enabled && !cards[i].Hidden &&
+                    cards[i].Metadata.Type != CardType.None && cards[i].Metadata.Type != CardType.Launcher)
                 {
                     this.BuildCardOutput(cards[i], outputDir);
-                    this.log.LogInformation("{CardName} successfully built.", cards[i].Name);
+                    this.log.LogInformation("{CardName} successfully built.", cards[i].Metadata.Name);
                 }
             }
 
@@ -115,7 +115,7 @@ namespace CaelumCoreLibrary.Builders.Modules
                 module.BuildCard(card, outputDir, builtCardFiles);
             }
 
-            this.log.LogDebug("Card {CardName} built with {NumFiles} files processed.", card.Name, builtCardFiles.Count);
+            this.log.LogDebug("Card {CardName} built with {NumFiles} files processed.", card.Metadata.Name, builtCardFiles.Count);
         }
     }
 }

@@ -95,17 +95,20 @@ namespace CaelumGameManagerGUI.ViewModels.Toolbars
 
                         LauncherCardModel reloadedCard = new()
                         {
-                            CardId = reloadedCardId,
-                            Name = "Reloaded II",
-                            Authors = null,
-                            Games = new() { "Persona 4 Golden" },
-                            IsEnabled = true,
-                            Version = "1.0.0",
-                            Description = "[Reloaded II] is a Universal DLL Injection based Mod Loader and Management System.",
-                            Type = CardType.Launcher,
+                            Metadata = new()
+                            {
+                                Name = "Reloaded II",
+                                Authors = null,
+                                Games = new() { "Persona 4 Golden" },
+                                Version = "1.0.0",
+                                Description = "[Reloaded II] is a Universal DLL Injection based Mod Loader and Management System.",
+                                Type = CardType.Launcher,
+                            },
+                            Id = reloadedCardId,
+                            Enabled = true,
                             LauncherPath = "Reloaded-II.exe",
                             LauncherArgs = @"--launch ""${GameInstall}""",
-                            InstallDirectory = reloadedCardDir,
+                            InstallFolder = reloadedCardDir,
                         };
 
                         // Write card file.
@@ -126,10 +129,10 @@ namespace CaelumGameManagerGUI.ViewModels.Toolbars
                 // Set card enabled settings same as Aemulus.
                 foreach (var gamePackage in p4gGamePackages.packages)
                 {
-                    var match = this._deck.FirstOrDefault(x => x.CardId == gamePackage.id);
+                    var match = this._deck.FirstOrDefault(x => x.Id == gamePackage.id);
                     if (match != null)
                     {
-                        match.IsEnabled = gamePackage.enabled;
+                        match.Enabled = gamePackage.enabled;
                     }
                 }
 

@@ -98,19 +98,22 @@ namespace CaelumCoreLibrary.Cards.Converters.Aemulus
                     CardType cardType = CardType.Folder;
 
                     // Probably package from Community Pack seperator.
-                    if (packageXml.author == "" && packageXml.version == "" && packageXml.link == "")
+                    if (packageXml.author == string.Empty && packageXml.version == string.Empty && packageXml.link == string.Empty)
                     {
                         cardType = CardType.None;
                     }
 
                     CardModel card = new()
                     {
-                        Name = packageXml.name,
-                        CardId = packageXml.id,
-                        Authors = new(),
-                        Description = packageXml.description,
-                        Type = cardType,
-                        Version = packageXml.version,
+                        Metadata = new CardMetadataModel()
+                        {
+                            Name = packageXml.name,
+                            Description = packageXml.description,
+                            Type = cardType,
+                            Version = packageXml.version,
+                        },
+
+                        Id = packageXml.id,
                     };
 
                     this.writer.WriteFile(Path.Join(packageDir, "card.json"), card);

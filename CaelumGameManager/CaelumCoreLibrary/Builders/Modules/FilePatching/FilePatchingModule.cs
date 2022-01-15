@@ -42,7 +42,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
         public void BuildCard(ICardModel card, string outputDir, HashSet<string> builtCardFiles)
         {
             // Card patches dir.
-            string cardPatchesFolder = Path.Join(card.InstallDirectory, "Data", "Patches");
+            string cardPatchesFolder = Path.Join(card.InstallFolder, "Data", "Patches");
 
             if (Directory.Exists(cardPatchesFolder))
             {
@@ -104,7 +104,7 @@ namespace CaelumCoreLibrary.Builders.Modules.FilePatching
                     }
                 }
 
-                this.log.LogDebug("Loaded {NumPatches} file patch(es) from card {CardName}", patchFiles.Length, card.Name);
+                this.log.LogDebug("Loaded {NumPatches} file patch(es) from card {CardName}", patchFiles.Length, card.Metadata.Name);
             }
         }
     }

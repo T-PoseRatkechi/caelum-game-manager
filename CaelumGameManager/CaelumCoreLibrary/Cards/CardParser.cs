@@ -26,10 +26,10 @@ namespace CaelumCoreLibrary.Cards
             string cardText = File.ReadAllText(cardFile);
             var card = JsonConvert.DeserializeObject<T>(cardText);
 
-            card.InstallDirectory = Path.GetDirectoryName(cardFile);
+            card.InstallFolder = Path.GetDirectoryName(cardFile);
 
             // Load author files.
-            var authorsDir = Path.Join(card.InstallDirectory, "Authors");
+            var authorsDir = Path.Join(card.InstallFolder, "Authors");
             if (Directory.Exists(authorsDir))
             {
                 foreach (var file in Directory.GetFiles(authorsDir))

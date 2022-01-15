@@ -6,11 +6,12 @@
 namespace CaelumCoreLibrary.Cards
 {
     using System.Collections.Generic;
+    using CaelumCoreLibrary.Common;
 
     /// <summary>
     /// Metadata model.
     /// </summary>
-    public class MetadataModel
+    public class CardMetadataModel
     {
         /// <summary>
         /// Gets or sets card name.
@@ -25,7 +26,7 @@ namespace CaelumCoreLibrary.Cards
         /// <summary>
         /// Gets or sets authors' names list.
         /// </summary>
-        public List<string> Authors { get; set; }
+        public List<Author> Authors { get; set; }
 
         /// <summary>
         /// Gets or sets card version.

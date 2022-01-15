@@ -39,7 +39,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
             {
                 if (this.Card is ICardModel installedCard)
                 {
-                    string cardImagePath = Path.Join(installedCard.InstallDirectory, "card.png");
+                    string cardImagePath = Path.Join(installedCard.InstallFolder, "card.png");
                     if (File.Exists(cardImagePath))
                     {
                         return cardImagePath;
@@ -63,7 +63,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
             {
                 if (this.Card != null)
                 {
-                    switch (this.Card.Type)
+                    switch (this.Card.Metadata.Type)
                     {
                         case CardType.Folder:
                             return "FolderOpen";

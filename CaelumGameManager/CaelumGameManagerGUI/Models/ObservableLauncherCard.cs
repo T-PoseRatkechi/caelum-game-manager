@@ -16,7 +16,7 @@ namespace CaelumGameManagerGUI.Models
         public ObservableLauncherCard(ICardModel card)
             : base(card)
         {
-            if (card.Type != CardType.Launcher)
+            if (card.Metadata.Type != CardType.Launcher)
             {
                 throw new ArgumentException("Card is a not a game launcher.");
             }

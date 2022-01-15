@@ -52,11 +52,11 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
 
             if (card != null)
             {
-                this._cardId = card.CardId;
-                this.CardName = card.Name;
-                this.CardAuthors = card.Authors;
-                this.SelectedType = card.Type.ToString();
-                this.CardDescription = card.Description;
+                this._cardId = card.Id;
+                this.CardName = card.Metadata.Name;
+                this.CardAuthors = card.Metadata.Authors;
+                this.SelectedType = card.Metadata.Type.ToString();
+                this.CardDescription = card.Metadata.Description;
 
                 this.CardDisplay = new(card);
             }
@@ -206,12 +206,12 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
                     string cardVersion = string.IsNullOrEmpty(this.CardVersion) ? "1.0.0" : this.CardVersion;
 
                     ObservableCardModel newCard = new();
-                    newCard.CardId = this.CardId;
-                    newCard.Name = this.CardName;
-                    newCard.Description = this.CardDescription;
-                    newCard.Authors = this.CardAuthors;
-                    newCard.Version = cardVersion;
-                    newCard.Type = cardType;
+                    newCard.Id = this.CardId;
+                    newCard.Metadata.Name = this.CardName;
+                    newCard.Metadata.Description = this.CardDescription;
+                    newCard.Metadata.Authors = this.CardAuthors;
+                    newCard.Metadata.Version = cardVersion;
+                    newCard.Metadata.Type = cardType;
 
                     this.cardFactory.CreateCard(this.game.GameInstall, newCard);
                     this.cards.Add(newCard);
@@ -227,10 +227,10 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
             }
             else
             {
-                this.card.CardId = this.CardId;
-                this.card.Name = this.CardName;
-                this.card.Description = this.CardDescription;
-                this.card.Authors = this.CardAuthors;
+                this.card.Id = this.CardId;
+                this.card.Metadata.Name = this.CardName;
+                this.card.Metadata.Description = this.CardDescription;
+                this.card.Metadata.Authors = this.CardAuthors;
                 // this.card.Version = this.cardVersion;
             }
         }

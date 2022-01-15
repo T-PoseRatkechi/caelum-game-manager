@@ -5,64 +5,34 @@
 
 namespace CaelumCoreLibrary.Cards
 {
-    using System.Collections.Generic;
-    using CaelumCoreLibrary.Common;
-
     /// <summary>
     /// Interface for cards that are installable (has an installation folder somewhere).
     /// </summary>
     public interface ICardModel
     {
         /// <summary>
-        /// Gets or sets card ID. Must be unique with the deck with only Update Card being the exception.
-        /// Should typically be: {author_name}_{card_name}
-        /// Update Cards must have the same id as the card they are updating.
+        /// Gets or sets card metadata.
         /// </summary>
-        public string CardId { get; set; }
+        public CardMetadataModel Metadata { get; set; }
+
+        /// <summary>
+        /// Gets or sets card id.
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the card is enabled.
         /// </summary>
-        public bool IsEnabled { get; set; }
+        public bool Enabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the card is hidden in the deck.
         /// </summary>
-        public bool IsHidden { get; set; }
+        public bool Hidden { get; set; }
 
         /// <summary>
-        /// Gets or sets name of card.
+        /// Gets or sets the path to card install folder.
         /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets games card is for.
-        /// </summary>
-        public List<string> Games { get; set; }
-
-        /// <summary>
-        /// Gets or sets authors of the card.
-        /// </summary>
-        public List<Author> Authors { get; set; }
-
-        /// <summary>
-        /// Gets or sets description of card.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets version of card.
-        /// </summary>
-        public string Version { get; set; }
-
-        /// <summary>
-        /// Gets or sets card type.
-        /// </summary>
-        public CardType Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets the install path of the card.
-        /// </summary>
-        public string InstallDirectory { get; set; }
+        public string InstallFolder { get; set; }
     }
 }

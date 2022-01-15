@@ -50,9 +50,9 @@ namespace CaelumCoreLibrary.Decks
             }
 
             // Don't add cards if one already exists with the same card id.
-            else if (this.Cards.FindIndex(cardInDeck => cardInDeck.CardId == card.CardId) > -1)
+            else if (this.Cards.FindIndex(cardInDeck => cardInDeck.Id == card.Id) > -1)
             {
-                throw new ArgumentException($"Cannot add card because a card already exists with the same id {card.CardId}.", nameof(card));
+                throw new ArgumentException($"Cannot add card because a card already exists with the same id {card.Id}.", nameof(card));
             }
             else
             {
@@ -66,23 +66,23 @@ namespace CaelumCoreLibrary.Decks
             // Could not remove card from deck.
             if (!this.Cards.Remove(card))
             {
-                throw new ArgumentException($"Could not remove card {card.CardId} from deck.", nameof(card));
+                throw new ArgumentException($"Could not remove card {card.Id} from deck.", nameof(card));
             }
 
             // Delete card installation folder.
-            Directory.Delete(card.InstallDirectory, true);
+            Directory.Delete(card.InstallFolder, true);
         }
 
         /// <inheritdoc/>
         public void HideCard(ICardModel card)
         {
             // Don't allow hiding cards that are already hidden.
-            if (card.IsHidden)
+            if (card.Hidden)
             {
-                throw new ArgumentException($"Could not set card {card.CardId} to hidden because card is already hidden!", nameof(card));
+                throw new ArgumentException($"Could not set card {card.Id} to hidden because card is already hidden!", nameof(card));
             }
 
-            card.IsHidden = true;
+            card.Hidden = true;
         }
     }
 }

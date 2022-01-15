@@ -97,7 +97,7 @@ namespace CaelumGameManagerGUI.ViewModels
         /// <summary>
         /// Gets the game's available game launchers.
         /// </summary>
-        public List<ICardModel> GameLauncher => this._deck.Where(card => card.Type == CardType.Launcher).ToList();
+        public List<ICardModel> GameLauncher => this._deck.Where(card => card.Metadata.Type == CardType.Launcher).ToList();
 
         /// <summary>
         /// Gets or sets the index of currently selected game launcher.
@@ -118,7 +118,7 @@ namespace CaelumGameManagerGUI.ViewModels
                     this._selectedGameLauncher = (ILauncherCardModel)this.GameLauncher[0];
                 }
 
-                this.game.GameConfig.Settings.DefaultGameLauncher = this._selectedGameLauncher.CardId;
+                this.game.GameConfig.Settings.DefaultGameLauncher = this._selectedGameLauncher.Id;
                 this.game.GameConfig.SaveGameConfig();
             }
         }
@@ -210,7 +210,7 @@ namespace CaelumGameManagerGUI.ViewModels
         {
             if (item is ICardModel cardModel)
             {
-                if (cardModel.Type == type)
+                if (cardModel.Metadata.Type == type)
                 {
                     return true;
                 }
@@ -222,10 +222,17 @@ namespace CaelumGameManagerGUI.ViewModels
         private void SetInitialLauncher()
         {
             // Set default launcher.
-            this._selectedGameLauncher = (ILauncherCardModel)this._deck.FirstOrDefault(card => card.CardId == this.game.GameConfig.Settings.DefaultGameLauncher);
+            this._selectedGameLauncher = (ILauncherCardModel)this._deck.FirstOrDefault(card => card.Id == this.game.GameConfig.Settings.DefaultGameLauncher);
             if (this._selectedGameLauncher == null)
             {
-                this._selectedGameLauncher = (ILauncherCardModel)this.GameLauncher[0];
+                if (this.GameLauncher.Count > 0)
+                {
+                    this._selectedGameLauncher = (ILauncherCardModel)this.GameLauncher[0];
+                }
+                else
+                {
+                    throw new ArgumentException($"No game launchers found for {this.game.GameInstall.GameName}.");
+                }
             }
         }
 
@@ -264,9 +271,9 @@ namespace CaelumGameManagerGUI.ViewModels
 
         public void OpenCardFolder()
         {
-            if (this.SelectedCard != null && this.SelectedCard.InstallDirectory != null)
+            if (this.SelectedCard != null && this.SelectedCard.InstallFolder != null)
             {
-                Process.Start("explorer.exe", this.SelectedCard.InstallDirectory);
+                Process.Start("explorer.exe", this.SelectedCard.InstallFolder);
             }
         }
 

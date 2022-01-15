@@ -37,7 +37,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// <inheritdoc/>
         public void BuildCard(ICardModel card, string outputDir, HashSet<string> builtFiles)
         {
-            string cardDataDir = Path.Join(card.InstallDirectory, "Data");
+            string cardDataDir = Path.Join(card.InstallFolder, "Data");
             var songPresetFiles = Directory.GetFiles(cardDataDir, "*.songs", SearchOption.TopDirectoryOnly);
 
             if (songPresetFiles.Length > 0)

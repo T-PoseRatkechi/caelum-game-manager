@@ -33,11 +33,11 @@ namespace CaelumCoreLibrary.Builders
         {
             if (this.outputFilesLog.ContainsKey(outputFile))
             {
-                this.outputFilesLog[outputFile].Add(card.CardId);
+                this.outputFilesLog[outputFile].Add(card.Id);
             }
             else
             {
-                this.outputFilesLog.Add(outputFile, new() { card.CardId });
+                this.outputFilesLog.Add(outputFile, new() { card.Id });
             }
         }
 

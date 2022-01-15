@@ -30,10 +30,10 @@ namespace CaelumCoreLibrary.Cards
 
         public void CreateCard(IGameInstall gameInstall, ICardModel card)
         {
-            switch (card.Type)
+            switch (card.Metadata.Type)
             {
                 case CardType.Folder:
-                    var cardInstallDir = Path.Join(gameInstall.CardsDirectory, card.CardId);
+                    var cardInstallDir = Path.Join(gameInstall.CardsDirectory, card.Id);
                     if (this.fileSystem.Directory.Exists(cardInstallDir))
                     {
                         throw new ArgumentException($"Could not create card because an installation folder for it already exists. Directory: {cardInstallDir}", nameof(card));
@@ -44,11 +44,11 @@ namespace CaelumCoreLibrary.Cards
                     this.fileSystem.Directory.CreateDirectory(Path.Join(cardInstallDir, "Data"));
 
                     this.writer.WriteFile(Path.Join(cardInstallDir, "card.json"), card);
-                    card.InstallDirectory = cardInstallDir;
+                    card.InstallFolder = cardInstallDir;
 
                     break;
                 default:
-                    throw new NotSupportedException($@"Creating cards of card type ""{card.Type}"" is not supported.");
+                    throw new NotSupportedException($@"Creating cards of card type ""{card.Metadata.Type}"" is not supported.");
             }
         }
     }

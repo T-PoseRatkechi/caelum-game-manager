@@ -39,7 +39,7 @@ namespace CaelumCoreLibrary.Builders.Modules
         /// <inheritdoc/>
         public void BuildCard(ICardModel card, string outputDir, HashSet<string> builtCardFiles)
         {
-            var dataFolders = Directory.GetDirectories(Path.Join(card.InstallDirectory, "Data"), "data_*", SearchOption.TopDirectoryOnly);
+            var dataFolders = Directory.GetDirectories(Path.Join(card.InstallFolder, "Data"), "data_*", SearchOption.TopDirectoryOnly);
 
             /*
             // Only allow one data_x card.

@@ -21,12 +21,11 @@ namespace CaelumGameManagerGUI.Models
     /// </summary>
     public class ObservableCardModel : PropertyChangedBase, ICardModel
     {
-        private string _cardId;
-        private bool _isEnabled;
-        private string _name;
-        private string _description;
-        private string _version;
-        private CardType _type;
+        private CardMetadataModel _metadata;
+        private string _id;
+        private bool _enabled;
+        private bool _hidden;
+        private string _installFolder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableCardModel"/> class.
@@ -41,122 +40,76 @@ namespace CaelumGameManagerGUI.Models
         /// <param name="card">Source card.</param>
         public ObservableCardModel(ICardModel card)
         {
-            this.CardId = card.CardId;
-            this.IsEnabled = card.IsEnabled;
-            this.IsHidden = card.IsHidden;
-            this.Name = card.Name;
-            this.Games = card.Games;
-            this.Authors = card.Authors;
-            this.Description = card.Description;
-            this.Version = card.Version;
-            this.Type = card.Type;
-            this.InstallDirectory = card.InstallDirectory;
+            this._id = card.Id;
+            this._enabled = card.Enabled;
+            this._hidden = card.Hidden;
+            this.InstallFolder = card.InstallFolder;
 
             this.PropertyChanged += this.SaveCardChanges;
         }
 
         /// <inheritdoc/>
-        public string CardId
+        public CardMetadataModel Metadata
         {
             get
             {
-                return this._cardId;
+                return this._metadata;
             }
 
             set
             {
-                this._cardId = value;
-                this.NotifyOfPropertyChange(() => this.IsEnabled);
+                this._metadata = value;
+                this.NotifyOfPropertyChange(() => this.Metadata);
             }
         }
 
         /// <inheritdoc/>
-        public bool IsEnabled
+        public string Id
         {
             get
             {
-                if (this.Type == CardType.None)
+                return this._id;
+            }
+
+            set
+            {
+                this._id = value;
+                this.NotifyOfPropertyChange(() => this.Enabled);
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool Enabled
+        {
+            get
+            {
+                if (this.Metadata.Type == CardType.None)
                 {
                     return false;
                 }
 
-                return this._isEnabled;
+                return this._enabled;
             }
 
             set
             {
-                this._isEnabled = value;
-                this.NotifyOfPropertyChange(() => this.IsEnabled);
+                this._enabled = value;
+                this.NotifyOfPropertyChange(() => this.Enabled);
             }
         }
 
         /// <inheritdoc/>
-        public bool IsHidden { get; set; }
-
-        /// <inheritdoc/>
-        public string Name
+        public bool Hidden
         {
             get
             {
-                return this._name;
+                return this._hidden;
             }
 
             set
             {
-                this._name = value;
-                this.NotifyOfPropertyChange(() => this.Name);
-            }
-        }
-
-        /// <inheritdoc/>
-        public List<string> Games { get; set; }
-
-        /// <inheritdoc/>
-        public List<Author> Authors { get; set; }
-
-        /// <inheritdoc/>
-        public string Description
-        {
-            get
-            {
-                return this._description;
-            }
-
-            set
-            {
-                this._description = value;
-                this.NotifyOfPropertyChange(() => this.Description);
-            }
-        }
-
-        /// <inheritdoc/>
-        public string Version
-        {
-            get
-            {
-                return this._version;
-            }
-
-            set
-            {
-                this._version = value;
-                this.NotifyOfPropertyChange(() => this.Version);
-            }
-        }
-
-        /// <inheritdoc/>
-        public CardType Type
-        {
-            get
-            {
-                return this._type;
-            }
-
-            set
-            {
-                this._type = value;
-                this.NotifyOfPropertyChange(() => this.Type);
-                this.NotifyOfPropertyChange(() => this.TypeString);
+                this._hidden = value;
+                this.NotifyOfPropertyChange(() => this.Hidden);
             }
         }
 
@@ -168,7 +121,7 @@ namespace CaelumGameManagerGUI.Models
         {
             get
             {
-                return this.Type switch
+                return this.Metadata.Type switch
                 {
                     CardType.Folder => LocalizedStrings.Instance["FolderText"],
                     CardType.Mod => LocalizedStrings.Instance["ModText"],
@@ -179,17 +132,18 @@ namespace CaelumGameManagerGUI.Models
         }
 
         /// <inheritdoc/>
-        public string InstallDirectory { get; set; }
+        public string InstallFolder { get; set; }
 
         private void SaveCardChanges(object sender, PropertyChangedEventArgs e)
         {
             if (sender is ICardModel card)
             {
+                /*
                 var cardModel = new CardModel()
                 {
-                    CardId = this.CardId,
-                    IsEnabled = this.IsEnabled,
-                    IsHidden = this.IsHidden,
+                    Id = this.Id,
+                    Enabled = this.Enabled,
+                    Hidden = this.Hidden,
                     Name = this.Name,
                     Games = this.Games,
                     Authors = this.Authors,
@@ -197,9 +151,21 @@ namespace CaelumGameManagerGUI.Models
                     Version = this.Version,
                     Type = this.Type,
                 };
+                */
 
-                var cardText = JsonConvert.SerializeObject(cardModel, new JsonSerializerSettings() { Formatting = Formatting.Indented });
-                File.WriteAllText(Path.Join(card.InstallDirectory, "card.json"), cardText);
+                // Update card metadata.
+                var newMetadata = new CardMetadataModel()
+                {
+                    Name = this.Metadata.Name,
+                    Games = this.Metadata.Games,
+                    Authors = this.Metadata.Authors,
+                    Description = this.Metadata.Description,
+                    Version = this.Metadata.Version,
+                    Type = this.Metadata.Type,
+                };
+
+                var cardText = JsonConvert.SerializeObject(newMetadata, new JsonSerializerSettings() { Formatting = Formatting.Indented });
+                File.WriteAllText(Path.Join(card.InstallFolder, "card.json"), cardText);
             }
         }
     }

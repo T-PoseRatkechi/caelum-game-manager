@@ -15,6 +15,9 @@ namespace CaelumGameManagerGUI.Models
 
     public class ObservableCard : PropertyChangedBase, ICardModel
     {
+        /// <summary>
+        /// Original card.
+        /// </summary>
         protected ICardModel _card;
 
         public ObservableCard(ICardModel card)
@@ -25,139 +28,93 @@ namespace CaelumGameManagerGUI.Models
         }
 
         /// <inheritdoc/>
-        public string CardId
+        public CardMetadataModel Metadata
         {
             get
             {
-                return this._card.CardId;
+                return this._card.Metadata;
             }
 
             set
             {
-                this._card.CardId = value;
-                this.NotifyOfPropertyChange(() => this.CardId);
+                this._card.Metadata = value;
+                this.NotifyOfPropertyChange(() => this._card.Metadata);
             }
         }
 
         /// <inheritdoc/>
-        public bool IsEnabled
+        public string Id
         {
             get
             {
-                if (this.Type == CardType.None)
+                return this._card.Id;
+            }
+
+            set
+            {
+                this._card.Id = value;
+                this.NotifyOfPropertyChange(() => this.Id);
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool Enabled
+        {
+            get
+            {
+                if (this._card.Metadata.Type == CardType.None)
                 {
                     return false;
                 }
 
-                return this._card.IsEnabled;
+                return this._card.Enabled;
             }
 
             set
             {
-                this._card.IsEnabled = value;
-                this.NotifyOfPropertyChange(() => this.IsEnabled);
+                this._card.Enabled = value;
+                this.NotifyOfPropertyChange(() => this.Enabled);
             }
         }
 
         /// <inheritdoc/>
-        public bool IsHidden
+        public bool Hidden
         {
             get
             {
-                return this._card.IsHidden;
+                return this._card.Hidden;
             }
 
             set
             {
-                this._card.IsHidden = value;
-                this.NotifyOfPropertyChange(() => this.IsHidden);
+                this._card.Hidden = value;
+                this.NotifyOfPropertyChange(() => this.Hidden);
             }
         }
 
         /// <inheritdoc/>
-        public string Name
+        public string InstallFolder
         {
             get
             {
-                return this._card.Name;
+                return this._card.InstallFolder;
             }
 
             set
             {
-                this._card.Name = value;
-                this.NotifyOfPropertyChange(() => this.Name);
+                this._card.InstallFolder = value;
             }
         }
 
-        /// <inheritdoc/>
-        public List<string> Games { get; set; }
-
-        /// <inheritdoc/>
-        public List<Author> Authors { get; set; }
-
-        /// <inheritdoc/>
-        public string Description
-        {
-            get
-            {
-                return this._card.Description;
-            }
-
-            set
-            {
-                this._card.Description = value;
-                this.NotifyOfPropertyChange(() => this.Description);
-            }
-        }
-
-        /// <inheritdoc/>
-        public string Version
-        {
-            get
-            {
-                return this._card.Version;
-            }
-
-            set
-            {
-                this._card.Version = value;
-                this.NotifyOfPropertyChange(() => this.Version);
-            }
-        }
-
-        /// <inheritdoc/>
-        public CardType Type
-        {
-            get
-            {
-                return this._card.Type;
-            }
-
-            set
-            {
-                this._card.Type = value;
-                this.NotifyOfPropertyChange(() => this.Type);
-            }
-        }
-
-        /// <inheritdoc/>
-        public string InstallDirectory
-        {
-            get
-            {
-                return this._card.InstallDirectory;
-            }
-
-            set
-            {
-                this._card.InstallDirectory = value;
-            }
-        }
-
+        /// <summary>
+        /// Saves card changes to file.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Event.</param>
         protected void SaveCardChanges(object sender, PropertyChangedEventArgs e)
         {
             var cardText = JsonConvert.SerializeObject(this._card, new JsonSerializerSettings() { Formatting = Formatting.Indented });
-            File.WriteAllText(Path.Join(this._card.InstallDirectory, "card.json"), cardText);
+            File.WriteAllText(Path.Join(this._card.InstallFolder, "card.json"), cardText);
         }
     }
 }

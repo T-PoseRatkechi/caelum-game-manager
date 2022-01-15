@@ -57,12 +57,12 @@ namespace CaelumCoreLibrary.Tests.Decks
 
             var firstCard = new CardModel()
             {
-                CardId = "tposeratkechi_caelummusicmanager"
+                Id = "tposeratkechi_caelummusicmanager"
             };
 
             var secondCard = new CardModel()
             {
-                CardId = "tposeratkechi_caelummusicmanager"
+                Id = "tposeratkechi_caelummusicmanager"
             };
 
             // Act
@@ -89,7 +89,7 @@ namespace CaelumCoreLibrary.Tests.Decks
 
             // Assert
             Assert.Contains(newCard, deck.Cards);
-            Assert.True(deck.Cards.Find(x => x == newCard).IsHidden);
+            Assert.True(deck.Cards.Find(x => x == newCard).Hidden);
         }
 
         [Fact]

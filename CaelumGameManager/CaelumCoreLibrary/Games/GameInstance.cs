@@ -45,9 +45,9 @@ namespace CaelumCoreLibrary.Games
         /// <inheritdoc/>
         public void StartGame(ILauncherCardModel gameLauncher = null)
         {
-            if (gameLauncher.Type != CardType.Launcher)
+            if (gameLauncher.Metadata.Type != CardType.Launcher)
             {
-                this.log.LogWarning("Card {CardName} is not a game launcher.", gameLauncher.Name);
+                this.log.LogWarning("Card {CardName} is not a game launcher.", gameLauncher.Metadata.Name);
                 return;
             }
 
@@ -135,7 +135,7 @@ namespace CaelumCoreLibrary.Games
             {
                 // Set inital order of cards based on config.
                 var originalCards = this.Deck.Cards;
-                this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.CardId, (i, d) => d).Distinct().ToList();
+                this.Deck.Cards = this.GameConfig.Settings.Cards.Join(this.Deck.Cards, i => i, d => d.Id, (i, d) => d).Distinct().ToList();
 
                 // Add back any cards that were removed for not existing previously.
                 if (originalCards.Count != this.Deck.Cards.Count)
@@ -152,8 +152,12 @@ namespace CaelumCoreLibrary.Games
 
             var defaultGameLauncher = new LauncherCardModel()
             {
-                CardId = $"${this.GameInstall.GameName}_default".ToLower(),
-                Name = "Default",
+                Metadata = new()
+                {
+                    Name = "Default",
+                    Type = CardType.Launcher,
+                },
+                Id = $"${this.GameInstall.GameName}_default".ToLower(),
                 LauncherPath = "${GameInstall}",
             };
 
