@@ -5,8 +5,8 @@
 
 namespace CaelumCoreLibrary.Common
 {
-    using Newtonsoft.Json;
     using System;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Author object.
