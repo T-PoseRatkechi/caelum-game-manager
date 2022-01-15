@@ -57,7 +57,6 @@ namespace CaelumGameManagerGUI.ViewModels
         private ILauncherCardModel _selectedGameLauncher;
         private ICardModel _selectedCard;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckViewModel"/> class.
         /// </summary>
@@ -192,7 +191,7 @@ namespace CaelumGameManagerGUI.ViewModels
 
                 if (selectedItem != null)
                 {
-                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck, selectedItem as ICardModel));
+                    this.windowManager.ShowDialogAsync(new CreateCardViewModel(this.game, this._cardFactory, this._deck, selectedItem as ObservableCard));
                     return;
                 }
 

@@ -89,12 +89,20 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" Value="#20AAAAAA"/>
                         </MultiTrigger>
-                        <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.None}">
+                        <DataTrigger Binding="{Binding Path=Metadata.Type}" Value="{x:Static cards:CardType.None}">
                             <Setter Property="Background" Value="#1f1137"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="TextBlock.FontWeight" Value="Bold"/>
                             <Setter Property="FontSize" Value="15"/>
                             <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                        </DataTrigger>
+
+                        <!--Disable selection for default launch row.-->
+                        <DataTrigger Binding="{Binding Path=Metadata.Name}" Value="Default">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <!--Right clicking on row still selects. Seems to be a bug that should've
+                                been fixed, maybe Mahapp still retains it?-->
+                            <Setter Property="IsHitTestVisible" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -109,10 +117,10 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.None}">
+                                <DataTrigger Binding="{Binding Path=Metadata.Type}" Value="{x:Static cards:CardType.None}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Type}" Value="{x:Static cards:CardType.Launcher}">
+                                <DataTrigger Binding="{Binding Path=Metadata.Type}" Value="{x:Static cards:CardType.Launcher}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>

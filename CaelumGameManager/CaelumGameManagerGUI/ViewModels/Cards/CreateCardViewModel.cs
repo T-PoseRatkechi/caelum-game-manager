@@ -29,7 +29,7 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
 
         private string selectedType = CardType.Mod.ToString();
         private BindableDeckModel cards;
-        private ICardModel card;
+        private ObservableCard card;
         private IGameInstance game;
         private ICardFactory cardFactory;
 
@@ -43,12 +43,12 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
         /// </summary>
         /// <param name="openContext">Context that VM was opened in: Create or Edit.</param>
         /// <param name="deckCards">Deck cards to add to or edit.</param>
-        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableDeckModel deckCards, ICardModel card = null)
+        public CreateCardViewModel(IGameInstance game, ICardFactory cardFactory, BindableDeckModel deckCards, ObservableCard selectedCard = null)
         {
             this.cards = deckCards;
             this.cardFactory = cardFactory;
             this.game = game;
-            this.card = card;
+            this.card = selectedCard;
 
             if (card != null)
             {
@@ -227,11 +227,15 @@ namespace CaelumGameManagerGUI.ViewModels.Cards
             }
             else
             {
+                // Set new values.
                 this.card.Id = this.CardId;
                 this.card.Metadata.Name = this.CardName;
                 this.card.Metadata.Description = this.CardDescription;
                 this.card.Metadata.Authors = this.CardAuthors;
-                // this.card.Version = this.cardVersion;
+                this.card.Metadata.Version = this.CardVersion;
+
+                // Notify card metadata changed.
+                this.card.NotifyOfPropertyChange(() => this.card.Metadata);
             }
         }
 

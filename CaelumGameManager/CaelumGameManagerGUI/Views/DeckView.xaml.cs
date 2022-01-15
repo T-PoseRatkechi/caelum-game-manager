@@ -124,7 +124,7 @@ namespace CaelumGameManagerGUI.Views
         /// <inheritdoc/>
         public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 
@@ -158,7 +158,7 @@ namespace CaelumGameManagerGUI.Views
         /// <inheritdoc/>
         public object ConvertBack(object value, System.Type targetType, object parameter, CultureInfo culture)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
